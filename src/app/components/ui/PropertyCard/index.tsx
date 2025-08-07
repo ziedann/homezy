@@ -29,7 +29,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   isMonthly = false,
 }) => {
   return (
-    <div className="relative w-[368px] rounded-[15px] overflow-hidden">
+    <div className="relative lg:w-[368px] w-full rounded-[15px] overflow-hidden">
       <div className="relative w-full">
         <div className="aspect-[368/280] w-full relative rounded-[15px] border border-[#E7DCFF] overflow-hidden">
           <Image
@@ -55,7 +55,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           <div className="p-6 flex flex-col gap-4 border border-[#E7DCFF] rounded-[15px] bg-white mt-[-70px]">
             <div className='flex flex-col gap-[4px]'>
               <div className="flex items-end gap-[4px]">
-                <h2 className="text-[32px] leading-[40px] tracking-[-0.03em] font-semibold font-hanken">
+                <h2 className="lg:text-[32px] text-[24px] lg:leading-[40px] leading-[32px] tracking-[-0.03em] font-semibold font-hanken">
                   {price}
                 </h2>
                 {isMonthly && (
@@ -66,7 +66,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
               </div>
 
               {/* Title */}
-              <h3 className="text-[24px] leading-[32px] tracking-[4%] font-semibold font-syne">
+              <h3 className="lg:text-[24px] text-[20px] lg:leading-[32px] leading-[28px] tracking-[-0.03em] font-semibold font-syne">
                 {title}
               </h3>
             </div>
@@ -79,22 +79,22 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             <div className='w-full h-[1px] bg-[#F7F2FF]'></div>
 
             {/* Property Details */}
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-[8px]">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-[6px]">
                 <Bed className="w-5 h-5" />
-                <p className='font-semibold font-hanken text-[14px] leading-[20px] text-[#686A79]'>
+                <p className='font-medium font-hanken text-[14px] leading-[20px] text-[#686A79]'>
                   {beds} Beds
                 </p>
               </div>
-              <div className="flex items-center gap-[8px]">
+              <div className="flex items-center gap-[6px]">
                 <Bath className="w-5 h-5" />
-                <p className='font-semibold font-hanken text-[14px] leading-[20px] text-[#686A79]'>
+                <p className='font-medium font-hanken text-[14px] leading-[20px] text-[#686A79]'>
                   {baths} Baths
                 </p>
               </div>
-              <div className="flex items-center gap-[8px]">
+              <div className="flex items-center gap-[6px]">
                 <Area className="w-5 h-5" />
-                <p className='font-semibold font-hanken text-[14px] leading-[20px] text-[#686A79]'>
+                <p className='font-medium font-hanken text-[14px] leading-[20px] text-[#686A79]'>
                   {area}
                 </p>
               </div>

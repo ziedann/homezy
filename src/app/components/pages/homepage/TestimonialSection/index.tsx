@@ -15,7 +15,7 @@ export default function TestimonialSection() {
 
     const handleScroll = (direction: 'left' | 'right') => {
         if (scrollContainerRef.current) {
-            const scrollAmount = 600 // Adjust this value based on your card width + gap
+            const scrollAmount = window.innerWidth >= 1024 ? 800 : 351 // Card width (335) + gap (16)
             const currentScroll = scrollContainerRef.current.scrollLeft
 
             scrollContainerRef.current.scrollTo({
@@ -28,63 +28,66 @@ export default function TestimonialSection() {
     }
 
     return (
-        <div className='w-full min-h-full mt-[120px]'>
-            <div>
-                <div className="flex flex-col gap-[64px]">
+        <div className='w-full'>
+            <SectionContainer>
+                <div className="flex flex-col lg:gap-[0px] gap-[40px]">
                     <SectionHeader
                         title="Kind Words From Our Customers"
                         browseText=""
-                        className="flex flex-col items-center"
+                        className="text-center"
                         showArrowIcon={false}
                     />
-                    <div className='flex flex-col gap-[40px]'>
-                        {/* Testimonial Cards Container */}
-                        <div className="relative">
-                            <div 
-                                ref={scrollContainerRef}
-                                className="flex flex-row overflow-x-auto scrollbar-hide scroll-smooth"
-                                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                            >
-                                <div className="flex flex-row px-[2px] min-w-max">
-                                    <TestimonialCard
-                                        image={TestimonialPerson1}
-                                        review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
-                                        name="Brooklyn Simmons"
-                                        role="CEO of Asana"
-                                    />
-                                    <TestimonialCard
-                                        image={TestimonialPerson2}
-                                        review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
-                                        name="Brooklyn Simmons"
-                                        role="CEO of Asana"
-                                    />
-                                    <TestimonialCard
-                                        image={TestimonialPerson1}
-                                        review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
-                                        name="Brooklyn Simmons"
-                                        role="CEO of Asana"
-                                    />
-                                    <TestimonialCard
-                                        image={TestimonialPerson2}
-                                        review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
-                                        name="Brooklyn Simmons"
-                                        role="CEO of Asana"
-                                    />
-                                </div>
+                </div>
+            </SectionContainer>
+
+            <div className='lg:mt-[64px] mt-[40px]'>
+                <div className='flex flex-col lg:gap-[40px] gap-[32px]'>
+                    {/* Testimonial Cards Container */}
+                    <div className="relative">
+                        <div 
+                            ref={scrollContainerRef}
+                            className="flex flex-row overflow-x-auto scrollbar-hide scroll-smooth px-5 lg:px-0"
+                            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                        >
+                            <div className="flex flex-row lg:w-full gap-[16px]">
+                                <TestimonialCard
+                                    image={TestimonialPerson1}
+                                    review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
+                                    name="Brooklyn Simmons"
+                                    role="CEO of Asanaa"
+                                />
+                                <TestimonialCard
+                                    image={TestimonialPerson2}
+                                    review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
+                                    name="Brooklyn Simmons"
+                                    role="CEO of Asana"
+                                />
+                                <TestimonialCard
+                                    image={TestimonialPerson1}
+                                    review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
+                                    name="Brooklyn Simmons"
+                                    role="CEO of Asana"
+                                />
+                                <TestimonialCard
+                                    image={TestimonialPerson2}
+                                    review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
+                                    name="Brooklyn Simmons"
+                                    role="CEO of Asana"
+                                />
                             </div>
                         </div>
+                    </div>
 
-                        {/* Navigation Buttons */}
-                        <div className='flex items-center justify-center gap-[40px]'>
-                            <NavigationButton
-                                icon={<ArrowLeftLight />}
-                                onClick={() => handleScroll('left')}
-                            />
-                            <NavigationButton
-                                icon={<ArrowRightLight />}
-                                onClick={() => handleScroll('right')}
-                            />
-                        </div>
+                    {/* Navigation Buttons */}
+                    <div className='flex items-center justify-center gap-[40px]'>
+                        <NavigationButton
+                            icon={<ArrowLeftLight />}
+                            onClick={() => handleScroll('left')}
+                        />
+                        <NavigationButton
+                            icon={<ArrowRightLight />}
+                            onClick={() => handleScroll('right')}
+                        />
                     </div>
                 </div>
             </div>

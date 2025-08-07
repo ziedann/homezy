@@ -9,7 +9,7 @@ interface CategoryCardProps {
 
 export default function CategoryCard({ icon, title, listingCount }: CategoryCardProps) {
   return (
-    <div className='flex flex-row justify-between bg-white rounded-[15px] p-[24px] border border-[#E7DCFF] w-[365px]'>
+    <div className='flex flex-row justify-between bg-white rounded-[15px] p-[24px] border border-[#E7DCFF] lg:w-[365px] w-full'>
       <div className='flex flex-row gap-[16px]'>
         <div className='p-[14px] bg-[#E7DCFF] rounded-[15px] flex items-center justify-center'>
           {icon}

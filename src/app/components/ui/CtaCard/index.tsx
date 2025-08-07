@@ -15,29 +15,29 @@ export default function CtaCard({
     buttonText
 }: CtaCardProps) {
     return (
-        <div className="relative w-full h-[380px] bg-[#C1A5FF] rounded-[24px] border-[2px] border-[#191A23] overflow-hidden">
+        <div className="relative w-full lg:h-[380px] h-[500px] bg-[#C1A5FF] rounded-[24px] border-[2px] border-[#191A23] overflow-hidden">
             {/* Pattern Background */}
-            <PatternCta className="absolute inset-0 left-[265px] w-[1173px] h-full" />
+            <PatternCta className="absolute inset-0 lg:left-[265px] lg:w-[1173px] top-[150px] right-[30px] w-full h-full" />
 
             {/* Content Container */}
-            <div className="relative z-10 flex flex-col justify-center w-[420px] h-full px-[64px]">
+            <div className="relative z-10 flex flex-col lg:w-[420px] w-full h-full lg:px-[64px] p-[24px]">
                 {/* Content */}
-                <div className="flex flex-col gap-[32px] w-[420px]">
-                    <div className="flex flex-col gap-[16px]">
-                        <h2 className="text-[48px] leading-[56px] tracking-[-0.04em] w-[358px] font-semibold font-syne text-white">
+                <div className="flex flex-col lg:gap-[32px] gap-[24px] lg:w-[420px] w-full">
+                    <div className="flex flex-col lg:gap-[16px] gap-3">
+                        <h2 className="lg:text-[48px] text-[32px] lg:leading-[56px] leading-[40px] tracking-[-0.04em] lg:w-[358px] w-full font-semibold font-syne text-white">
                             {title}
                         </h2>
-                        <p className="w-[420px] text-[18px] leading-[28px] font-light font-hanken text-[#E7DCFF]">
+                        <p className="lg:w-[420px] w-full text-[18px] leading-[28px] font-light font-hanken text-[#E7DCFF]">
                             {description}
                         </p>
                     </div>
-                    <div className="flex p-[8px] bg-white rounded-[15px] w-[414px]">
+                    <div className="flex flex-col lg:flex-row lg:p-[8px] p-0 lg:bg-white lg:rounded-[15px] rounded-none lg:w-[414px] w-full gap-[8px] lg:gap-0">
                         <input
                             type="email"
                             placeholder={placeholder}
-                            className="w-[320px] px-[16px] text-[16px] leading-[26px] font-light font-hanken text-[#B7B8C1] focus:outline-none"
+                            className="lg:w-[320px] w-full px-[16px] h-[56px] text-[16px] leading-[26px] font-light font-hanken text-[#B7B8C1] focus:outline-none rounded-[15px] lg:rounded-none"
                         />
-                        <button className="flex items-center justify-center gap-[8px] h-[48px] px-[24px] bg-[#191A23] rounded-[12px] hover:bg-[#2C2D3C] transition-colors">
+                        <button className="flex items-center justify-center h-[56px] lg:px-[24px] bg-[#191A23] lg:rounded-[12px] rounded-[15px] hover:bg-[#2C2D3C] transition-colors w-full lg:w-auto">
                             <span className="text-[16px] leading-[24px] font-semibold font-hanken text-white">
                                 {buttonText}
                             </span>

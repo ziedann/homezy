@@ -7,7 +7,7 @@ interface SectionContainerProps {
 export default function SectionContainer({ children }: SectionContainerProps) {
   return (
     <div className='w-full min-h-full mt-[120px]'>
-      <div className='mx-auto max-w-[1160px]'>
+      <div className='mx-auto lg:max-w-[1160px] max-w-[335px]'>
         {children}
       </div>
     </div>

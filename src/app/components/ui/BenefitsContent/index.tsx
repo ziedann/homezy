@@ -10,11 +10,11 @@ const BenefitsContent: React.FC<BenefitsContentProps> = ({
     description
 }) => {
     return (
-        <div className='flex flex-col gap-[24px] w-[460px]'>
-            <h2 className='text-[48px] leading-[56px] tracking-[4%] font-semibold font-syne'>
+        <div className='flex flex-col gap-[24px] lg:w-[460px] w-full'>
+            <h2 className='lg:text-[48px] text-[32px] lg:leading-[56px] leading-[40px] tracking-[-0.04em] font-semibold font-syne'>
                 {title}
             </h2>
-            <p className='w-[430px] text-[18px] leading-[28px] font-regular font-hanken text-[#686A79]'>
+            <p className='lg:w-[430px] w-full text-[18px] leading-[28px] font-light font-hanken text-[#686A79]'>
                 {description}
             </p>
         </div>

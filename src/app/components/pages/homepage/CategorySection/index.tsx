@@ -15,7 +15,7 @@ export default function CategorySection() {
           browseText="Browse All Categories"
         />
         
-        <div className='flex flex-row justify-between'>
+        <div className='flex lg:flex-row flex-col gap-[32px] lg:w-full w-[335px] justify-between'>
           <CategoryCard 
             icon={<BuildingIcon1 className='w-[32px] h-[32px] text-primary' />}
             title="Studio"

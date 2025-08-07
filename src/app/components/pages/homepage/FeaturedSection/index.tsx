@@ -16,7 +16,7 @@ export default function FeaturedSection() {
         />
         
         {/* Property Cards */}
-        <div className="flex flex-row gap-[24px]">
+        <div className="flex lg:flex-row flex-col gap-[32px]">
           <PropertyCard 
             price="$15,000"
             title="Beach Pros Realty Inc."
