@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useState, useEffect, useRef } from 'react'
 import Logo from '@/app/assets/icons/logo.svg'
 import ArrowDown from '@/app/assets/icons/arrow-down.svg'
 import Menu from '@/app/assets/icons/menu.svg'
@@ -6,6 +8,33 @@ import NavbarButton from '@/app/components/ui/NavbarButton'
 import { NAV_ITEMS } from '@/app/components/layouts/Navbar/types'
 
 export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Effect to handle body scroll
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+
+    // Cleanup function to ensure scroll is restored when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isMenuOpen])
   const renderNavLinks = () => {
     return NAV_ITEMS.map((item) => (
       <a 
@@ -20,25 +49,44 @@ export default function Navbar() {
   }
 
   const renderMobileMenuButton = () => (
-    <button className="md:hidden p-2 text-gray-500 hover:text-gray-700">
-      <Menu className="h-6 w-6" />
+    <button 
+      className="lg:hidden p-2 text-gray-500 hover:text-gray-700 z-50"
+      onClick={() => setIsMenuOpen(!isMenuOpen)}
+    >
+      {isMenuOpen ? (
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      ) : (
+        <Menu className="h-6 w-6" />
+      )}
     </button>
   )
 
   return (
-    <nav className="navbar bg-[#F7F2FF]">
-      <div className="lg:max-w-[1160px] max-w-[335px] mx-auto">
+    <nav className="navbar bg-[#F7F2FF] relative">
+      <div className="lg:max-w-[1160px] md:max-w-[720px] w-[90%] mx-auto">
         <div className="flex items-center justify-between h-[100px]">
           {/* Logo */}
           <Logo className="h-[40px] w-auto" />
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center gap-[64px]">
+          {/* Navigation Links - Desktop */}
+          <div className="hidden lg:flex items-center gap-[64px]">
             {renderNavLinks()}
           </div>
           
-          {/* Contact Button */}
-          <div className="hidden md:block">
+          {/* Contact Button - Desktop */}
+          <div className="hidden lg:block">
             <NavbarButton>
               Contact Us
             </NavbarButton>
@@ -46,6 +94,43 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           {renderMobileMenuButton()}
+
+          {/* Mobile Menu Overlay */}
+          <div 
+            ref={menuRef}
+            className={`fixed top-0 right-0 h-screen w-full md:w-[400px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
+              isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+          >
+            <div className="p-6 pt-24">
+              <div className="flex flex-col gap-6">
+                {NAV_ITEMS.map((item) => (
+                  <a 
+                    key={item.label}
+                    href={item.href} 
+                    className="text-dark-100 text-[18px] font-regular flex items-center gap-1 hover:text-primary-500"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                    {item.hasDropdown && <ArrowDown className="w-4 h-4" />}
+                  </a>
+                ))}
+                <div className="pt-4">
+                  <NavbarButton className="w-full">
+                    Contact Us
+                  </NavbarButton>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Overlay Background */}
+          {isMenuOpen && (
+            <div 
+              className="fixed inset-0 bg-black bg-opacity-50 z-30"
+              onClick={() => setIsMenuOpen(false)}
+            />
+          )}
         </div>
       </div>
     </nav>
