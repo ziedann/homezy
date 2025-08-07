@@ -54,8 +54,8 @@ export default function HeroSection() {
             />
           </div>
 
-          <div className='max-w-[400px] self-center'>
-            <p className='font-hanken text-[20px] text-[#686A79] leading-[30px] fw-300'>
+          <div className='max-w-[372px] self-center'>
+            <p className='font-hanken text-[20px] text-[#686A79] leading-[30px] font-light'>
               We are creative people who provide the best way to you who want to have a new comfortable and suitable place to live
             </p>
           </div>

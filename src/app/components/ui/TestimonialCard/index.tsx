@@ -19,7 +19,7 @@ export default function TestimonialCard({
   showCompanyLogo = true 
 }: TestimonialCardProps) {
   return (
-    <div className="flex flex-row items-center bg-[#F7F2FF] border border-[#E7DCFF]">
+    <div className="flex flex-row items-center bg-[#F7F2FF] border border-[#E7DCFF] w-[800px]">
       {/* Image */}
       <div className="w-[300px] h-[380px] overflow-hidden bg-[#FFE1F2]">
         <Image 
@@ -30,7 +30,7 @@ export default function TestimonialCard({
       </div>
 
       {/* Content */}
-      <div className="flex flex-col gap-[32px] max-w-[368px] m-[32px]">
+      <div className="flex flex-col gap-[32px] w-[400px] m-[32px]">
         {/* Stars */}
         <div className="flex gap-1">
           {[...Array(5)].map((_, index) => (

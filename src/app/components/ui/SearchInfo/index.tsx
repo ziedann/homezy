@@ -14,7 +14,7 @@ export default function SearchInfo({ icon, label, value, className = '' }: Searc
         {icon}
       </div>
       <div>
-        <p className='font-hanken text-[14px] text-[#686A79] font-regular leading-[24px]'>
+        <p className='font-hanken text-[14px] text-[#686A79] font-light leading-[24px]'>
           {label}
         </p>
         <p className='font-hanken text-[16px] leading-[20px] font-semibold'>
