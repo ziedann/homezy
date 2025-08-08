@@ -2,8 +2,8 @@
 
 import React from 'react'
 import Image from 'next/image'
-import HomeIcon1 from '@assets/icons/home-icon-1.svg'
-import HomeIcon2 from '@assets/icons/home-icon-2.svg'
+import homeIcon1 from '@assets/icons/home-icon-1.webp'
+import homeIcon2 from '@assets/icons/home-icon-2.webp'
 import LocationIcon from '@assets/icons/location.svg'
 import DollarIcon from '@assets/icons/dollar-square.svg'
 import HouseIcon from '@assets/icons/house.svg'
@@ -51,7 +51,13 @@ export default function HeroSection() {
               />
             </div>
             <div className='absolute left-0 top-[50px] flex items-center gap-[4px]'>
-              <HomeIcon1 className='w-[98px] h-[48px] md:w-[110px] md:h-[60px] lg:w-[122px] lg:h-[70px]' />
+              <Image 
+                src={homeIcon1}
+                alt="Decorative home icon"
+                className='w-[98px] h-[48px] md:w-[110px] md:h-[60px] lg:w-[122px] lg:h-[70px]'
+                width={122}
+                height={70}
+              />
               <div className='w-full md:w-[600px]'>
                 <HeadingLine
                   text="to realize"
@@ -72,7 +78,13 @@ export default function HeroSection() {
               />
             </div>
             <div className='absolute top-[150px] left-[160px] md:right-[120px]'>
-              <HomeIcon2 className='w-[98px] h-[48px] md:w-[110px] md:h-[60px]' />
+              <Image 
+                src={homeIcon2}
+                alt="Decorative home icon"
+                className='w-[98px] h-[48px] md:w-[110px] md:h-[60px]'
+                width={110}
+                height={60}
+              />
             </div>
           </div>
 
@@ -81,12 +93,28 @@ export default function HeroSection() {
             <HeadingLine
               text="We help people"
               className='flex-row justify-start'
-              icon={<HomeIcon1 className='w-[122px] h-[70px]' />}
+              icon={
+                <Image 
+                  src={homeIcon1}
+                  alt="Decorative home icon"
+                  className='w-[122px] h-[70px]'
+                  width={122}
+                  height={70}
+                />
+              }
             />
             <HeadingLine text="to realize their dream" />
             <HeadingLine
               text="property"
-              icon={<HomeIcon2 className='w-[122px] h-[70px] mt-2' />}
+              icon={
+                <Image 
+                  src={homeIcon2}
+                  alt="Decorative home icon"
+                  className='w-[122px] h-[70px] mt-2'
+                  width={122}
+                  height={70}
+                />
+              }
             />
           </div>
 
