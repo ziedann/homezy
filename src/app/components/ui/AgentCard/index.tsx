@@ -7,7 +7,7 @@ import Facebook from "@/app/assets/icons/facebook.svg"
 import Twitter from "@/app/assets/icons/twitter.svg"
 
 interface AgentCardProps {
-  image: StaticImageData
+  image: StaticImageData | string
   name: string
   role: string
 }

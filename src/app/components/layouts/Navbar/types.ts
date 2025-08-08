@@ -11,11 +11,11 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     label: 'Properties',
-    href: '/properties'
+    href: '/'
   },
   {
     label: 'Agents',
-    href: '/agents'
+    href: '/'
   },
   {
     label: 'Pages',
