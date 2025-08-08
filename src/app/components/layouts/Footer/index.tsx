@@ -14,7 +14,7 @@ export default function Footer() {
 
         {/* Bottom Section - Copyright */}
         <div className="pt-8 border-t border-[#E8E8E8]">
-          <p className="text-center text-dark-60 text-sm">
+          <p className="text-center text-dark-60 text-sm font-light font-hanken">
             ©2023 Homezy. All rights reserved
           </p>
         </div>

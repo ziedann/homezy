@@ -5,6 +5,7 @@ import PropertyCard from '@/app/components/ui/PropertyCard'
 import SectionContainer from '@/app/components/ui/SectionContainer'
 import SectionHeader from '@/app/components/ui/SectionHeader'
 import SkeletonPropertyCard from '@/app/components/ui/SkeletonPropertyCard'
+import { delay } from '@/app/utils/delay'
 
 interface Property {
   id: number
@@ -34,6 +35,7 @@ export default function FeaturedSection() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/featured`)
         const jsonData = await response.json()
+        await delay(2000) // Add 2 second delay
         setData(jsonData)
       } catch (error) {
         console.error('Error fetching featured data:', error)

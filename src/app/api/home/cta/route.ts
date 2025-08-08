@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   const data = {
-    title: "Subscribe For Latest Newsletter",
-    description: "Stay updated with our latest news and properties",
+    title: "Subscribe To Our Newsletter",
+    description: "Join our newsletter to stay up to date on features and releases.",
     buttonText: "Subscribe",
     placeholderText: "Enter your email address"
   }

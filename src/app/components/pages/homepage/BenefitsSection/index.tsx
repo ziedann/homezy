@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import PatternBenefits from '@/app/assets/images/pattern-benefits.svg'
+import { delay } from '@/app/utils/delay'
 import CloudIcon from '@/app/assets/images/cloud-line.svg'
 import BenefitCard from '@/app/components/ui/BenefitCard'
 import SkeletonBenefitCard from '@/app/components/ui/SkeletonBenefitCard'
@@ -38,6 +39,7 @@ export default function BenefitsSection() {
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/benefits`)
                 const jsonData = await response.json()
+                await delay(2000) // Add 2 second delay
                 setData(jsonData)
             } catch (error) {
                 console.error('Error fetching benefits data:', error)

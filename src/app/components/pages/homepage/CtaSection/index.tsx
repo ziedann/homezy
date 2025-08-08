@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SectionContainer from '@/app/components/ui/SectionContainer'
+import { delay } from '@/app/utils/delay'
 import CtaCard from '@/app/components/ui/CtaCard'
 import SkeletonCtaCard from '@/app/components/ui/SkeletonCtaCard'
 
@@ -19,6 +20,7 @@ export default function CtaSection() {
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/cta`)
                 const jsonData = await response.json()
+                await delay(2000) // Add 2 second delay
                 setData(jsonData)
             } catch (error) {
                 console.error('Error fetching CTA data:', error)

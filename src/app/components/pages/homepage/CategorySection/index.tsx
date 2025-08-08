@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import BuildingIcon1 from '@/app/assets/icons/buliding-benefits-1.svg'
+import { delay } from '@/app/utils/delay'
 import BuildingIcon2 from '@/app/assets/icons/buliding-benefits-2.svg'
 import BuildingIcon3 from '@/app/assets/icons/buliding-benefits-3.svg'
 import CategoryCard from '@/app/components/ui/CategoryCard'
@@ -31,6 +32,7 @@ export default function CategorySection() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/categories`)
         const jsonData = await response.json()
+        await delay(2000) // Add 2 second delay
         setData(jsonData)
       } catch (error) {
         console.error('Error fetching categories data:', error)

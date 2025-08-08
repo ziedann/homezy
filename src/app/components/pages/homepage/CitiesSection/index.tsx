@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import SectionContainer from "@/app/components/ui/SectionContainer"
+import { delay } from '@/app/utils/delay'
 import SectionHeader from "@/app/components/ui/SectionHeader"
 import CityCard from "@/app/components/ui/CityCard"
 import SkeletonCityCard from '@/app/components/ui/SkeletonCityCard'
@@ -35,6 +36,7 @@ export default function CitiesSection() {
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/cities`)
                 const jsonData = await response.json()
+                await delay(2000) // Add 2 second delay
                 setData(jsonData)
             } catch (error) {
                 console.error('Error fetching cities data:', error)

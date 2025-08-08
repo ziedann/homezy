@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import SectionContainer from "@/app/components/ui/SectionContainer"
+import { delay } from '@/app/utils/delay'
 import SectionHeader from "@/app/components/ui/SectionHeader"
 import AgentCard from "@/app/components/ui/AgentCard"
 import SkeletonAgentCard from '@/app/components/ui/SkeletonAgentCard'
@@ -43,6 +44,7 @@ export default function AgentsSection() {
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/agents`)
                 const jsonData = await response.json()
+                await delay(2000) // Add 2 second delay
                 setData(jsonData)
             } catch (error) {
                 console.error('Error fetching agents data:', error)

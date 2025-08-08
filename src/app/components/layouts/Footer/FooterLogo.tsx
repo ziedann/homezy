@@ -9,7 +9,7 @@ export default function FooterLogo() {
   return (
     <div className="max-w-[360px]">
       <Logo className="h-8 w-auto mb-6" />
-      <p className="text-dark-60 text-sm font-regular">
+      <p className="text-dark-60 text-sm font-light font-hanken">
         We are creative people who provide the best way to you who want to have a new comfortable and suitable place to live
       </p>
       <div className="flex gap-4 mt-6">
