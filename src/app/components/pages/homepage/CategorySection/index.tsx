@@ -9,13 +9,13 @@ import SectionHeader from '@/app/components/ui/SectionHeader'
 export default function CategorySection() {
   return (
     <SectionContainer>
-      <div className='flex flex-col gap-[64px]'>
+      <div className='flex flex-col lg:gap-[64px] md:gap-[48px] gap-[32px]'>
         <SectionHeader 
           title="Featured Categories"
           browseText="Browse All Categories"
         />
         
-        <div className='flex lg:flex-row flex-col gap-[32px] lg:w-full w-[335px] justify-between'>
+        <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 lg:gap-[32px] gap-[24px] w-full'>
           <CategoryCard 
             icon={<BuildingIcon1 className='w-[32px] h-[32px] text-primary' />}
             title="Studio"

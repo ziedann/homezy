@@ -76,7 +76,7 @@ export default function BenefitsSection() {
                                     className="flex flex-row overflow-x-auto scrollbar-hide scroll-smooth gap-[16px]"
                                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                                 >
-                                    <div className="flex flex-row gap-[16px] min-w-max px-[2px]">
+                                    <div className="flex flex-row gap-[16px] min-w-max px-[2px] w-full">
                                         <BenefitCard 
                                             icon={<CoinIcon className='w-[48px] h-[48px]' />}
                                             title="Affordable Price"
