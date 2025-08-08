@@ -4,6 +4,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import SectionContainer from '@/app/components/ui/SectionContainer'
 import SectionHeader from '@/app/components/ui/SectionHeader'
 import TestimonialCard from '@/app/components/ui/TestimonialCard'
+import SkeletonTestimonialCard from '@/app/components/ui/SkeletonTestimonialCard'
 import NavigationButton from '@/app/components/ui/NavigationButton'
 import ArrowLeftLight from '@/app/assets/icons/arrow-left-light.svg'
 import ArrowRightLight from '@/app/assets/icons/arrow-right-light.svg'
@@ -33,7 +34,7 @@ export default function TestimonialSection() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/home/testimonials')
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/testimonials`)
                 const jsonData = await response.json()
                 setData(jsonData)
             } catch (error) {
@@ -60,12 +61,48 @@ export default function TestimonialSection() {
         }
     }
 
-    if (isLoading) {
-        return <div>Loading...</div>
-    }
+    if (isLoading || !data) {
+        return (
+            <div className='w-full'>
+                <SectionContainer>
+                    {/* Skeleton Header */}
+                    <div className="flex flex-col items-center lg:gap-[0px] gap-[40px] w-full">
+                        <div className="text-center max-w-[700px] w-full space-y-4 animate-pulse">
+                            <div className="h-[38px] bg-[#E5E7EB] rounded-[4px] w-[400px] mx-auto" />
+                            <div className="h-[22px] bg-[#E5E7EB] rounded-[4px] w-[280px] mx-auto" />
+                        </div>
+                    </div>
+                </SectionContainer>
 
-    if (!data) {
-        return <div>No data available</div>
+                <div className='lg:mt-[64px] mt-[40px]'>
+                    <div className='flex flex-col lg:gap-[40px] gap-[32px]'>
+                        {/* Desktop Layout */}
+                        <div className="hidden lg:flex lg:flex-row gap-[32px]">
+                            {[...Array(2)].map((_, index) => (
+                                <SkeletonTestimonialCard key={`desktop-${index}`} />
+                            ))}
+                        </div>
+
+                        {/* Mobile Layout */}
+                        <div className="lg:hidden relative">
+                            <div className="flex flex-row overflow-x-auto scrollbar-hide scroll-smooth px-5">
+                                <div className="flex flex-row gap-[18px]">
+                                    {[...Array(2)].map((_, index) => (
+                                        <SkeletonTestimonialCard key={`mobile-${index}`} />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Navigation Buttons */}
+                        <div className='flex items-center justify-center gap-[40px]'>
+                            <div className="w-[56px] h-[56px] rounded-full bg-[#E5E7EB] animate-pulse" />
+                            <div className="w-[56px] h-[56px] rounded-full bg-[#E5E7EB] animate-pulse" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (

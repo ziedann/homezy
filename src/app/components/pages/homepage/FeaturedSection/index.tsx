@@ -32,7 +32,7 @@ export default function FeaturedSection() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/home/featured')
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/featured`)
         const jsonData = await response.json()
         setData(jsonData)
       } catch (error) {

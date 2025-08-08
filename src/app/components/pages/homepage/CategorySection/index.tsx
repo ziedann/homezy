@@ -29,7 +29,7 @@ export default function CategorySection() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/home/categories')
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/categories`)
         const jsonData = await response.json()
         setData(jsonData)
       } catch (error) {
@@ -51,10 +51,17 @@ export default function CategorySection() {
             <div className="h-[22px] bg-[#E5E7EB] rounded-[4px] w-[180px]" />
           </div>
           
-          {/* Skeleton Cards */}
-          <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 lg:gap-[32px] gap-[24px] w-full'>
+          {/* Desktop Layout */}
+          <div className="hidden lg:grid lg:grid-cols-3 gap-[32px]">
             {[...Array(6)].map((_, index) => (
-              <SkeletonCategoryCard key={index} />
+              <SkeletonCategoryCard key={`desktop-${index}`} />
+            ))}
+          </div>
+
+          {/* Mobile Layout */}
+          <div className="lg:hidden grid md:grid-cols-2 grid-cols-1 gap-[24px]">
+            {[...Array(4)].map((_, index) => (
+              <SkeletonCategoryCard key={`mobile-${index}`} />
             ))}
           </div>
         </div>

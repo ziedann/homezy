@@ -33,7 +33,7 @@ export default function CitiesSection() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/home/cities')
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/cities`)
                 const jsonData = await response.json()
                 setData(jsonData)
             } catch (error) {
@@ -70,17 +70,16 @@ export default function CitiesSection() {
             <div className="h-[22px] bg-[#E5E7EB] rounded-[4px] w-[180px]" />
           </div>
 
-          {/* Skeleton Cards */}
-          <div className='flex flex-col lg:gap-[40px] gap-[32px]'>
-            {/* Desktop Layout */}
-            <div className="hidden lg:grid lg:grid-cols-3 gap-[32px]">
-              {[...Array(3)].map((_, index) => (
-                <SkeletonCityCard key={`desktop-${index}`} />
-              ))}
-            </div>
+          {/* Desktop Layout */}
+          <div className="hidden lg:grid lg:grid-cols-3 gap-[32px]">
+            {[...Array(3)].map((_, index) => (
+              <SkeletonCityCard key={`desktop-${index}`} />
+            ))}
+          </div>
 
-            {/* Mobile Layout */}
-            <div className="lg:hidden relative">
+          {/* Mobile Layout */}
+          <div className="lg:hidden flex flex-col gap-[32px]">
+            <div className="relative">
               <div className="flex flex-row overflow-x-auto scrollbar-hide scroll-smooth px-5">
                 <div className="flex flex-row gap-[16px]">
                   {[...Array(3)].map((_, index) => (
@@ -90,8 +89,8 @@ export default function CitiesSection() {
               </div>
             </div>
 
-            {/* Navigation Buttons Skeleton - Mobile Only */}
-            <div className='lg:hidden flex items-center justify-center gap-[40px]'>
+            {/* Navigation Buttons */}
+            <div className='flex items-center justify-center gap-[40px]'>
               <div className="w-[56px] h-[56px] rounded-full bg-[#E5E7EB] animate-pulse" />
               <div className="w-[56px] h-[56px] rounded-full bg-[#E5E7EB] animate-pulse" />
             </div>

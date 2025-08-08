@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import SectionContainer from '@/app/components/ui/SectionContainer'
 import CtaCard from '@/app/components/ui/CtaCard'
+import SkeletonCtaCard from '@/app/components/ui/SkeletonCtaCard'
 
 interface CtaData {
     title: string
@@ -16,7 +17,7 @@ export default function CtaSection() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/home/cta')
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/cta`)
                 const jsonData = await response.json()
                 setData(jsonData)
             } catch (error) {
@@ -29,13 +30,13 @@ export default function CtaSection() {
         fetchData()
     }, [])
 
-    if (isLoading) {
-        return <div>Loading...</div>
-    }
-
-    if (!data) {
-        return <div>No data available</div>
-    }
+      if (isLoading || !data) {
+    return (
+      <SectionContainer>
+        <SkeletonCtaCard />
+      </SectionContainer>
+    )
+  }
 
     return (
         <SectionContainer>
