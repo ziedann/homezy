@@ -17,17 +17,17 @@ export default function CtaCard({
     return (
         <div className="relative w-full lg:h-[380px] h-[500px] bg-[#C1A5FF] rounded-[24px] border-[2px] border-[#191A23] overflow-hidden">
             {/* Pattern Background */}
-            <PatternCta className="absolute inset-0 lg:left-[265px] lg:w-[1173px] top-[150px] right-[30px] w-full h-full" />
+            <PatternCta className="absolute inset-0 lg:left-[265px] lg:w-[1173px] lg:top-[0px] top-[100px] right-[30px] w-full h-full" />
 
             {/* Content Container */}
-            <div className="relative z-10 flex flex-col lg:w-[420px] w-full h-full lg:px-[64px] p-[24px]">
+            <div className="relative z-10 flex flex-col lg:justify-center lg:w-[450px] w-full h-full lg:px-[64px] p-[24px]">
                 {/* Content */}
                 <div className="flex flex-col lg:gap-[32px] gap-[24px] lg:w-[420px] w-full">
                     <div className="flex flex-col lg:gap-[16px] gap-3">
                         <h2 className="lg:text-[48px] text-[32px] lg:leading-[56px] leading-[40px] tracking-[-0.04em] lg:w-[358px] w-full font-semibold font-syne text-white">
                             {title}
                         </h2>
-                        <p className="lg:w-[420px] w-full text-[18px] leading-[28px] font-light font-hanken text-[#E7DCFF]">
+                        <p className="lg:w-[450px] w-full text-[18px] leading-[28px] font-light font-hanken text-[#E7DCFF]">
                             {description}
                         </p>
                     </div>
