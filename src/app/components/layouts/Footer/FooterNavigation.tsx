@@ -2,35 +2,35 @@ import React from 'react'
 import FooterLinks from './FooterLinks'
 
 const pagesLinks = [
-  { href: '/home-v1', text: 'Home V1' },
-  { href: '/home-v2', text: 'Home V2' },
-  { href: '/search-properties-v1', text: 'Search Properties V1' },
-  { href: '/search-properties-v2', text: 'Search Properties V2' },
-  { href: '/property-details-v1', text: 'Property Details V1' },
-  { href: '/property-details-v2', text: 'Property Details V2' },
-  { href: '/agent-list-v1', text: 'Agent List V1' },
-  { href: '/agent-list-v2', text: 'Agent List V2' },
+  { href: '/', text: 'Home V1' },
+  { href: '/', text: 'Home V2' },
+  { href: '/', text: 'Search Properties V1' },
+  { href: '/', text: 'Search Properties V2' },
+  { href: '/', text: 'Property Details V1' },
+  { href: '/', text: 'Property Details V2' },
+  { href: '/', text: 'Agent List V1' },
+  { href: '/', text: 'Agent List V2' },
 ]
 
 const agentLinks = [
-  { href: '/agent-details-v1', text: 'Agent Details V1' },
-  { href: '/agent-details-v2', text: 'Agent Details V2' },
-  { href: '/about-us-v1', text: 'About Us V1' },
-  { href: '/about-us-v2', text: 'About Us V2' },
-  { href: '/contact-us-v1', text: 'Contact Us V1' },
-  { href: '/contact-us-v2', text: 'Contact Us V2' },
-  { href: '/faq', text: 'FAQ' },
+  { href: '/', text: 'Agent Details V1' },
+  { href: '/', text: 'Agent Details V2' },
+  { href: '/', text: 'About Us V1' },
+  { href: '/', text: 'About Us V2' },
+  { href: '/', text: 'Contact Us V1' },
+  { href: '/', text: 'Contact Us V2' },
+  { href: '/', text: 'FAQ' },
 ]
 
 const utilityLinks = [
-  { href: '/sign-in', text: 'Sign In' },
-  { href: '/sign-up', text: 'Sign Up' },
-  { href: '/forgot-password', text: 'Forgot Password' },
-  { href: '/reset-password', text: 'Reset Password' },
-  { href: '/404', text: '404 Error Page' },
-  { href: '/style-guides', text: 'Style Guides' },
-  { href: '/licenses', text: 'Licenses' },
-  { href: '/changelog', text: 'Change Log' },
+  { href: '/', text: 'Sign In' },
+  { href: '/', text: 'Sign Up' },
+  { href: '/', text: 'Forgot Password' },
+  { href: '/', text: 'Reset Password' },
+  { href: '/', text: '404 Error Page' },
+  { href: '/', text: 'Style Guides' },
+  { href: '/', text: 'Licenses' },
+  { href: '/', text: 'Change Log' },
 ]
 
 export default function FooterNavigation() {
