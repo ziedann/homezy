@@ -9,14 +9,14 @@ import SectionHeader from '@/app/components/ui/SectionHeader'
 export default function FeaturedSection() {
   return (
     <SectionContainer>
-      <div className='flex flex-col gap-8'>
+      <div className='flex flex-col lg:gap-8 md:gap-6 gap-5'>
         <SectionHeader 
           title="Featured Properties"
           browseText="Browse All Featured"
         />
         
         {/* Property Cards */}
-        <div className="flex lg:flex-row flex-col gap-[32px]">
+        <div className="flex lg:flex-row flex-col lg:gap-[32px] md:gap-6 gap-5 overflow-x-auto lg:overflow-x-visible">
           <PropertyCard 
             price="$15,000"
             title="Beach Pros Realty Inc."

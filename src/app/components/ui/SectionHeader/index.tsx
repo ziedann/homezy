@@ -15,15 +15,15 @@ export default function SectionHeader({
   className
 }: SectionHeaderProps) {
   return (
-    <div className={`flex lg:flex-row flex-col gap-[10px] lg:justify-between  ${className}`}>
-      <h1 className='lg:text-[40px] text-[32px] lg:leading-[56px] leading-[40px] tracking-[-0.05em] font-bold font-syne'>
+    <div className={`flex lg:flex-row flex-col gap-[10px] lg:justify-between items-start lg:items-center ${className}`}>
+      <h1 className='lg:text-[40px] md:text-[36px] text-[32px] lg:leading-[56px] md:leading-[48px] leading-[40px] tracking-[-0.05em] font-bold font-syne'>
         {title}
       </h1>
-      <div className='inline-flex items-center gap-[8px]'>
-        <p className='text-[18px] leading-[22px] font-bold font-hanken'>
+      <div className='inline-flex items-center gap-[8px] lg:mt-0 md:mt-2 mt-1'>
+        <p className='lg:text-[18px] text-[16px] lg:leading-[22px] leading-[20px] font-bold font-hanken'>
           {browseText}
         </p>
-        {showArrowIcon && <ArrowRight className='w-[20px] h-[20px]' />}
+        {showArrowIcon && <ArrowRight className='lg:w-[20px] lg:h-[20px] w-[18px] h-[18px]' />}
       </div>
     </div>
   )
