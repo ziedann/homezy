@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Hanken_Grotesk } from "next/font/google";
 import { Syne } from "next/font/google";
 import Navbar from "@/app/components/layouts/Navbar";
-import HomePage from "./components/pages/homepage";
 import Footer from "@/app/components/layouts/Footer";
 import LogoIcon from "@/app/assets/icons/logo-icon.svg";
 import "./globals.css";
@@ -56,7 +55,6 @@ export default function RootLayout({
       </head>
       <body className="bg-[#FBFAFF] font-hanken">
         <Navbar />
-        <HomePage />
         {children}
         <Footer />
       </body>
