@@ -39,7 +39,7 @@ export default function BenefitsSection() {
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home/benefits`)
                 const jsonData = await response.json()
-                await delay(2000) // Add 2 second delay
+                await delay(2000)
                 setData(jsonData)
             } catch (error) {
                 console.error('Error fetching benefits data:', error)

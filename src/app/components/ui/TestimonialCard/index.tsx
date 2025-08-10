@@ -34,37 +34,37 @@ export default function TestimonialCard({
         />
       </div>
 
-      {/* Content */}
-      <div className="flex justify-between flex-col lg:gap-[32px] gap-[24px] lg:w-[450px] w-full lg:p-[32px] p-[24px]">
+            {/* Content */}
+      <div className="flex justify-between flex-col lg:min-h-[380px] min-h-[300px] lg:w-[450px] w-full lg:p-[32px] p-[24px]">
                  {/* Stars */}
-         <div className="flex gap-1">
-           {[...Array(5)].map((_, index) => (
-             <Star 
-               key={index} 
-               className={`lg:w-6 w-5 h-auto ${index < rating ? 'text-[#FF7A00]' : 'text-[#D9D9D9]'}`}
-             />
-           ))}
-         </div>
+          <div className="flex gap-1">
+            {[...Array(5)].map((_, index) => (
+              <Star 
+                key={index} 
+                className={`lg:w-6 w-5 h-auto ${index < rating ? 'text-[#FF7A00]' : 'text-[#D9D9D9]'}`}
+              />
+            ))}
+          </div>
 
-         {/* Review */}
-         <div className="flex-grow">
-           <p className="lg:text-[18px] text-[16px] lg:leading-[26px] leading-[24px] font-light font-hanken text-[#686A79]">
-             "{review}"
-           </p>
-         </div>
+          {/* Review */}
+          <div className="flex-grow mt-[10px]">
+            <p className="lg:text-[18px] text-[16px] lg:leading-[26px] leading-[24px] font-light font-hanken text-[#686A79]">
+              "{review}"
+            </p>
+          </div>
 
-         {/* Author */}
-         <div className="flex flex-row justify-between items-center">
-           <div className="flex flex-col gap-[2px]">
-             <h3 className="lg:text-[24px] text-[22px] lg:leading-[32px] leading-[24px] lg:tracking-[-0.04em] tracking-[-0.05em] font-semibold font-syne text-secondary-dark-100">
-               {name}
-             </h3>
-             <p className="text-[16px] leading-[26px] font-light font-hanken text-[#686A79]">
-               {role}
-             </p>
-           </div>
-           {showCompanyLogo && <CompanyLogo className="lg:w-[40px] w-[32px] lg:h-[40px] h-[32px]" />}
-         </div>
+          {/* Author */}
+          <div className="flex flex-row justify-between items-center mt-auto">
+            <div className="flex flex-col gap-[2px]">
+              <h3 className="lg:text-[24px] text-[22px] lg:leading-[32px] leading-[24px] lg:tracking-[-0.04em] tracking-[-0.05em] font-semibold font-syne text-secondary-dark-100">
+                {name}
+              </h3>
+              <p className="text-[16px] leading-[26px] font-light font-hanken text-[#686A79]">
+                {role}
+              </p>
+            </div>
+            {showCompanyLogo && <CompanyLogo className="lg:w-[40px] w-[32px] lg:h-[40px] h-[32px]" />}
+          </div>
       </div>
     </div>
   )
