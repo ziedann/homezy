@@ -24,12 +24,12 @@ export default function HeroSection() {
         </div>
 
         {/* Hero Image */}
-        <div className='absolute inset-0 lg:top-[260px] md:top-[460px] top-[600px] z-10'>
-          <div className='w-full'>
+        <div className='absolute inset-0 bottom-0 z-10'>
+          <div className='w-full h-full flex items-end'>
             <Image
               src={HeroImage}
               alt='Modern house exterior'
-              className='w-full lg:h-[620px] md:h-[400px] h-[300px] object-cover'
+              className='w-full lg:h-[620px] md:h-[400px] h-[300px] object-cover object-bottom mb-[70px]'
               width={1920}
               height={520}
               priority
@@ -39,9 +39,9 @@ export default function HeroSection() {
       </div>
 
       {/* Content Section */}
-      <div className='relative z-20 mx-auto lg:max-w-[1160px] md:max-w-[720px] w-[90%] min-h-fit pb-[400px] lg:mt-[56px] md:mt-[48px] mt-[32px]'>
+      <div className='relative z-20 mx-auto lg:max-w-[1160px] md:max-w-[720px] w-[90%] min-h-fit pb-[400px] lg:mt-[56px] md:mt-[48px] mt-[24px]'>
         {/* Hero Content */}
-        <div className='flex flex-col lg:flex-row items-start justify-between'>
+        <div className='flex flex-col lg:flex-row mid-xl:flex-col xxl:flex-row items-start justify-between'>
           {/* Mobile & Tablet Heading Layout (Absolute Positioning) */}
           <div className='relative lg:hidden w-full'>
             <div className='absolute left-0 top-0 w-full md:w-[600px]'>
@@ -51,12 +51,12 @@ export default function HeroSection() {
               />
             </div>
             <div className='absolute left-0 top-[50px] flex items-center gap-[4px]'>
-              <Image 
+              <Image
                 src={homeIcon1}
                 alt="Decorative home icon"
                 className='w-[98px] h-[48px] md:w-[110px] md:h-[60px] lg:w-[122px] lg:h-[70px]'
                 width={122}
-                height={70}
+                height={60}
               />
               <div className='w-full md:w-[600px]'>
                 <HeadingLine
@@ -78,7 +78,7 @@ export default function HeroSection() {
               />
             </div>
             <div className='absolute top-[150px] left-[160px] md:right-[120px]'>
-              <Image 
+              <Image
                 src={homeIcon2}
                 alt="Decorative home icon"
                 className='w-[98px] h-[48px] md:w-[110px] md:h-[60px]'
@@ -94,7 +94,7 @@ export default function HeroSection() {
               text="We help people"
               className='flex-row justify-start'
               icon={
-                <Image 
+                <Image
                   src={homeIcon1}
                   alt="Decorative home icon"
                   className='w-[122px] h-[70px]'
@@ -107,7 +107,7 @@ export default function HeroSection() {
             <HeadingLine
               text="property"
               icon={
-                <Image 
+                <Image
                   src={homeIcon2}
                   alt="Decorative home icon"
                   className='w-[122px] h-[70px] mt-2'
@@ -118,7 +118,7 @@ export default function HeroSection() {
             />
           </div>
 
-          <div className='max-w-[372px] md:max-w-[450px] self-start lg:self-center mt-[230px] md:mt-[260px] lg:mt-0'>
+          <div className='max-w-[372px] md:max-w-[450px] self-start lg:self-center mid-xl:self-start xxl:self-center mt-[220px] md:mt-[260px] lg:mt-0 mid-xl:mt-[20px] xxl:mt-0'>
             <p className='font-hanken text-[20px] text-[#686A79] leading-[30px] font-light text-left lg:text-left'>
               We are creative people who provide the best way to you who want to have a new comfortable and suitable place to live
             </p>
@@ -126,7 +126,7 @@ export default function HeroSection() {
         </div>
 
         {/* Search Card */}
-        <div className='relative z-30 w-full border border-[#191A23] rounded-[15px] p-[20px] bg-white flex-col lg:flex-row mt-[83px] md:mt-[100px] lg:shadow-sm shadow-none gap-[10px]'>
+        <div className='relative z-30 w-full border border-[#191A23] rounded-[15px] p-[20px] bg-white flex-col lg:flex-row mt-[40px] md:mt-[100px] lg:shadow-sm shadow-none gap-[10px]'>
           <div className='flex flex-col md:grid md:grid-cols-2 lg:flex lg:flex-row lg:justify-between gap-[32px] md:gap-[24px]'>
             <SearchInfo
               icon={<LocationIcon />}
@@ -147,8 +147,8 @@ export default function HeroSection() {
               className="md:col-span-1"
             />
             <ButtonText
-             variant="primary" 
-             className='w-full md:col-span-1 lg:w-auto'>
+              variant="primary"
+              className='w-full md:col-span-1 lg:w-auto'>
               Browse Property
             </ButtonText>
           </div>

@@ -55,7 +55,7 @@ export default function Navbar() {
     >
       {isMenuOpen ? (
         <svg
-          className="h-6 w-6"
+          className="h-[24px] w-[24px] md:h-[32px] md:w-[32px] lg:h-[40px] lg:w-[40px]"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -76,9 +76,9 @@ export default function Navbar() {
   return (
     <nav className="navbar bg-[#F7F2FF] relative">
       <div className="lg:max-w-[1160px] md:max-w-[720px] w-[90%] mx-auto">
-        <div className="flex items-center justify-between h-[100px]">
+        <div className="flex items-center justify-between md:h-[100px] h-[70px]">
           {/* Logo */}
-          <Logo className="h-[40px] w-auto" />
+          <Logo className="lg:h-[40px] md:h-[32px] h-[24px] w-auto" />
 
           {/* Navigation Links - Desktop */}
           <div className="hidden lg:flex items-center gap-[64px]">
