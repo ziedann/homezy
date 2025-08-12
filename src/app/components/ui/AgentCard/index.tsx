@@ -1,10 +1,10 @@
 import React from 'react'
 import Image from 'next/image'
 import { StaticImageData } from 'next/image'
-import Phone from "@/app/assets/icons/phone.svg"
-import Instagram from "@/app/assets/icons/instagram.svg"
-import Facebook from "@/app/assets/icons/facebook.svg"
-import Twitter from "@/app/assets/icons/twitter.svg"
+import Phone from "@assets/icons/phone.svg"
+import Instagram from "@assets/icons/instagram.svg"
+import Facebook from "@assets/icons/facebook.svg"
+import Twitter from "@assets/icons/twitter.svg"
 
 interface AgentCardProps {
   image: StaticImageData | string

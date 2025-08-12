@@ -1,9 +1,9 @@
 import React from 'react'
-import Logo from '@/app/assets/icons/logo.svg'
-import Phone from '@/app/assets/icons/phone.svg'
-import Instagram from '@/app/assets/icons/instagram.svg'
-import Facebook from '@/app/assets/icons/facebook.svg'
-import Twitter from '@/app/assets/icons/twitter.svg'
+import Logo from '@assets/icons/logo.svg'
+import Phone from '@assets/icons/phone.svg'
+import Instagram from '@assets/icons/instagram.svg'
+import Facebook from '@assets/icons/facebook.svg'
+import Twitter from '@assets/icons/twitter.svg'
 
 export default function FooterLogo() {
   return (
@@ -27,3 +27,4 @@ export default function FooterLogo() {
     </div>
   )
 }
+

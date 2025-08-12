@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import BuildingIcon1 from '@/app/assets/icons/buliding-benefits-1.svg'
+import BuildingIcon1 from '@assets/icons/buliding-benefits-1.svg'
 import { delay } from '@/app/utils/delay'
-import BuildingIcon2 from '@/app/assets/icons/buliding-benefits-2.svg'
-import BuildingIcon3 from '@/app/assets/icons/buliding-benefits-3.svg'
+import BuildingIcon2 from '@assets/icons/buliding-benefits-2.svg'
+import BuildingIcon3 from '@assets/icons/buliding-benefits-3.svg'
 import CategoryCard from '@/app/components/ui/CategoryCard'
 import SkeletonCategoryCard from '@/app/components/ui/SkeletonCategoryCard'
 import SectionContainer from '@/app/components/ui/SectionContainer'
@@ -98,3 +98,4 @@ export default function CategorySection() {
     </SectionContainer>
   )
 }
+

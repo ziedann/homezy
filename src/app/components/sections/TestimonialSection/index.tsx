@@ -7,10 +7,10 @@ import SectionHeader from '@/app/components/ui/SectionHeader'
 import TestimonialCard from '@/app/components/ui/TestimonialCard'
 import SkeletonTestimonialCard from '@/app/components/ui/SkeletonTestimonialCard'
 import NavigationButton from '@/app/components/ui/NavigationButton'
-import ArrowLeftLight from '@/app/assets/icons/arrow-left-light.svg'
-import ArrowRightLight from '@/app/assets/icons/arrow-right-light.svg'
-import TestimonialPerson1 from '@/app/assets/images/testimonial-person-1.png'
-import TestimonialPerson2 from '@/app/assets/images/testimonial-person-2.png'
+import ArrowLeftLight from '@assets/icons/arrow-left-light.svg'
+import ArrowRightLight from '@assets/icons/arrow-right-light.svg'
+import TestimonialPerson1 from '@assets/images/testimonial-person-1.png'
+import TestimonialPerson2 from '@assets/images/testimonial-person-2.png'
 
 interface Testimonial {
     id: number
@@ -160,3 +160,4 @@ export default function TestimonialSection() {
         </div>
     )
 }
+

@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { StaticImageData } from 'next/image'
-import HouseCitiesIcon from '@/app/assets/icons/house-cities.svg'
+import HouseCitiesIcon from '@assets/icons/house-cities.svg'
 
 interface CityCardProps {
   image: StaticImageData | string

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import FeaturedImage1 from '@/app/assets/images/featured-listing-1.png'
-import FeaturedImage2 from '@/app/assets/images/featured-listing-2.png'
-import FeaturedImage3 from '@/app/assets/images/featured-listing-3.png'
+import FeaturedImage1 from '@assets/images/featured-listing-1.png'
+import FeaturedImage2 from '@assets/images/featured-listing-2.png'
+import FeaturedImage3 from '@assets/images/featured-listing-3.png'
 
 export async function GET() {
   const data = {
@@ -49,3 +49,4 @@ export async function GET() {
 
   return NextResponse.json(data)
 }
+

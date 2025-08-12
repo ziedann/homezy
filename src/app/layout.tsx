@@ -3,7 +3,7 @@ import { Hanken_Grotesk } from "next/font/google";
 import { Syne } from "next/font/google";
 import Navbar from "@/app/components/layouts/Navbar";
 import Footer from "@/app/components/layouts/Footer";
-import LogoIcon from "@/app/assets/icons/logo-icon.svg";
+import LogoIcon from "@assets/icons/logo-icon.svg";
 import "./globals.css";
 
 // Google Fonts
@@ -61,3 +61,4 @@ export default function RootLayout({
     </html>
   );
 }
+

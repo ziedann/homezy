@@ -1,5 +1,5 @@
 import React from 'react'
-import SendIcon from '@/app/assets/icons/send.svg'
+import SendIcon from '@assets/icons/send.svg'
 
 interface CategoryCardProps {
   icon: React.ReactNode

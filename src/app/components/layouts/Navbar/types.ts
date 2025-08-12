@@ -7,11 +7,11 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   {
     label: 'Home',
-    href: '/'
+    href: '/routes/homepage'
   },
   {
     label: 'Properties',
-    href: '/'
+    href: '/routes/search-property'
   },
   {
     label: 'Agents',

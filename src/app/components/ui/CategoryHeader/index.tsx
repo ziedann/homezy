@@ -1,5 +1,5 @@
 import React from 'react'
-import ArrowDown from '@/app/assets/icons/arrow-down.svg'
+import ArrowDown from '@assets/icons/arrow-down.svg'
 
 interface CategoryHeaderProps {
   title: string

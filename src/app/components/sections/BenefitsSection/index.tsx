@@ -1,19 +1,19 @@
 'use client'
 
 import React, { useRef, useEffect, useState } from 'react'
-import PatternBenefits from '@/app/assets/images/pattern-benefits.svg'
+import PatternBenefits from '@assets/images/pattern-benefits.svg'
 import { delay } from '@/app/utils/delay'
-import CloudIcon from '@/app/assets/images/cloud-line.svg'
+import CloudIcon from '@assets/images/cloud-line.svg'
 import BenefitCard from '@/app/components/ui/BenefitCard'
 import SkeletonBenefitCard from '@/app/components/ui/SkeletonBenefitCard'
 import BackgroundPattern from '@/app/components/ui/BackgroundPattern'
 import BenefitsContent from '@/app/components/ui/BenefitsContent'
 import NavigationButton from '@/app/components/ui/NavigationButton'
-import CoinIcon from '@/app/assets/icons/coin.svg'
-import LikeIcon from '@/app/assets/icons/like-shapes.svg'
-import PeopleIcon from '@/app/assets/icons/people.svg'
-import ArrowLeftLight from '@/app/assets/icons/arrow-left-light.svg'
-import ArrowRightLight from '@/app/assets/icons/arrow-right-light.svg'
+import CoinIcon from '@assets/icons/coin.svg'
+import LikeIcon from '@assets/icons/like-shapes.svg'
+import PeopleIcon from '@assets/icons/people.svg'
+import ArrowLeftLight from '@assets/icons/arrow-left-light.svg'
+import ArrowRightLight from '@assets/icons/arrow-right-light.svg'
 import SectionContainer from '@/app/components/ui/SectionContainer'
 
 interface Benefit {
@@ -199,3 +199,4 @@ export default function BenefitsSection() {
         </div>
     )
 }
+

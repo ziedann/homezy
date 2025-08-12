@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import ImageCity1 from '@/app/assets/images/image-cities-1.png'
-import ImageCity2 from '@/app/assets/images/image-cities-2.png'
-import ImageCity3 from '@/app/assets/images/image-cities-3.png'
+import ImageCity1 from '@assets/images/image-cities-1.png'
+import ImageCity2 from '@assets/images/image-cities-2.png'
+import ImageCity3 from '@assets/images/image-cities-3.png'
 
 export async function GET() {
   const data = {

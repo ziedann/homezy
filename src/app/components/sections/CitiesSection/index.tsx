@@ -7,11 +7,11 @@ import SectionHeader from "@/app/components/ui/SectionHeader"
 import CityCard from "@/app/components/ui/CityCard"
 import SkeletonCityCard from '@/app/components/ui/SkeletonCityCard'
 import NavigationButton from '@/app/components/ui/NavigationButton'
-import ArrowLeftLight from '@/app/assets/icons/arrow-left-light.svg'
-import ArrowRightLight from '@/app/assets/icons/arrow-right-light.svg'
-import ImageCity1 from '@/app/assets/images/image-cities-1.png'
-import ImageCity2 from '@/app/assets/images/image-cities-2.png'
-import ImageCity3 from '@/app/assets/images/image-cities-3.png'
+import ArrowLeftLight from '@assets/icons/arrow-left-light.svg'
+import ArrowRightLight from '@assets/icons/arrow-right-light.svg'
+import ImageCity1 from '@assets/images/image-cities-1.png'
+import ImageCity2 from '@assets/images/image-cities-2.png'
+import ImageCity3 from '@assets/images/image-cities-3.png'
 
 interface City {
     id: number
@@ -161,3 +161,4 @@ export default function CitiesSection() {
         </SectionContainer>
     )
 }
+

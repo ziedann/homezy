@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import TestimonialPerson1 from '@/app/assets/images/testimonial-person-1.png'
-import TestimonialPerson2 from '@/app/assets/images/testimonial-person-2.png'
+import TestimonialPerson1 from '@assets/images/testimonial-person-1.png'
+import TestimonialPerson2 from '@assets/images/testimonial-person-2.png'
 
 export async function GET() {
   const data = {

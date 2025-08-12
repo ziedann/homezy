@@ -1,7 +1,7 @@
 import React from 'react'
 import Image, { StaticImageData } from 'next/image'
-import Star from '@/app/assets/icons/star.svg'
-import CompanyLogo from '@/app/assets/icons/company-logo.svg'
+import Star from '@assets/icons/star.svg'
+import CompanyLogo from '@assets/icons/company-logo.svg'
 
 interface TestimonialCardProps {
   image: StaticImageData | string

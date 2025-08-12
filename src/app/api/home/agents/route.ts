@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
-import Agent1 from '@/app/assets/images/agent-1.png'
-import Agent2 from '@/app/assets/images/agent-2.png'
-import Agent3 from '@/app/assets/images/agent-3.png'
-import Agent4 from '@/app/assets/images/agent-4.png'
-import Agent5 from '@/app/assets/images/agent-5.png'
-import Agent6 from '@/app/assets/images/agent-6.png'
+import Agent1 from '@assets/images/agent-1.png'
+import Agent2 from '@assets/images/agent-2.png'
+import Agent3 from '@assets/images/agent-3.png'
+import Agent4 from '@assets/images/agent-4.png'
+import Agent5 from '@assets/images/agent-5.png'
+import Agent6 from '@assets/images/agent-6.png'
 
 export async function GET() {
   const data = {

@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import homeIcon1 from '@assets/icons/home-icon-1.webp'
 import homeIcon2 from '@assets/icons/home-icon-2.webp'
 import LocationIcon from '@assets/icons/location.svg'
@@ -14,6 +15,12 @@ import SearchInfo from '@/app/components/ui/SearchInfo'
 import ButtonText from '@/app/components/ui/ButtonText/index'
 
 export default function HeroSection() {
+  const router = useRouter()
+
+  const handleBrowseProperty = () => {
+    router.push('/search-property')
+  }
+
   return (
     <div className='relative lg:min-h-[1100px] md:min-h-[900px] min-h-[800px] w-full overflow-hidden bg-[#F7F2FF]'>
       {/* Background Pattern and Image */}
@@ -148,7 +155,8 @@ export default function HeroSection() {
             />
             <ButtonText
               variant="primary"
-              className='w-full md:col-span-1 lg:w-auto'>
+              className='w-full md:col-span-1 lg:w-auto'
+              onClick={handleBrowseProperty}>
               Browse Property
             </ButtonText>
           </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import ArrowRight from '@/app/assets/icons/arrow-right.svg'
+import ArrowRight from '@assets/icons/arrow-right.svg'
 
 interface SectionHeaderProps {
   title: string

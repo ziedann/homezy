@@ -1,5 +1,5 @@
 import React from 'react'
-import PatternCta from '@/app/assets/images/pattern-cta.svg'
+import PatternCta from '@assets/images/pattern-cta.svg'
 
 interface CtaCardProps {
     title: string

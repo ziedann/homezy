@@ -1,9 +1,9 @@
 import React from 'react'
 import Image, { StaticImageData } from 'next/image'
-import Sparkles from '@/app/assets/icons/sparkles.svg'
-import Bed from '@/app/assets/icons/bed.svg'
-import Bath from '@/app/assets/icons/bath.svg'
-import Area from '@/app/assets/icons/surface-area.svg'
+import Sparkles from '@assets/icons/sparkles.svg'
+import Bed from '@assets/icons/bed.svg'
+import Bath from '@assets/icons/bath.svg'
+import Area from '@assets/icons/surface-area.svg'
 
 interface PropertyCardProps {
   price: string;

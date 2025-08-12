@@ -7,14 +7,14 @@ import SectionHeader from "@/app/components/ui/SectionHeader"
 import AgentCard from "@/app/components/ui/AgentCard"
 import SkeletonAgentCard from '@/app/components/ui/SkeletonAgentCard'
 import NavigationButton from '@/app/components/ui/NavigationButton'
-import ArrowLeftLight from '@/app/assets/icons/arrow-left-light.svg'
-import ArrowRightLight from '@/app/assets/icons/arrow-right-light.svg'
-import Agent1 from "@/app/assets/images/agent-1.png"
-import Agent2 from "@/app/assets/images/agent-2.png"
-import Agent3 from "@/app/assets/images/agent-3.png"
-import Agent4 from "@/app/assets/images/agent-4.png"
-import Agent5 from "@/app/assets/images/agent-5.png"
-import Agent6 from "@/app/assets/images/agent-6.png"
+import ArrowLeftLight from '@assets/icons/arrow-left-light.svg'
+import ArrowRightLight from '@assets/icons/arrow-right-light.svg'
+import Agent1 from "@assets/images/agent-1.png"
+import Agent2 from "@assets/images/agent-2.png"
+import Agent3 from "@assets/images/agent-3.png"
+import Agent4 from "@assets/images/agent-4.png"
+import Agent5 from "@assets/images/agent-5.png"
+import Agent6 from "@assets/images/agent-6.png"
 
 interface Agent {
     id: number
@@ -169,3 +169,4 @@ export default function AgentsSection() {
         </SectionContainer>
     )
 }
+

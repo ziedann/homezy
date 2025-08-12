@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import Logo from '@/app/assets/icons/logo.svg'
-import ArrowDown from '@/app/assets/icons/arrow-down.svg'
-import Menu from '@/app/assets/icons/menu.svg'
+import Logo from '@assets/icons/logo.svg'
+import ArrowDown from '@assets/icons/arrow-down.svg'
+import Menu from '@assets/icons/menu.svg'
 import NavbarButton from '@/app/components/ui/NavbarButton'
 import { NAV_ITEMS } from '@/app/components/layouts/Navbar/types'
 
