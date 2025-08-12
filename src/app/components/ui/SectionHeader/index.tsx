@@ -16,7 +16,7 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <div className={`flex lg:flex-row flex-col gap-[10px] lg:justify-between items-start lg:items-center ${className}`}>
-      <h1 className='lg:text-[48px] md:text-[36px] text-[32px] lg:leading-[56px] md:leading-[48px] leading-[40px] tracking-[-0.05em] font-bold font-syne'>
+      <h1 className='lg:text-[48px] md:text-[36px] text-[32px] lg:leading-[56px] md:leading-[48px] leading-[40px] tracking-[-0.05em] font-semibold font-syne'>
         {title}
       </h1>
       <div className='inline-flex items-center gap-[8px] lg:mt-0 md:mt-2 mt-1'>

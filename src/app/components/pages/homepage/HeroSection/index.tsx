@@ -29,7 +29,7 @@ export default function HeroSection() {
             <Image
               src={HeroImage}
               alt='Modern house exterior'
-              className='w-full lg:h-[620px] md:h-[400px] h-[300px] object-cover object-bottom mb-[70px]'
+              className='w-full lg:h-[620px] md:h-[400px] h-[300px] object-cover object-bottom mb-[50px]'
               width={1920}
               height={520}
               priority

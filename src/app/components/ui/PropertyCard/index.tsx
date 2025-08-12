@@ -45,17 +45,17 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           {isFeatured && (
             <div className="absolute -top-[10px] right-[30px] flex flex-row items-center gap-[4px] bg-[#191A23] rounded-[8px] w-[113px] h-[32px] justify-center">
               <Sparkles className="w-[16px] h-[16px]" />
-              <p className='text-[14px] leading-[24px] font-medium font-hanken text-white'>
+              <p className='text-[14px] leading-[24px] font-light font-hanken text-white'>
                 FEATURED
               </p>
             </div>
           )}
 
           {/* Property Info */}
-          <div className="p-6 flex flex-col gap-4 border border-[#E7DCFF] rounded-[15px] bg-white mt-[-70px]">
+          <div className="p-[24px] flex flex-col gap-4 border border-[#E7DCFF] rounded-[15px] bg-white mt-[-70px]">
             <div className='flex flex-col gap-[4px]'>
               <div className="flex items-end gap-[4px]">
-                <h2 className="lg:text-[32px] text-[24px] lg:leading-[40px] leading-[32px] tracking-[-0.03em] font-semibold font-hanken">
+                <h2 className="lg:text-[32px] text-[24px] lg:leading-[40px] leading-[32px] tracking-[-0.04em] font-semibold font-syne">
                   {price}
                 </h2>
                 {isMonthly && (
@@ -66,13 +66,13 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
               </div>
 
               {/* Title */}
-              <h3 className="lg:text-[24px] text-[20px] lg:leading-[32px] leading-[28px] tracking-[-0.03em] font-semibold font-syne">
+              <h3 className="lg:text-[24px] text-[20px] lg:leading-[32px] leading-[28px] tracking-[-0.04em] font-semibold font-syne">
                 {title}
               </h3>
             </div>
 
             {/* Location */}
-            <p className="text-[16px] leading-[26px] font-regular font-hanken text-[#686A79]">
+            <p className="lg:text-[24px] lg:leading-[32px] text-[16px] leading-[26px] font-regular font-hanken text-[#686A79]">
               {location}
             </p>
 

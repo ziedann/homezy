@@ -90,6 +90,7 @@ export default function CategorySection() {
               }
               title={category.title}
               listingCount={category.listingCount}
+              
             />
           ))}
         </div>
