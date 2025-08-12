@@ -114,7 +114,7 @@ export default function TestimonialSection() {
                     <SectionHeader
                         title={data.title}
                         browseText={data.browseText}
-                        className="text-center max-w-[700px]"
+                        className="text-center max-w-[1000px]"
                         showArrowIcon={false}
                     />
                 </div>

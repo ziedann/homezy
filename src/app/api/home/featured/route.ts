@@ -5,7 +5,7 @@ import FeaturedImage3 from '@/app/assets/images/featured-listing-3.png'
 
 export async function GET() {
   const data = {
-    title: "Featured Properties",
+    title: "Featured Listings",
     browseText: "Browse All Featured",
     properties: [
       {
