@@ -23,19 +23,19 @@ export default function TestimonialCard({
   return (
     <div className="flex lg:flex-row flex-col bg-[#F7F2FF] border border-[#E7DCFF] lg:w-full w-[335px]">
       {/* Image */}
-      <div className="lg:w-[300px] w-full lg:h-[380px] h-[260px] overflow-hidden bg-[#FFE1F2]">
+      <div className="lg:w-[300px] w-[335px] lg:h-[380px] h-[340px] overflow-hidden bg-[#FFE1F2]">
         <Image 
           src={image} 
           alt={name} 
-          className="w-full h-full object-cover"
-          width={300}
-          height={380}
+          className="w-full h-full object-cover object-top"
+          width={335}
+          height={340}
           priority
         />
       </div>
 
             {/* Content */}
-      <div className="flex justify-between flex-col lg:min-h-[380px] min-h-[300px] lg:w-[450px] w-full lg:p-[32px] p-[24px]">
+      <div className="flex justify-between flex-col lg:min-h-[380px] min-h-[390px] lg:w-[450px] w-full lg:p-[32px] p-[24px] gap-[16px]">
                  {/* Stars */}
           <div className="flex gap-1">
             {[...Array(5)].map((_, index) => (
@@ -47,14 +47,14 @@ export default function TestimonialCard({
           </div>
 
           {/* Review */}
-          <div className="flex-grow mt-[10px]">
-            <p className="lg:text-[18px] text-[16px] lg:leading-[26px] leading-[24px] font-light font-hanken text-[#686A79]">
+          <div className="flex-grow mt-[10px] h-[150px]">
+            <p className="text-[20px] leading-[30px] font-light font-hanken text-[#191A23]">
               "{review}"
             </p>
           </div>
 
           {/* Author */}
-          <div className="flex flex-row justify-between items-center mt-auto">
+          <div className="flex flex-row justify-between items-center">
             <div className="flex flex-col gap-[2px]">
               <h3 className="lg:text-[24px] text-[22px] lg:leading-[32px] leading-[24px] lg:tracking-[-0.04em] tracking-[-0.05em] font-semibold font-syne text-secondary-dark-100">
                 {name}

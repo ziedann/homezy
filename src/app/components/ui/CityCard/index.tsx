@@ -22,12 +22,12 @@ export default function CityCard({ image, name, listingCount }: CityCardProps) {
         />
       </div>
       <div className="flex flex-col gap-[6px]">
-        <h3 className="lg:text-[24px] text-[20px] leading-[32px] tracking-[-0.04em] font-semibold font-syne">
+        <h3 className="text-[20px] leading-[32px] tracking-[-0.04em] font-semibold font-syne">
           {name}
         </h3>
         <div className="flex flex-row gap-[8px]">
           <HouseCitiesIcon />
-          <p className="text-[16px] leading-[26px] font-light font-hanken text-[#686A79]">
+          <p className="text-[18px] leading-[28px] font-light font-hanken text-[#686A79]">
             {listingCount} listings
           </p>
         </div>

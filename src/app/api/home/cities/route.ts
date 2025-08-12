@@ -10,38 +10,38 @@ export async function GET() {
     cities: [
       {
         id: 1,
-        title: "Jakarta Selatan",
-        listingCount: "24",
+        title: "Pasadena, Oklah..",
+        listingCount: "100+",
         image: ImageCity1
       },
       {
         id: 2,
-        title: "Bandung",
-        listingCount: "18",
+        title: "Laffayette, California",
+        listingCount: "100+",
         image: ImageCity2
       },
       {
         id: 3,
-        title: "Surabaya",
-        listingCount: "16",
+        title: "Stockton, New Ha..",
+        listingCount: "100+",
         image: ImageCity3
       },
       {
         id: 4,
-        title: "Jakarta Pusat",
-        listingCount: "24",
+        title: "Pasadena, Oklah..",
+        listingCount: "100+",
         image: ImageCity1
       },
       {
         id: 5,
-        title: "Jakarta Utara",
-        listingCount: "24",
+        title: "Laffayette, California",
+        listingCount: "100+",
         image: ImageCity1
       },
       {
         id: 6,
-        title: "Jakarta Timur",
-        listingCount: "24",
+        title: "Stockton, New Ha..",
+        listingCount: "100+",
         image: ImageCity1
       }
     ]

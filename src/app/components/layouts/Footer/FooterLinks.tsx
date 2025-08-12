@@ -11,11 +11,11 @@ interface FooterLinksProps {
 export default function FooterLinks({ title, links }: FooterLinksProps) {
   return (
     <div>
-      <h3 className="text-dark-100 text-base font-semibold font-syne mb-6">{title}</h3>
-      <ul className="space-y-4">
+      <h3 className="text-[#686A79] text-[16px] leading-[26px] font-light font-hanken mb-[32px]">{title}</h3>
+      <ul className="space-y-[16px]">
         {links.map((link, index) => (
           <li key={index}>
-            <a href={link.href} className="text-dark-60 text-sm font-light font-hanken hover:text-dark-100">
+            <a href={link.href} className="text-[#191A23] text-[16px] leading-[20px] font-medium font-hanken hover:text-dark-100">
               {link.text}
             </a>
           </li>

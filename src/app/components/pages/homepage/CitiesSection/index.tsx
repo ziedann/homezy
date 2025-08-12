@@ -104,7 +104,7 @@ export default function CitiesSection() {
 
     return (
         <SectionContainer>
-            <div className='flex flex-col gap-[64px]'>
+            <div className='flex flex-col lg:gap-[64px] gap-[32px]'>
                 <SectionHeader
                     title={data.title}
                     browseText={data.browseText}
@@ -125,7 +125,7 @@ export default function CitiesSection() {
                 </div>
 
                 {/* Mobile Layout - Horizontal Scroll */}
-                <div className='lg:hidden flex flex-col gap-[40px]'>
+                <div className='lg:hidden flex flex-col lg:gap-[40px] gap-[32px]'>
                     <div className='relative'>
                         <div 
                             ref={scrollContainerRef}
@@ -146,8 +146,8 @@ export default function CitiesSection() {
                     </div>
 
                     {/* Navigation Buttons for Mobile */}
-                    <div className='flex items-center justify-center gap-[40px]'>
-                        <NavigationButton
+                    <div className='flex items-center justify-center lg:gap-[40px] gap-[24px]'>
+                        <NavigationButton 
                             icon={<ArrowLeftLight />}
                             onClick={() => handleScroll('left')}
                         />

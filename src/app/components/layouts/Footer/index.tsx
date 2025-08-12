@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="pt-[64px] pb-8">
       <div className="max-w-[1160px] mx-auto px-5 lg:px-0">
         {/* Top Section */}
-        <div className="flex flex-col md:flex-row justify-between gap-8 pb-[64px]">
+        <div className="flex flex-col md:flex-row justify-between gap-[64px] pb-[64px]">
           <FooterLogo />
           <FooterNavigation />
         </div>

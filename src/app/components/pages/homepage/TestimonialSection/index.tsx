@@ -145,7 +145,7 @@ export default function TestimonialSection() {
                     </div>
 
                     {/* Navigation Buttons */}
-                    <div className='flex items-center justify-center gap-[40px]'>
+                    <div className='flex items-center justify-center lg:gap-[40px] gap-[24px]'>
                         <NavigationButton
                             icon={<ArrowLeftLight />}
                             onClick={() => handleScroll('left')}

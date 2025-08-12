@@ -35,7 +35,7 @@ const utilityLinks = [
 
 export default function FooterNavigation() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-[64px]">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-[64px] md:gap-[64px]">
       <FooterLinks title="Pages" links={pagesLinks} />
       <FooterLinks title="Agent Details" links={agentLinks} />
       <FooterLinks title="Utility Pages" links={utilityLinks} />
