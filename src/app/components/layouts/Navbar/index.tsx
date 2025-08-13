@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import Logo from '@assets/icons/logo.svg'
 import ArrowDown from '@assets/icons/arrow-down.svg'
 import Menu from '@assets/icons/menu.svg'
@@ -10,6 +11,11 @@ import { NAV_ITEMS } from '@/app/components/layouts/Navbar/types'
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname()
+
+  const getNavbarBackground = () => {
+    return pathname === '/search-property' ? 'bg-[#FBFAFF]' : 'bg-[#F7F2FF]'
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -74,7 +80,7 @@ export default function Navbar() {
   )
 
   return (
-    <nav className="navbar bg-[#F7F2FF] relative">
+    <nav className={`navbar ${getNavbarBackground()} relative`}>
       <div className="lg:max-w-[1160px] md:max-w-[720px] w-[90%] mx-auto">
         <div className="flex items-center justify-between md:h-[100px] h-[70px]">
           {/* Logo */}
