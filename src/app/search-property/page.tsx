@@ -1,66 +1,44 @@
 'use client'
 
 import React from 'react'
+import SearchForm from '../components/ui/SearchForm'
+import SectionContainer from '../components/ui/SectionContainer'
+import SectionHeader from '../components/ui/SectionHeader'
+import CandleIcon from '@assets/icons/candle.svg'
 
 export default function SearchPropertyPage() {
   return (
     <main className="min-h-screen bg-[#FBFAFF]">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
-          Search Properties
-        </h1>
+      <SectionContainer>
+        {/* Header Section */}
+        <SectionHeader
+          title="Search Properties"
+          browseText=""
+          showArrowIcon={false}
+          className=""
+        />
         
         {/* Search Form */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Location
-              </label>
-              <input
-                type="text"
-                placeholder="Enter location"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Property Type
-              </label>
-              <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                <option value="">All Types</option>
-                <option value="house">House</option>
-                <option value="apartment">Apartment</option>
-                <option value="villa">Villa</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Price Range
-              </label>
-              <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                <option value="">Any Price</option>
-                <option value="0-100000">$0 - $100,000</option>
-                <option value="100000-500000">$100,000 - $500,000</option>
-                <option value="500000+">$500,000+</option>
-              </select>
-            </div>
+        <div className="flex lg:flex-row flex-col gap-[16px] lg:gap-[24px]">
+          <div className="flex-1">
+            <SearchForm buttonText="Browse" />
           </div>
-          <button className="mt-4 w-full md:w-auto bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition-colors">
-            Search Properties
+          <button type="button" className="md:flex lg:mt-[40px] lg:h-[96px] h-[58px]  lg:flex-col flex justify-center lg:px-[32px] lg:py:20px bg-[#E7DCFF] rounded-[15px] items-center gap-[12px] border border-[#191A23]">
+            <CandleIcon className="w-5 h-5" />
+            <span className='text-[16px] leading-[20px] font-semibold font-hanken'>More Filter</span>
           </button>
         </div>
         
         {/* Results Section */}
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+        <div className="mt-8">
+          <h2 className="text-[24px] font-semibold leading-[32px] mb-6">
             Search Results
           </h2>
           <div className="text-gray-600">
-            <p>Search results will appear here...</p>
+            <p>Search results will appear here.</p>
           </div>
         </div>
-      </div>
+      </SectionContainer>
     </main>
   )
 }

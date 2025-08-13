@@ -8,7 +8,11 @@ import HouseIcon from '@assets/icons/house.svg'
 import SearchInfo from '@/app/components/ui/SearchInfo'
 import ButtonText from '@/app/components/ui/ButtonText'
 
-export default function SearchForm() {
+interface SearchFormProps {
+  buttonText?: string
+}
+
+export default function SearchForm({ buttonText = 'Browse Property' }: SearchFormProps) {
   const router = useRouter()
 
   const handleBrowseProperty = () => {
@@ -16,7 +20,7 @@ export default function SearchForm() {
   }
 
   return (
-    <div className='relative z-30 w-full border border-[#191A23] rounded-[15px] p-[20px] bg-white flex-col lg:flex-row mt-[40px] md:mt-[100px] lg:shadow-sm shadow-none gap-[10px]'>
+    <div className='relative z-30 w-full border border-[#191A23] rounded-[15px] p-[20px] bg-white flex-col lg:flex-row mt-[32px] md:mt-[40px] lg:shadow-sm shadow-none gap-[10px]'>
       <div className='flex flex-col md:grid md:grid-cols-2 lg:flex lg:flex-row lg:justify-between gap-[32px] md:gap-[24px]'>
         <SearchInfo
           icon={<LocationIcon />}
@@ -40,7 +44,7 @@ export default function SearchForm() {
           variant="primary"
           className='w-full md:col-span-1 lg:w-auto'
           onClick={handleBrowseProperty}>
-          Browse Property
+          {buttonText}
         </ButtonText>
       </div>
     </div>
