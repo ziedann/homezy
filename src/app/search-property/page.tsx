@@ -5,6 +5,9 @@ import SearchForm from '../components/ui/SearchForm'
 import SectionContainer from '../components/ui/SectionContainer'
 import SectionHeader from '../components/ui/SectionHeader'
 import CandleIcon from '@assets/icons/candle.svg'
+import dynamic from 'next/dynamic'
+
+const SearchMap = dynamic(() => import('./SearchMap'), { ssr: false })
 
 export default function SearchPropertyPage() {
   return (
@@ -29,14 +32,9 @@ export default function SearchPropertyPage() {
           </button>
         </div>
         
-        {/* Results Section */}
+        {/* Map Section */}
         <div className="mt-8">
-          <h2 className="text-[24px] font-semibold leading-[32px] mb-6">
-            Search Results
-          </h2>
-          <div className="text-gray-600">
-            <p>Search results will appear here.</p>
-          </div>
+          <SearchMap />
         </div>
       </SectionContainer>
     </main>
