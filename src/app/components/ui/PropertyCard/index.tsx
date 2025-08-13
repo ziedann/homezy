@@ -72,7 +72,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             </div>
 
             {/* Location */}
-            <p className="lg:text-[24px] lg:leading-[32px] text-[16px] leading-[26px] font-regular font-hanken text-[#686A79]">
+            <p className="text-[16px] leading-[26px] font-regular font-hanken text-[#686A79]">
               {location}
             </p>
 
