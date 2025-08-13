@@ -77,6 +77,42 @@ export async function GET() {
         image: FeaturedImage3,
         coordinates: [40.743, -73.928], // Gramercy Park (center kanan)
         isMonthly: true
+      },
+      {
+        id: 7,
+        price: "$3,899",
+        title: "Chelsea Modern Apartment",
+        location: "Chelsea, Manhattan, NY",
+        beds: 2,
+        baths: 2,
+        area: "4x6 m²",
+        image: FeaturedImage1,
+        coordinates: [40.747, -74.002], // Chelsea
+        isMonthly: true
+      },
+      {
+        id: 8,
+        price: "$2,599",
+        title: "Upper West Side Studio",
+        location: "Upper West Side, NY",
+        beds: 1,
+        baths: 1,
+        area: "3x5 m²",
+        image: FeaturedImage2,
+        coordinates: [40.785, -73.978], // Upper West Side
+        isMonthly: true
+      },
+      {
+        id: 9,
+        price: "$4,799",
+        title: "Tribeca Penthouse",
+        location: "Tribeca, Manhattan, NY",
+        beds: 3,
+        baths: 3,
+        area: "6x8 m²",
+        image: FeaturedImage3,
+        coordinates: [40.719, -74.009], // Tribeca
+        isMonthly: true
       }
     ]
   }

@@ -23,6 +23,32 @@
     scrollbar-width: none;  /* Firefox */
 }
 
+/* Custom thin scrollbar */
+.scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: #F8FAFC;
+    border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* Firefox scrollbar styling */
+.scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #CBD5E1 #F8FAFC;
+}
+
 /* Custom price marker styles for React Leaflet */
 .price-marker {
   display: inline-flex;
@@ -57,6 +83,75 @@
 .leaflet-div-icon {
   background: transparent;
   border: none;
+}
+
+/* Hide Leaflet attribution */
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+/* Hide zoom controls when drawer is open on mobile */
+@media (max-width: 991px) {
+  .hide-zoom-controls .leaflet-control-zoom {
+    display: none !important;
+  }
+}
+
+/* Smooth drawer animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
 }
 
 /* Overlay card centered on the map */

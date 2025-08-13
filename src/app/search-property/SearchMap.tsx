@@ -37,6 +37,7 @@ interface PopupPosition {
 interface SearchMapProps {
   center?: LatLngExpression
   zoom?: number
+  hideZoomControls?: boolean
 }
 
 
@@ -73,7 +74,7 @@ function createPriceIcon(label: string, isActive?: boolean) {
     : ''
 
   const houseSvg = `
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M1.66675 18.3333H18.3334" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M2.45825 18.3334L2.49992 8.30836C2.49992 7.80003 2.74159 7.31674 3.14159 7.00008L8.97492 2.4584C9.57492 1.99173 10.4166 1.99173 11.0249 2.4584L16.8583 6.99173C17.2666 7.3084 17.4999 7.7917 17.4999 8.30836V18.3334" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linejoin="round"/>
       <path d="M10.8334 14.1667H9.16675C8.47508 14.1667 7.91675 14.7251 7.91675 15.4167V18.3334H12.0834V15.4167C12.0834 14.7251 11.5251 14.1667 10.8334 14.1667Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linejoin="round"/>
@@ -131,6 +132,7 @@ function MapEventHandler({ onMapReady }: { onMapReady: (map: LeafletMap) => void
 export default function SearchMap({
   center = [40.742, -73.98],
   zoom = 12,
+  hideZoomControls = false,
 }: SearchMapProps) {
   const tileUrl = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
   
@@ -216,9 +218,9 @@ export default function SearchMap({
 
 
   return (
-    <div ref={containerRef} className="relative w-full h-[400px] rounded-[16px] overflow-hidden border border-[#191A23] bg-white">
-      <MapContainer center={center} zoom={zoom} scrollWheelZoom className="w-full h-full">
-        <TileLayer url={tileUrl} attribution='&copy; OpenStreetMap contributors' />
+    <div ref={containerRef} className={`relative w-full h-[400px] rounded-[16px] overflow-hidden border border-[#191A23] bg-white ${hideZoomControls ? 'hide-zoom-controls' : ''}`}>
+      <MapContainer center={center} zoom={zoom} scrollWheelZoom className="w-full h-full" attributionControl={false}>
+        <TileLayer url={tileUrl} attribution='' />
         <MapEventHandler onMapReady={handleMapReady} />
 
         {properties.map((property) => (
