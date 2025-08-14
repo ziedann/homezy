@@ -256,7 +256,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
       <div className="flex gap-2 bg-[#F5F5F7] rounded-[16px] p-1">
         <button
           onClick={() => setSelectedType('sale')}
-          className={`flex-1 py-3 px-6 rounded-[12px] font-semibold text-[16px] transition-all duration-200 ${
+          className={`flex-1 py-3 px-6 rounded-[12px] font-semibold text-[16px] font-hanken transition-all duration-200 ${
             selectedType === 'sale'
               ? 'bg-[#191A23] text-white shadow-sm'
               : 'bg-transparent text-[#6B7280] hover:text-[#374151]'
@@ -470,20 +470,26 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
             {/* Mobile Drawer using shadcn Drawer */}
       {isMobile ? (
         <Drawer open={isOpen} onOpenChange={onClose}>
-          <DrawerContent className="h-[85vh] px-0 rounded-t-[32px]">
-            <div className="mx-auto w-full">
-              {/* Drawer handle is built into shadcn Drawer */}
-              <DrawerHeader className="text-left px-6">
+          <DrawerContent className="h-[90vh] px-0 rounded-t-[32px] flex flex-col">
+            <div className="flex flex-col h-full">
+              {/* Custom visible drag handle */}
+              <div className="flex justify-center pt-4 pb-3" style={{ zIndex: 1000 }}>
+                <div 
+                  className="w-12 h-[6px] rounded-full bg-[#ececec]"
+                ></div>
+              </div>
+              
+              <DrawerHeader className="text-left px-6 flex-shrink-0 pt-2">
                 <DrawerTitle className="text-[20px] leading-[28px] font-semibold font-syne text-[#191A23]">
                   More Filter
                 </DrawerTitle>
               </DrawerHeader>
               
-              <div className="px-6 py-4 overflow-y-auto scrollbar-thin max-h-[calc(85vh-200px)]">
+              <div className="flex-1 px-6 py-4 overflow-y-auto scrollbar-thin min-h-0">
                 <FilterContent />
               </div>
 
-              <DrawerFooter className="px-6 py-6 flex flex-col gap-3">
+              <DrawerFooter className="px-6 mb-6 flex flex-col gap-2 flex-shrink-0 border-t border-gray-100 bg-white">
                 <Button
                   onClick={() => {
                     const filterCriteria: FilterCriteria = {

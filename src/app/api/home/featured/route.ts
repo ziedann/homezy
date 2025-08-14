@@ -11,7 +11,7 @@ export async function GET() {
       {
         id: 1,
         price: "$15,000",
-        title: "Beach Pros Realty", // 18 chars - kategori "realty"
+        title: "Beach Pros Realty", 
         location: "37 Ambleside Gardens, Ilford, IG4 5HH",
         beds: 3,
         baths: 2,
@@ -23,7 +23,7 @@ export async function GET() {
       {
         id: 2,
         price: "$ 4,299",
-        title: "Beacon Homes Realty", // 19 chars - kategori "realty"
+        title: "Beacon Homes Realty", 
         location: "3 Leame Close, Hull, HU3 6ND",
         beds: 3,
         baths: 2,
@@ -35,7 +35,7 @@ export async function GET() {
       {
         id: 3,
         price: "$ 5,099",
-        title: "Herringbone Realty", // 18 chars - kategori "realty"
+        title: "Herringbone Realty", 
         location: "28B Highgate Road, London, NW5 1NS",
         beds: 3,
         baths: 2,

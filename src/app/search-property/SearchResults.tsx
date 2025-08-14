@@ -248,7 +248,7 @@ export default function SearchResults({ className = '', filterCriteria }: Search
       {currentProperties.length > 0 ? (
         <div className={viewMode === 'grid' 
           ? "flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6" 
-          : "flex flex-col gap-8"
+          : "flex flex-col gap-4"
         }>
           {currentProperties.map((property) => (
             <PropertyCard
@@ -285,17 +285,8 @@ export default function SearchResults({ className = '', filterCriteria }: Search
       )}
 
       {/* Pagination - Only show if more than 1 page */}
-      {totalPages > 1 && (
-        <div className="flex flex-col gap-4 mt-12">
-          {/* Mobile Pagination Info */}
-          <div className="flex justify-center items-center lg:hidden">
-            <span className="text-[14px] text-[#6B7280]">
-              Page {currentPage} of {totalPages}
-            </span>
-          </div>
-          
-          {/* Pagination Controls */}
-          <div className="flex justify-center items-center gap-2">
+      {totalPages > 1 && (          
+        <div className="flex justify-center items-center gap-2 mt-12">
           {/* Previous Button */}
           <button 
             onClick={goToPrevious}
@@ -389,40 +380,6 @@ export default function SearchResults({ className = '', filterCriteria }: Search
               <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          </div>
-          
-          {/* Mobile Previous/Next buttons */}
-          <div className="flex justify-between items-center lg:hidden gap-4">
-            <button 
-              onClick={goToPrevious}
-              disabled={currentPage === 1}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
-                currentPage === 1 
-                  ? 'border-[#E7DCFF] text-[#9CA3AF] cursor-not-allowed' 
-                  : 'border-[#E7DCFF] hover:bg-[#F7F2FF] text-[#686A79]'
-              }`}
-            >
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Previous
-            </button>
-            
-            <button 
-              onClick={goToNext}
-              disabled={currentPage === totalPages}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
-                currentPage === totalPages 
-                  ? 'border-[#E7DCFF] text-[#9CA3AF] cursor-not-allowed' 
-                  : 'border-[#E7DCFF] hover:bg-[#F7F2FF] text-[#686A79]'
-              }`}
-            >
-              Next
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </div>
         </div>
       )}
     </div>

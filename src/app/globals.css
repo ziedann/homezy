@@ -97,6 +97,47 @@
   }
 }
 
+/* Force Leaflet to use very low z-index */
+.leaflet-container {
+  z-index: 0 !important;
+  position: relative !important;
+}
+
+.leaflet-map-pane {
+  z-index: 0 !important;
+}
+
+.leaflet-tile-pane {
+  z-index: 1 !important;
+}
+
+.leaflet-marker-pane {
+  z-index: 2 !important;
+}
+
+.leaflet-popup-pane {
+  z-index: 3 !important;
+}
+
+.leaflet-overlay-pane {
+  z-index: 1 !important;
+}
+
+/* Custom popup for map should be above everything */
+.map-popup-container {
+  z-index: 100 !important;
+  position: relative;
+}
+
+/* Map marker z-index hierarchy - very low values */
+.map-marker {
+  z-index: 2 !important;
+}
+
+.map-marker-active {
+  z-index: 3 !important;
+}
+
 /* Smooth drawer animations */
 @keyframes slideUp {
   from {
