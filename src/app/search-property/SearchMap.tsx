@@ -93,7 +93,7 @@ function createPriceIcon(label: string, isActive?: boolean) {
   `
 
   return new DivIcon({
-    className: isActive ? 'z-[400]' : 'z-[300]',
+    className: isActive ? 'z-[40]' : 'z-[30]',
     html,
     iconAnchor: [50, 30],
     popupAnchor: [0, -16],
@@ -218,7 +218,7 @@ export default function SearchMap({
 
 
   return (
-    <div ref={containerRef} className={`relative w-full h-[400px] rounded-[16px] overflow-hidden border border-[#191A23] bg-white ${hideZoomControls ? 'hide-zoom-controls' : ''}`}>
+    <div ref={containerRef} className={`relative w-full h-[400px] rounded-[16px] overflow-hidden border border-[#191A23] bg-white z-[1] ${hideZoomControls ? 'hide-zoom-controls' : ''}`}>
       <MapContainer center={center} zoom={zoom} scrollWheelZoom className="w-full h-full" attributionControl={false}>
         <TileLayer url={tileUrl} attribution='' />
         <MapEventHandler onMapReady={handleMapReady} />
@@ -238,7 +238,7 @@ export default function SearchMap({
       {/* Positioned popup below marker */}
       {shouldShowPopup && (
         <div 
-          className="absolute z-[500] pointer-events-none top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          className="absolute z-[45] pointer-events-none top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
           style={popupPosition ? {
             left: popupPosition.x,
             top: popupPosition.y,

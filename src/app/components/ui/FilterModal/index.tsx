@@ -1,6 +1,14 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerFooter,
+} from '@/components/ui/drawer'
+import { Button } from '@/components/ui/button'
 
 interface FilterModalProps {
   isOpen: boolean
@@ -30,15 +38,10 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
   const [isMinYearOpen, setIsMinYearOpen] = useState(false)
   const [isMaxYearOpen, setIsMaxYearOpen] = useState(false)
   
-  // Drag state for mobile drawer
-  const [isDragging, setIsDragging] = useState(false)
-  const [startY, setStartY] = useState(0)
-  const [currentY, setCurrentY] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
+  // Mobile state
+  const [isMobile, setIsMobile] = useState(false)
   
   const modalRef = useRef<HTMLDivElement>(null)
-  const drawerRef = useRef<HTMLDivElement>(null)
-  const backdropRef = useRef<HTMLDivElement>(null)
 
   // Dropdown options
   const bedroomOptions = [
@@ -167,118 +170,32 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
     setIsMaxYearOpen(false)
   }
 
-  // Handle touch/drag events for mobile drawer
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true)
-    setStartY(e.touches[0].clientY)
-    setCurrentY(e.touches[0].clientY)
-  }
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || isAnimating) return
-    
-    const touchY = e.touches[0].clientY
-    setCurrentY(touchY)
-    
-    // Calculate drag distance
-    const dragDistance = touchY - startY
-    
-    if (drawerRef.current) {
-      // Prevent default to avoid scroll
-      e.preventDefault()
-      
-      // Remove transition during drag for immediate response
-      drawerRef.current.style.transition = 'none'
-      
-      // Real-time height adjustment based on drag
-      if (dragDistance >= 0) {
-        // Dragging down - reduce height by moving drawer down
-        const newHeight = Math.max(200, window.innerHeight * 0.85 - dragDistance)
-        drawerRef.current.style.height = `${newHeight}px`
-        drawerRef.current.style.transform = `translateY(0px)`
-      } else {
-        // Dragging up - slight resistance, increase height slightly
-        const resistanceFactor = 0.2
-        const heightIncrease = Math.abs(dragDistance) * resistanceFactor
-        const maxHeight = window.innerHeight * 0.9
-        const newHeight = Math.min(maxHeight, window.innerHeight * 0.85 + heightIncrease)
-        drawerRef.current.style.height = `${newHeight}px`
-        drawerRef.current.style.transform = `translateY(0px)`
-      }
-      
-      // Dynamic backdrop opacity
-      if (backdropRef.current) {
-        const opacity = dragDistance > 0 
-          ? Math.max(0.5 - (dragDistance / 400), 0.1)
-          : Math.min(0.5 + (Math.abs(dragDistance) / 800), 0.7)
-        backdropRef.current.style.opacity = opacity.toString()
-      }
-    }
-  }
 
-  const handleTouchEnd = () => {
-    if (!isDragging) return
-    
-    setIsDragging(false)
-    setIsAnimating(true)
-    
-    const dragDistance = currentY - startY
-    
-    if (dragDistance > 150) {
-      // Close drawer
-      handleCloseWithAnimation()
-    } else {
-      // Snap back to original height
-      if (drawerRef.current) {
-        drawerRef.current.style.transition = 'height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-        drawerRef.current.style.height = '85vh'
-      }
-      if (backdropRef.current) {
-        backdropRef.current.style.transition = 'opacity 0.3s ease-out'
-        backdropRef.current.style.opacity = '0.5'
-      }
-      
-      setTimeout(() => {
-        setIsAnimating(false)
-        if (drawerRef.current) {
-          drawerRef.current.style.transition = ''
-          drawerRef.current.style.height = ''
-        }
-        if (backdropRef.current) {
-          backdropRef.current.style.transition = ''
-          backdropRef.current.style.opacity = ''
-        }
-      }, 300)
-    }
-    
-    setStartY(0)
-    setCurrentY(0)
-  }
-
-  // Handle click outside to close modal
+  // Handle click outside to close modal (for desktop)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        handleCloseWithAnimation()
+        onClose()
         closeAllDropdowns()
       }
     }
 
-    if (isOpen) {
+    if (isOpen && !isMobile) { // Only for desktop
       document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isOpen])
+  }, [isOpen, onClose, isMobile])
 
   // Handle ESC key to close modal
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         closeAllDropdowns()
-        handleCloseWithAnimation()
+        onClose()
       }
     }
 
@@ -289,73 +206,11 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
     return () => {
       document.removeEventListener('keydown', handleEscKey)
     }
-  }, [isOpen])
+  }, [isOpen, onClose])
 
-  // Prevent background scrolling when drawer is open on mobile ONLY
-  useEffect(() => {
-    const checkScreenSize = () => {
-      return window.innerWidth < 1024 // lg breakpoint is 1024px
-    }
-
-    const handleScrollPrevention = () => {
-      if (isOpen) {
-        // Only prevent scrolling on mobile/tablet, NOT on lg+ screens
-        if (checkScreenSize()) {
-          document.body.style.overflow = 'hidden'
-          document.body.style.touchAction = 'none'
-        } else {
-          // On lg+ screens, allow background scrolling
-          document.body.style.overflow = ''
-          document.body.style.touchAction = ''
-        }
-      } else {
-        // Always restore scrolling when drawer is closed
-        document.body.style.overflow = ''
-        document.body.style.touchAction = ''
-      }
-    }
-
-    // Initial check
-    handleScrollPrevention()
-
-    // Listen for window resize to handle screen size changes
-    const handleResize = () => {
-      handleScrollPrevention()
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    // Cleanup when component unmounts or modal closes
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      document.body.style.overflow = ''
-      document.body.style.touchAction = ''
-    }
-  }, [isOpen])
-
-  // Handle smooth close animation
-  const handleCloseWithAnimation = () => {
-    if (drawerRef.current && backdropRef.current) {
-      // Add closing animation classes
-      drawerRef.current.classList.remove('animate-slide-up')
-      drawerRef.current.classList.add('animate-slide-down')
-      backdropRef.current.classList.remove('animate-fade-in')
-      backdropRef.current.classList.add('animate-fade-out')
-      
-      // Close after animation completes
-      setTimeout(() => {
-        onClose()
-      }, 300)
-    } else {
-      onClose()
-    }
-  }
-
-  if (!isOpen) return null
-
-  // Common content component
+  // Common filter content component
   const FilterContent = () => (
-    <>
+    <div className="space-y-6">
       {/* For Sale / For Rent Toggle */}
       <div className="flex gap-2 bg-[#F5F5F7] rounded-[16px] p-1">
         <button
@@ -481,114 +336,102 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
           />
         </div>
       </div>
-    </>
-  )
-
-  // Common footer buttons
-  const FooterButtons = () => (
-    <div className="flex-shrink-0 px-6 py-6 border-t border-[#F1F5F9] flex gap-3 bg-white">
-      <button
-        onClick={handleCloseWithAnimation}
-        className="flex-1 py-4 px-6 rounded-[16px] font-semibold text-[16px] text-[#191A23] bg-[#F7F2FF] hover:bg-[#F1F5F9] transition-all duration-200"
-      >
-        Cancel
-      </button>
-      <button
-        onClick={() => {
-          // Apply filter logic here
-          handleCloseWithAnimation()
-        }}
-        className="flex-1 py-4 px-6 rounded-[16px] font-semibold text-[16px] text-white bg-[#191A23] hover:bg-[#1A1B2E] transition-all duration-200"
-      >
-        Apply Filter
-      </button>
     </div>
   )
 
+  // Check if we're on mobile or desktop
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+    
+    // Check on mount
+    checkMobile()
+    
+    // Check on resize
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   return (
     <>
-      {/* Mobile Drawer */}
-      <div className="lg:hidden fixed inset-0 z-[1000]">
-        {/* Backdrop */}
-        <div 
-          ref={backdropRef}
-          className="absolute inset-0 bg-black bg-opacity-50 animate-fade-in" 
-          onClick={handleCloseWithAnimation} 
-        />
-        
-        {/* Drawer Content */}
-        <div 
-          ref={drawerRef}
-          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[24px] shadow-2xl max-h-[85vh] overflow-hidden transform transition-transform duration-500 ease-out animate-slide-up"
-        >
-          <div className="flex flex-col h-full max-h-[85vh]">
-            {/* Drag Handle Area */}
-            <div 
-              className={`flex-shrink-0 w-full py-4 px-4 select-none touch-manipulation ${
-                isDragging ? 'cursor-grabbing' : 'cursor-grab'
-              }`}
-              onTouchStart={(e) => {
-                e.preventDefault()
-                handleTouchStart(e)
-              }}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onClick={(e) => {
-                if (!isDragging && Math.abs(currentY - startY) < 10) {
-                  handleCloseWithAnimation()
-                }
-              }}
-              style={{ 
-                touchAction: 'pan-y',
-                WebkitUserSelect: 'none',
-                userSelect: 'none'
-              }}
-            >
-              <div className="flex flex-col items-center">
-                <div className="w-12 h-1.5 bg-gray-400 rounded-full mb-2"></div>
-                <span className="h-[7px] bg-[#f2f2f2] w-[100px] rounded-full"></span>
+            {/* Mobile Drawer using shadcn Drawer */}
+      {isMobile ? (
+        <Drawer open={isOpen} onOpenChange={onClose}>
+          <DrawerContent className="h-[85vh] px-0 rounded-t-[32px]">
+            <div className="mx-auto w-full">
+              {/* Drawer handle is built into shadcn Drawer */}
+              <DrawerHeader className="text-left px-6">
+                <DrawerTitle className="text-[20px] leading-[28px] font-semibold font-syne text-[#191A23]">
+                  More Filter
+                </DrawerTitle>
+              </DrawerHeader>
+              
+              <div className="px-6 py-4 overflow-y-auto scrollbar-thin max-h-[calc(85vh-200px)]">
+                <FilterContent />
+              </div>
+
+              <DrawerFooter className="px-6 py-6 flex flex-col gap-3">
+                <Button
+                  onClick={() => {
+                    // Apply filter logic here
+                    onClose()
+                  }}
+                  className="w-full py-4 px-6 h-auto rounded-[16px] font-semibold text-[16px] text-white bg-[#191A23] hover:bg-[#1A1B2E]"
+                >
+                  Apply Filter
+                </Button>
+                <Button
+                  onClick={onClose}
+                  variant="outline"
+                  className="w-full py-4 px-6 h-auto rounded-[16px] font-semibold text-[16px] text-[#191A23] bg-[#F7F2FF] border-[#F7F2FF] hover:bg-[#F1F5F9] hover:border-[#F1F5F9]"
+                >
+                  Cancel
+                </Button>
+              </DrawerFooter>
+            </div>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        /* Desktop Modal */
+        <div ref={modalRef} className="absolute top-full right-0 mt-2 z-[1001] w-[440px]">
+          {isOpen && (
+            <div className="bg-white rounded-[24px] shadow-2xl max-h-[80vh] overflow-hidden border border-[#E5E7EB]">
+              <div className="flex flex-col h-full max-h-[80vh]">
+                {/* Header */}
+                <div className="flex-shrink-0 p-[24px] border-b border-[#F1F5F9]">
+                  <h2 className="text-[20px] leading-[28px] font-semibold font-syne text-[#191A23]">More Filter</h2>
+                </div>
+
+                {/* Content - Scrollable */}
+                <div className="flex-1 px-6 py-6 overflow-y-auto scrollbar-thin">
+                  <FilterContent />
+                </div>
+
+                {/* Footer Buttons */}
+                <div className="flex-shrink-0 px-6 py-6 border-t border-[#F1F5F9] flex gap-3 bg-white">
+                  <Button
+                    onClick={onClose}
+                    variant="outline"
+                    className="flex-1 py-4 px-6 h-auto rounded-[16px] font-semibold text-[16px] text-[#191A23] bg-[#F7F2FF] border-[#F7F2FF] hover:bg-[#F1F5F9] hover:border-[#F1F5F9]"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      // Apply filter logic here
+                      onClose()
+                    }}
+                    className="flex-1 py-4 px-6 h-auto rounded-[16px] font-semibold text-[16px] text-white bg-[#191A23] hover:bg-[#1A1B2E]"
+                  >
+                    Apply Filter
+                  </Button>
+                </div>
               </div>
             </div>
-            
-            {/* Header */}
-            <div className="flex-shrink-0 px-6 pb-4">
-              <h2 className="text-[20px] leading-[28px] font-semibold font-syne text-[#191A23]">More Filter</h2>
-            </div>
-
-            {/* Content - Scrollable */}
-            <div 
-              className="flex-1 px-6 py-4 space-y-6 overflow-y-auto scrollbar-thin scroll-smooth" 
-              style={{ scrollBehavior: 'smooth' }}
-            >
-              <FilterContent />
-            </div>
-
-            {/* Footer Buttons */}
-            <FooterButtons />
-          </div>
+          )}
         </div>
-      </div>
-
-      {/* Desktop Dropdown */}
-      <div ref={modalRef} className="hidden lg:block absolute top-full right-0 mt-2 z-[1000] w-[440px]">
-        {/* Modal Content */}
-        <div className="bg-white rounded-[24px] shadow-2xl max-h-[80vh] overflow-hidden scroll-smooth">
-          <div className="flex flex-col h-full max-h-[80vh]">
-            {/* Header */}
-            <div className="flex-shrink-0 p-[24px] border-b border-[#F1F5F9]">
-              <h2 className="text-[20px] leading-[28px] font-semibold font-syne text-[#191A23]">More Filter</h2>
-            </div>
-
-            {/* Content - Scrollable */}
-            <div className="flex-1 px-6 py-6 space-y-6 overflow-y-auto scrollbar-thin scroll-smooth" style={{ scrollBehavior: 'smooth' }}>
-              <FilterContent />
-            </div>
-
-            {/* Footer Buttons */}
-            <FooterButtons />
-          </div>
-        </div>
-      </div>
+      )}
     </>
   )
 }
