@@ -29,6 +29,8 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
   const [minYearLabel, setMinYearLabel] = useState<string>('')
   const [maxYear, setMaxYear] = useState<string>('')
   const [maxYearLabel, setMaxYearLabel] = useState<string>('')
+  const [minPrice, setMinPrice] = useState<string>('')
+  const [maxPrice, setMaxPrice] = useState<string>('')
   
   // Dropdown open states
   const [isBedroomsOpen, setIsBedroomsOpen] = useState(false)
@@ -329,6 +331,74 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
             showAbove={true}
           />
         </div>
+
+      {/* Price Range */}
+      <div>
+        <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Price Range</label>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#6B7280] text-[16px]">$</span>
+            <input
+              type="number"
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+              placeholder="Min Price"
+              className="w-full pl-8 pr-4 py-4 border border-[#E5E7EB] rounded-[16px] bg-white text-[#191A23] text-[16px] placeholder:text-[#6B7280] focus:outline-none focus:border-[#9CA3AF] focus:ring-0"
+            />
+          </div>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#6B7280] text-[16px]">$</span>
+            <input
+              type="number"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              placeholder="Max Price"
+              className="w-full pl-8 pr-4 py-4 border border-[#E5E7EB] rounded-[16px] bg-white text-[#191A23] text-[16px] placeholder:text-[#6B7280] focus:outline-none focus:border-[#9CA3AF] focus:ring-0"
+            />
+          </div>
+        </div>
+        
+        {/* Quick Price Options */}
+        <div className="mt-3">
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: 'Under $500K', min: '', max: '500000' },
+              { label: '$500K - $1M', min: '500000', max: '1000000' },
+              { label: '$1M - $2M', min: '1000000', max: '2000000' },
+              { label: 'Over $2M', min: '2000000', max: '' },
+            ].map((range) => (
+              <button
+                key={range.label}
+                onClick={() => {
+                  setMinPrice(range.min)
+                  setMaxPrice(range.max)
+                }}
+                className="px-3 py-2 text-[14px] bg-[#F8FAFC] border border-[#E5E7EB] rounded-[8px] text-[#6B7280] hover:bg-[#F1F5F9] hover:text-[#374151] transition-colors"
+              >
+                {range.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Price Range Validation */}
+        {minPrice && maxPrice && parseInt(minPrice) > parseInt(maxPrice) && (
+          <p className="text-red-500 text-[14px] mt-2">Min price cannot be greater than max price</p>
+        )}
+        
+        {/* Clear Price Range */}
+        {(minPrice || maxPrice) && (
+          <button
+            onClick={() => {
+              setMinPrice('')
+              setMaxPrice('')
+            }}
+            className="text-[14px] text-[#6B7280] hover:text-[#374151] mt-2 underline"
+          >
+            Clear price range
+          </button>
+        )}
+      </div>
 
               {/* Year Built */}
         <div>
