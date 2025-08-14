@@ -10,12 +10,25 @@ import {
 } from '@/components/ui/drawer'
 import { Button } from '@/components/ui/button'
 
+export interface FilterCriteria {
+  type: 'sale' | 'rent'
+  category: string
+  bedrooms: string
+  bathrooms: string
+  floorArea: string
+  minYear: string
+  maxYear: string
+  minPrice: string
+  maxPrice: string
+}
+
 interface FilterModalProps {
   isOpen: boolean
   onClose: () => void
+  onApplyFilter: (criteria: FilterCriteria) => void
 }
 
-export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
+export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterModalProps) {
   const [selectedType, setSelectedType] = useState<'sale' | 'rent'>('sale')
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState<string>('')
@@ -47,29 +60,32 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
 
   // Dropdown options
   const bedroomOptions = [
-    { value: '2', label: '2 beds' },
-    { value: '3', label: '3 beds' },
-    { value: '4', label: '4 beds' },
+    { value: '1', label: '1 bed' },    // Studio apartments from API
+    { value: '2', label: '2 beds' },  // Modern Downtown Apartment, Greenwich Village Loft, Chelsea Modern Apartment
+    { value: '3', label: '3 beds' },  // Beach Pros Realty Inc., Beacon Homes LLC, Herringbone Realty, Tribeca Penthouse
   ]
 
   const bathroomOptions = [
-    { value: '1', label: '1 bath' },
-    { value: '2', label: '2 baths' },
-    { value: '3', label: '3 baths' },
+    { value: '1', label: '1 bath' },  // Brooklyn Heights Studio, Greenwich Village Loft, Upper West Side Studio
+    { value: '2', label: '2 baths' }, // Beach Pros Realty Inc., Beacon Homes LLC, Modern Downtown Apartment, Chelsea Modern Apartment
+    { value: '3', label: '3 baths' }, // Tribeca Penthouse
   ]
 
   const categoryOptions = [
-    { value: 'apartment', label: 'Apartment' },
-    { value: 'house', label: 'House' },
-    { value: 'studio', label: 'Studio' },
-    { value: 'loft', label: 'Loft' },
+    { value: 'studio', label: 'Studio' },        // Brooklyn Heights Studio, Upper West Side Studio
+    { value: 'apartment', label: 'Apartment' },  // Modern Downtown Apartment, Chelsea Modern Apartment
+    { value: 'loft', label: 'Loft' },           // Greenwich Village Loft
+    { value: 'penthouse', label: 'Penthouse' },  // Tribeca Penthouse
+    { value: 'realty', label: 'Realty' },       // Beach Pros Realty Inc., Herringbone Realty, Beacon Homes LLC
   ]
 
   const floorAreaOptions = [
-    { value: 'small', label: 'Small (< 500 sqft)' },
-    { value: 'medium', label: 'Medium (500-1000 sqft)' },
-    { value: 'large', label: 'Large (1000-2000 sqft)' },
-    { value: 'extra-large', label: 'Extra Large (> 2000 sqft)' },
+    { value: '3x4', label: '3x4 m²' },   // Brooklyn Heights Studio (12 m²)
+    { value: '3x5', label: '3x5 m²' },   // Upper West Side Studio (15 m²)
+    { value: '4x5', label: '4x5 m²' },   // Greenwich Village Loft (20 m²)
+    { value: '4x6', label: '4x6 m²' },   // Modern Downtown Apartment, Chelsea Modern Apartment (24 m²)
+    { value: '5x7', label: '5x7 m²' },   // Beach Pros Realty Inc., Beacon Homes LLC, Herringbone Realty (35 m²)
+    { value: '6x8', label: '6x8 m²' },   // Tribeca Penthouse (48 m²)
   ]
 
   const yearOptions = [
@@ -362,10 +378,10 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
         <div className="mt-3">
           <div className="flex flex-wrap gap-2">
             {[
-              { label: 'Under $500K', min: '', max: '500000' },
-              { label: '$500K - $1M', min: '500000', max: '1000000' },
-              { label: '$1M - $2M', min: '1000000', max: '2000000' },
-              { label: 'Over $2M', min: '2000000', max: '' },
+              { label: 'Under $2K', min: '', max: '2000' },
+              { label: '$2K - $3K', min: '2000', max: '3000' },
+              { label: '$3K - $4K', min: '3000', max: '4000' },
+              { label: 'Over $4K', min: '4000', max: '' },
             ].map((range) => (
               <button
                 key={range.label}
@@ -470,7 +486,18 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               <DrawerFooter className="px-6 py-6 flex flex-col gap-3">
                 <Button
                   onClick={() => {
-                    // Apply filter logic here
+                    const filterCriteria: FilterCriteria = {
+                      type: selectedType,
+                      category: selectedCategory,
+                      bedrooms: selectedBedrooms,
+                      bathrooms: selectedBathrooms,
+                      floorArea: selectedFloorArea,
+                      minYear: minYear,
+                      maxYear: maxYear,
+                      minPrice: minPrice,
+                      maxPrice: maxPrice,
+                    }
+                    onApplyFilter(filterCriteria)
                     onClose()
                   }}
                   className="w-full py-4 px-6 h-auto rounded-[16px] font-semibold text-[16px] text-white bg-[#191A23] hover:bg-[#1A1B2E]"
@@ -515,7 +542,18 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
                   </Button>
                   <Button
                     onClick={() => {
-                      // Apply filter logic here
+                      const filterCriteria: FilterCriteria = {
+                        type: selectedType,
+                        category: selectedCategory,
+                        bedrooms: selectedBedrooms,
+                        bathrooms: selectedBathrooms,
+                        floorArea: selectedFloorArea,
+                        minYear: minYear,
+                        maxYear: maxYear,
+                        minPrice: minPrice,
+                        maxPrice: maxPrice,
+                      }
+                      onApplyFilter(filterCriteria)
                       onClose()
                     }}
                     className="flex-1 py-4 px-6 h-auto rounded-[16px] font-semibold text-[16px] text-white bg-[#191A23] hover:bg-[#1A1B2E]"

@@ -9,7 +9,7 @@ export async function GET() {
       {
         id: 1,
         price: "$2,199",
-        title: "Beach Pros Realty Inc.",
+        title: "Beach Pros Realty", // 18 chars - kategori "realty"
         location: "37 Ambleside Gardens, Ilford, IG4 5HH",
         beds: 3,
         baths: 2,
@@ -21,7 +21,7 @@ export async function GET() {
       {
         id: 2,
         price: "$3,599",
-        title: "Beacon Homes LLC",
+        title: "Beacon Homes Realty", // 19 chars - kategori "realty"
         location: "3 Leame Close, Hull, HU3 6ND",
         beds: 3,
         baths: 2,
@@ -33,7 +33,7 @@ export async function GET() {
       {
         id: 3,
         price: "$4,299",
-        title: "Modern Downtown Apartment",
+        title: "Downtown Apartment", // 18 chars - kategori "apartment"
         location: "5th Avenue, Manhattan, NY",
         beds: 2,
         baths: 2,
@@ -45,7 +45,7 @@ export async function GET() {
       {
         id: 4,
         price: "$4,299",
-        title: "Brooklyn Heights Studio",
+        title: "Brooklyn Studio", // 15 chars - kategori "studio"
         location: "Brooklyn Heights, NY",
         beds: 1,
         baths: 1,
@@ -57,7 +57,7 @@ export async function GET() {
       {
         id: 5,
         price: "$5,099",
-        title: "Herringbone Realty",
+        title: "Herringbone Realty", // 18 chars - kategori "realty"
         location: "28B Highgate Road, London, NW5 1NS",
         beds: 3,
         baths: 2,
@@ -69,7 +69,7 @@ export async function GET() {
       {
         id: 6,
         price: "$1,299",
-        title: "Greenwich Village Loft",
+        title: "Greenwich Loft", // 14 chars - kategori "loft"
         location: "Greenwich Village, NY",
         beds: 2,
         baths: 1,
@@ -81,7 +81,7 @@ export async function GET() {
       {
         id: 7,
         price: "$3,899",
-        title: "Chelsea Modern Apartment",
+        title: "Chelsea Apartment", // 17 chars - kategori "apartment"
         location: "Chelsea, Manhattan, NY",
         beds: 2,
         baths: 2,
@@ -93,7 +93,7 @@ export async function GET() {
       {
         id: 8,
         price: "$2,599",
-        title: "Upper West Side Studio",
+        title: "West Side Studio", // 16 chars - kategori "studio"
         location: "Upper West Side, NY",
         beds: 1,
         baths: 1,
@@ -105,7 +105,7 @@ export async function GET() {
       {
         id: 9,
         price: "$4,799",
-        title: "Tribeca Penthouse",
+        title: "Tribeca Penthouse", // 17 chars - kategori "penthouse"
         location: "Tribeca, Manhattan, NY",
         beds: 3,
         baths: 3,

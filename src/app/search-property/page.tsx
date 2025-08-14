@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import SearchForm from '../components/ui/SearchForm'
 import SectionContainer from '../components/ui/SectionContainer'
 import SectionHeader from '../components/ui/SectionHeader'
-import FilterModal from '../components/ui/FilterModal'
+import FilterModal, { FilterCriteria } from '../components/ui/FilterModal'
 import CandleIcon from '@assets/icons/candle.svg'
 import dynamic from 'next/dynamic'
 
@@ -13,6 +13,11 @@ const SearchResults = dynamic(() => import('./SearchResults'), { ssr: false })
 
 export default function SearchPropertyPage() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
+  const [currentFilter, setCurrentFilter] = useState<FilterCriteria | null>(null)
+
+  const handleApplyFilter = (criteria: FilterCriteria) => {
+    setCurrentFilter(criteria)
+  }
 
   return (
     <main className="min-h-screen bg-[#FBFAFF]">
@@ -43,7 +48,8 @@ export default function SearchPropertyPage() {
             {/* Filter Modal positioned relative to button */}
             <FilterModal 
               isOpen={isFilterModalOpen} 
-              onClose={() => setIsFilterModalOpen(false)} 
+              onClose={() => setIsFilterModalOpen(false)}
+              onApplyFilter={handleApplyFilter}
             />
           </div>
         </div>
@@ -55,7 +61,7 @@ export default function SearchPropertyPage() {
 
         {/* Search Results Section */}
         <div className="mt-12">
-          <SearchResults />
+          <SearchResults filterCriteria={currentFilter} />
         </div>
       </SectionContainer>
     </main>

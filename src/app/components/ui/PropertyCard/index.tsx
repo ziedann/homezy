@@ -34,20 +34,20 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
     // Row/List Layout
     return (
       <div className="relative w-full rounded-[15px] overflow-hidden bg-white border border-[#E7DCFF]">
-        <div className="flex items-center p-4 gap-4">
+        <div className="flex items-center p-4 lg:p-6 gap-4 lg:gap-6">
           {/* Image Section - Square */}
-          <div className="relative w-[120px] h-[120px] flex-shrink-0 rounded-[12px] overflow-hidden">
+          <div className="relative w-[120px] h-[120px] lg:w-[160px] lg:h-[160px] flex-shrink-0 rounded-[12px] overflow-hidden">
             <Image
               src={image}
               alt={title}
               fill
               className="object-cover"
-              sizes="120px"
+              sizes="(max-width: 1024px) 120px, 160px"
             />
             {isFeatured && (
-              <div className="absolute top-2 right-2 flex flex-row items-center gap-[2px] bg-[#191A23] rounded-[6px] px-2 py-1">
-                <Sparkles className="w-[12px] h-[12px]" />
-                <p className='text-[10px] leading-[14px] font-light font-hanken text-white'>
+              <div className="absolute top-2 right-2 lg:top-3 lg:right-3 flex flex-row items-center gap-[2px] bg-[#191A23] rounded-[6px] lg:rounded-[8px] px-2 py-1 lg:px-3 lg:py-2">
+                <Sparkles className="w-[12px] h-[12px] lg:w-[16px] lg:h-[16px]" />
+                <p className='text-[10px] leading-[14px] lg:text-[14px] lg:leading-[20px] font-light font-hanken text-white'>
                   FEATURED
                 </p>
               </div>
@@ -55,15 +55,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           </div>
 
           {/* Content Section */}
-          <div className="flex-1 flex flex-col gap-3">
+          <div className="flex-1 flex flex-col gap-3 lg:gap-4">
             {/* Price Bar */}
-            <div className=" flex items-center px-3">
+            <div className="flex items-center px-3 lg:px-0">
               <div className="flex items-end gap-[4px]">
-                <span className="text-[18px] leading-[24px] tracking-[-0.02em] font-semibold font-syne text-[#191A23]">
+                <span className="text-[18px] leading-[24px] lg:text-[28px] lg:leading-[36px] tracking-[-0.02em] font-semibold font-syne text-[#191A23]">
                   {price}
                 </span>
                 {isMonthly && (
-                  <span className="text-[14px] leading-[20px] font-regular font-hanken text-[#686A79]">
+                  <span className="text-[14px] leading-[20px] lg:text-[18px] lg:leading-[24px] font-regular font-hanken text-[#686A79]">
                     /month
                   </span>
                 )}
@@ -71,37 +71,37 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             </div>
 
             {/* Title Bar */}
-            <div className="flex items-center px-3">
-              <h3 className="text-[16px] leading-[20px] tracking-[-0.02em] font-semibold font-syne text-[#191A23] truncate">
+            <div className="flex items-center px-3 lg:px-0">
+              <h3 className="text-[16px] leading-[20px] lg:text-[24px] lg:leading-[32px] tracking-[-0.02em] font-semibold font-syne text-[#191A23] truncate">
                 {title}
               </h3>
             </div>
 
             {/* Location Bar */}
-            <div className="flex items-center px-3">
-              <p className="text-[14px] leading-[18px] font-regular font-hanken text-[#686A79] truncate">
+            <div className="flex items-center px-3 lg:px-0">
+              <p className="text-[14px] leading-[18px] lg:text-[16px] lg:leading-[24px] font-regular font-hanken text-[#686A79] truncate">
                 {location}
               </p>
             </div>
 
             {/* Property Details Bar */}
-            <div className="flex items-center px-3">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-[4px]">
-                  <Bed className="w-4 h-4" />
-                  <span className='font-medium font-hanken text-[12px] leading-[16px] text-[#686A79]'>
+            <div className="flex items-center px-3 lg:px-0">
+              <div className="flex items-center gap-4 lg:gap-6">
+                <div className="flex items-center gap-[4px] lg:gap-[6px]">
+                  <Bed className="w-4 h-4 lg:w-5 lg:h-5" />
+                  <span className='font-medium font-hanken text-[12px] leading-[16px] lg:text-[14px] lg:leading-[20px] text-[#686A79]'>
                     {beds} Beds
                   </span>
                 </div>
-                <div className="flex items-center gap-[4px]">
-                  <Bath className="w-4 h-4" />
-                  <span className='font-medium font-hanken text-[12px] leading-[16px] text-[#686A79]'>
+                <div className="flex items-center gap-[4px] lg:gap-[6px]">
+                  <Bath className="w-4 h-4 lg:w-5 lg:h-5" />
+                  <span className='font-medium font-hanken text-[12px] leading-[16px] lg:text-[14px] lg:leading-[20px] text-[#686A79]'>
                     {baths} Baths
                   </span>
                 </div>
-                <div className="flex items-center gap-[4px]">
-                  <Area className="w-4 h-4" />
-                  <span className='font-medium font-hanken text-[12px] leading-[16px] text-[#686A79]'>
+                <div className="flex items-center gap-[4px] lg:gap-[6px]">
+                  <Area className="w-4 h-4 lg:w-5 lg:h-5" />
+                  <span className='font-medium font-hanken text-[12px] leading-[16px] lg:text-[14px] lg:leading-[20px] text-[#686A79]'>
                     {area}
                   </span>
                 </div>
