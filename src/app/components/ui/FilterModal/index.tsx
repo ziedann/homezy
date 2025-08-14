@@ -83,7 +83,7 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
     { value: '2024', label: '2024' },
   ]
 
-  // Custom dropdown component
+  // Custom dropdown component with smart positioning
   const CustomDropdown = ({ 
     isOpen, 
     setIsOpen, 
@@ -91,7 +91,8 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
     onSelect, 
     options, 
     placeholder,
-    selectedLabel
+    selectedLabel,
+    showAbove = false
   }: {
     isOpen: boolean
     setIsOpen: (value: boolean) => void
@@ -100,9 +101,31 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
     options: { value: string; label: string }[]
     placeholder: string
     selectedLabel?: string
+    showAbove?: boolean
   }) => {
+    const dropdownRef = useRef<HTMLDivElement>(null)
+    const [shouldShowAbove, setShouldShowAbove] = useState(showAbove)
+
+    useEffect(() => {
+      if (isOpen && dropdownRef.current) {
+        const rect = dropdownRef.current.getBoundingClientRect()
+        const spaceBelow = window.innerHeight - rect.bottom
+        const spaceAbove = rect.top
+        const dropdownHeight = 250 // Approximate height of dropdown
+        
+        // If there's not enough space below but enough space above, show above
+        if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+          setShouldShowAbove(true)
+        } else if (showAbove) {
+          setShouldShowAbove(true)
+        } else {
+          setShouldShowAbove(false)
+        }
+      }
+    }, [isOpen, showAbove])
+
     return (
-      <div className="relative">
+      <div className="relative" ref={dropdownRef}>
         <button
           type="button"
           onClick={() => {
@@ -121,14 +144,14 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
             height="16" 
             viewBox="0 0 16 16" 
             fill="none"
-            className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            className={`transform transition-transform ${isOpen ? (shouldShowAbove ? 'rotate-0' : 'rotate-180') : ''}`}
           >
             <path d="M4 6L8 10L12 6" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
         
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-[16px] shadow-xl border border-[#E5E7EB] z-50 overflow-hidden">
+          <div className={`absolute left-0 right-0 ${shouldShowAbove ? 'bottom-full mb-1' : 'top-full mt-1'} bg-white rounded-[16px] shadow-xl border border-[#E5E7EB] z-50 overflow-hidden`}>
             {/* Selected option at top with dark background */}
             {selectedValue && (
               <div className="bg-[#2B2D42] text-white px-4 py-3 text-[16px] font-medium">
@@ -289,53 +312,56 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
         </div>
       </div>
 
-      {/* Floor Area */}
-      <div>
-        <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Floor Area</label>
-        <CustomDropdown
-          isOpen={isFloorAreaOpen}
-          setIsOpen={setIsFloorAreaOpen}
-          selectedValue={selectedFloorArea}
-          selectedLabel={selectedFloorAreaLabel}
-          onSelect={(value, label) => {
-            setSelectedFloorArea(value)
-            setSelectedFloorAreaLabel(label)
-          }}
-          options={floorAreaOptions}
-          placeholder="Category"
-        />
-      </div>
-
-      {/* Year Built */}
-      <div>
-        <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Year Built</label>
-        <div className="grid grid-cols-2 gap-4">
+              {/* Floor Area */}
+        <div>
+          <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Floor Area</label>
           <CustomDropdown
-            isOpen={isMinYearOpen}
-            setIsOpen={setIsMinYearOpen}
-            selectedValue={minYear}
-            selectedLabel={minYearLabel}
+            isOpen={isFloorAreaOpen}
+            setIsOpen={setIsFloorAreaOpen}
+            selectedValue={selectedFloorArea}
+            selectedLabel={selectedFloorAreaLabel}
             onSelect={(value, label) => {
-              setMinYear(value)
-              setMinYearLabel(label)
+              setSelectedFloorArea(value)
+              setSelectedFloorAreaLabel(label)
             }}
-            options={yearOptions}
-            placeholder="Min Year"
-          />
-          <CustomDropdown
-            isOpen={isMaxYearOpen}
-            setIsOpen={setIsMaxYearOpen}
-            selectedValue={maxYear}
-            selectedLabel={maxYearLabel}
-            onSelect={(value, label) => {
-              setMaxYear(value)
-              setMaxYearLabel(label)
-            }}
-            options={yearOptions}
-            placeholder="Max Year"
+            options={floorAreaOptions}
+            placeholder="Category"
+            showAbove={true}
           />
         </div>
-      </div>
+
+              {/* Year Built */}
+        <div>
+          <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Year Built</label>
+          <div className="grid grid-cols-2 gap-4">
+            <CustomDropdown
+              isOpen={isMinYearOpen}
+              setIsOpen={setIsMinYearOpen}
+              selectedValue={minYear}
+              selectedLabel={minYearLabel}
+              onSelect={(value, label) => {
+                setMinYear(value)
+                setMinYearLabel(label)
+              }}
+              options={yearOptions}
+              placeholder="Min Year"
+              showAbove={true}
+            />
+            <CustomDropdown
+              isOpen={isMaxYearOpen}
+              setIsOpen={setIsMaxYearOpen}
+              selectedValue={maxYear}
+              selectedLabel={maxYearLabel}
+              onSelect={(value, label) => {
+                setMaxYear(value)
+                setMaxYearLabel(label)
+              }}
+              options={yearOptions}
+              placeholder="Max Year"
+              showAbove={true}
+            />
+          </div>
+        </div>
     </div>
   )
 
