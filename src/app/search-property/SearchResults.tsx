@@ -102,23 +102,23 @@ export default function SearchResults({ className = '' }: SearchResultsProps) {
         <h2 className="lg:text-[32px] lg:leading-[40px] text-[24px] leading-[32px] font-semibold font-syne tracking-[-0.04em] text-[#191A23]">
           {properties.length} Results
         </h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 bg-[#F8FAFC] p-1 rounded-[12px]">
           <button
             onClick={() => setViewMode('grid')}
-            className={`flex items-center justify-center w-12 h-12 rounded-[8px] transition-colors ${
+            className={`flex items-center justify-center w-12 h-12 rounded-[8px] transition-all duration-200 ${
               viewMode === 'grid' 
-                ? 'bg-white border-2 border-[#191A23]' 
-                : ''
+                ? 'bg-white border border-[#191A23] shadow-sm' 
+                : 'hover:bg-white/50'
             }`}
           >
             <GridIcon className={`w-5 h-5 ${viewMode === 'grid' ? 'text-[#191A23]' : 'text-[#9CA3AF]'}`} />
           </button>
           <button
             onClick={() => setViewMode('list')}
-            className={`flex items-center justify-center w-12 h-12 rounded-[8px] transition-colors ${
+            className={`flex items-center justify-center w-12 h-12 rounded-[8px] transition-all duration-200 ${
               viewMode === 'list' 
-                ? 'bg-white border-2 border-[#191A23]' 
-                : ''
+                ? 'bg-white border border-[#191A23] shadow-sm' 
+                : 'hover:bg-white/50'
             }`}
           >
             <RowVerticalIcon className={`w-5 h-5 ${viewMode === 'list' ? 'text-[#191A23]' : 'text-[#9CA3AF]'}`} />
@@ -126,8 +126,11 @@ export default function SearchResults({ className = '' }: SearchResultsProps) {
         </div>
       </div>
 
-      {/* Properties Grid */}
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6">
+      {/* Properties Container */}
+      <div className={viewMode === 'grid' 
+        ? "flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6" 
+        : "flex flex-col gap-6"
+      }>
         {properties.map((property) => (
           <PropertyCard
             key={property.id}
@@ -140,6 +143,7 @@ export default function SearchResults({ className = '' }: SearchResultsProps) {
             image={property.image}
             isMonthly={property.isMonthly}
             isFeatured={property.isFeatured}
+            layoutMode={viewMode}
           />
         ))}
       </div>

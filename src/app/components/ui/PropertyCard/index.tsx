@@ -15,6 +15,7 @@ interface PropertyCardProps {
   image: string | StaticImageData;
   isFeatured?: boolean;
   isMonthly?: boolean;
+  layoutMode?: 'grid' | 'list';
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -27,7 +28,92 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   image,
   isFeatured = false,
   isMonthly = false,
+  layoutMode = 'grid',
 }) => {
+  if (layoutMode === 'list') {
+    // Row/List Layout
+    return (
+      <div className="relative w-full rounded-[15px] overflow-hidden bg-white border border-[#E7DCFF]">
+        <div className="flex items-center p-4 gap-4">
+          {/* Image Section - Square */}
+          <div className="relative w-[120px] h-[120px] flex-shrink-0 rounded-[12px] overflow-hidden">
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className="object-cover"
+              sizes="120px"
+            />
+            {isFeatured && (
+              <div className="absolute top-2 right-2 flex flex-row items-center gap-[2px] bg-[#191A23] rounded-[6px] px-2 py-1">
+                <Sparkles className="w-[12px] h-[12px]" />
+                <p className='text-[10px] leading-[14px] font-light font-hanken text-white'>
+                  FEATURED
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Content Section */}
+          <div className="flex-1 flex flex-col gap-3">
+            {/* Price Bar */}
+            <div className=" flex items-center px-3">
+              <div className="flex items-end gap-[4px]">
+                <span className="text-[18px] leading-[24px] tracking-[-0.02em] font-semibold font-syne text-[#191A23]">
+                  {price}
+                </span>
+                {isMonthly && (
+                  <span className="text-[14px] leading-[20px] font-regular font-hanken text-[#686A79]">
+                    /month
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Title Bar */}
+            <div className="flex items-center px-3">
+              <h3 className="text-[16px] leading-[20px] tracking-[-0.02em] font-semibold font-syne text-[#191A23] truncate">
+                {title}
+              </h3>
+            </div>
+
+            {/* Location Bar */}
+            <div className="flex items-center px-3">
+              <p className="text-[14px] leading-[18px] font-regular font-hanken text-[#686A79] truncate">
+                {location}
+              </p>
+            </div>
+
+            {/* Property Details Bar */}
+            <div className="flex items-center px-3">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-[4px]">
+                  <Bed className="w-4 h-4" />
+                  <span className='font-medium font-hanken text-[12px] leading-[16px] text-[#686A79]'>
+                    {beds} Beds
+                  </span>
+                </div>
+                <div className="flex items-center gap-[4px]">
+                  <Bath className="w-4 h-4" />
+                  <span className='font-medium font-hanken text-[12px] leading-[16px] text-[#686A79]'>
+                    {baths} Baths
+                  </span>
+                </div>
+                <div className="flex items-center gap-[4px]">
+                  <Area className="w-4 h-4" />
+                  <span className='font-medium font-hanken text-[12px] leading-[16px] text-[#686A79]'>
+                    {area}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Grid Layout (Original)
   return (
     <div className="relative lg:w-[368px] w-full rounded-[15px] overflow-hidden">
       <div className="relative w-full">
