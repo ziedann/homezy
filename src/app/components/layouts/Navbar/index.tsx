@@ -56,7 +56,7 @@ export default function Navbar() {
 
   const renderMobileMenuButton = () => (
     <button 
-      className="lg:hidden p-2 text-gray-500 hover:text-gray-700 z-50"
+      className="lg:hidden p-2 text-gray-500 hover:text-[#191A23] hover:bg-gray-100 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-110 z-[1150] relative"
       onClick={() => setIsMenuOpen(!isMenuOpen)}
     >
       {isMenuOpen ? (
@@ -104,7 +104,7 @@ export default function Navbar() {
           {/* Mobile Menu Overlay */}
           <div 
             ref={menuRef}
-            className={`fixed top-0 right-0 h-screen w-full md:w-[400px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
+            className={`fixed top-0 right-0 h-screen w-full md:w-[400px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-[1100] ${
               isMenuOpen ? 'translate-x-0' : 'translate-x-full'
             }`}
           >
@@ -133,7 +133,7 @@ export default function Navbar() {
           {/* Overlay Background */}
           {isMenuOpen && (
             <div 
-              className="fixed inset-0 bg-black bg-opacity-50 z-30"
+              className="fixed inset-0 bg-black bg-opacity-50 z-[1050]"
               onClick={() => setIsMenuOpen(false)}
             />
           )}

@@ -5,11 +5,9 @@ import SearchForm from '../components/ui/SearchForm'
 import SectionContainer from '../components/ui/SectionContainer'
 import SectionHeader from '../components/ui/SectionHeader'
 import FilterModal, { FilterCriteria } from '../components/ui/FilterModal'
+import SearchMap from '../components/ui/SearchMap'
+import SearchResults from '../components/ui/SearchResults'
 import CandleIcon from '@assets/icons/candle.svg'
-import dynamic from 'next/dynamic'
-
-const SearchMap = dynamic(() => import('./SearchMap'), { ssr: false })
-const SearchResults = dynamic(() => import('./SearchResults'), { ssr: false })
 
 export default function SearchPropertyPage() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)

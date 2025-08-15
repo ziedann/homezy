@@ -7,8 +7,8 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerFooter,
-} from '@/components/ui/drawer'
-import { Button } from '@/components/ui/button'
+} from '../../shadcn/drawer'
+import { Button } from '../../shadcn/button'
 
 export interface FilterCriteria {
   type: 'sale' | 'rent'
