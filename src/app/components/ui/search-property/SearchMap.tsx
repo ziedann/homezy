@@ -1,12 +1,10 @@
 'use client'
 
-import React, { useMemo, useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
-import Image from 'next/image'
-import Bed from '@assets/icons/bed.svg'
-import Bath from '@assets/icons/bath.svg'
-import Area from '@assets/icons/surface-area.svg'
 import { DivIcon, LatLngExpression, Map as LeafletMap } from 'leaflet'
+import { Property, SearchMapProps, PopupPosition } from '@/app/types/search-property'
+import PropertyPopup from '../PropertyPopup'
 
 const MapContainer = dynamic(
   async () => (await import('react-leaflet')).MapContainer,
@@ -14,33 +12,6 @@ const MapContainer = dynamic(
 )
 const TileLayer = dynamic(async () => (await import('react-leaflet')).TileLayer, { ssr: false })
 const Marker = dynamic(async () => (await import('react-leaflet')).Marker, { ssr: false })
-
-
-interface Property {
-  id: number
-  price: string
-  title: string
-  location: string
-  beds: number
-  baths: number
-  area: string
-  image: any
-  coordinates: LatLngExpression
-  isMonthly: boolean
-}
-
-interface PopupPosition {
-  x: number
-  y: number
-}
-
-interface SearchMapProps {
-  center?: LatLngExpression
-  zoom?: number
-  hideZoomControls?: boolean
-}
-
-
 
 function createPriceIcon(label: string, isActive?: boolean) {
   const bubbleBase = [
@@ -109,7 +80,6 @@ function MapEventHandler({ onMapReady }: { onMapReady: (map: LeafletMap) => void
     const findMap = () => {
       const mapContainer = document.querySelector('.leaflet-container') as any
       if (mapContainer && mapContainer._leaflet_map) {
-
         onMapReady(mapContainer._leaflet_map)
         return
       }
@@ -148,7 +118,6 @@ export default function SearchMap({
       try {
         const response = await fetch('/api/properties')
         const data = await response.json()
-
         setProperties(data.properties)
       } catch (error) {
         console.error('Failed to fetch properties:', error)
@@ -206,16 +175,12 @@ export default function SearchMap({
       map.off('zoom', updatePosition)
       map.off('move', updatePosition)
     }
-  }, [selectedId]) // Remove properties dependency to avoid infinite loop
+  }, [selectedId])
   
   const selectedProperty = properties.find(p => p.id === selectedId)
   
   // Show popup when we have selected property and either position or fallback to center
   const shouldShowPopup = selectedId && selectedProperty
-  
-
-  
-
 
   return (
     <div ref={containerRef} className={`relative w-full h-[400px] rounded-[16px] overflow-hidden border border-[#191A23] bg-white z-[1] ${hideZoomControls ? 'hide-zoom-controls' : ''}`}>
@@ -235,50 +200,14 @@ export default function SearchMap({
         ))}
       </MapContainer>
 
-      {/* Positioned popup below marker */}
+      {/* Property Popup */}
       {shouldShowPopup && (
-        <div 
-          className="absolute z-[45] pointer-events-none top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          style={popupPosition ? {
-            left: popupPosition.x,
-            top: popupPosition.y,
-            transform: 'translate(-50%, 0)'
-          } : {}}
-        >
-          <div className="relative w-[280px] md:w-[320px] bg-white rounded-[16px] shadow-lg border border-[#E7DCFF] overflow-hidden">
-            <button
-              aria-label="Close"
-              onClick={() => setSelectedId(null)}
-              className="pointer-events-auto absolute right-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#191A23] bg-white text-[14px] font-hanken hover:bg-gray-50"
-            >
-              ×
-            </button>
-            <div className="w-full h-[150px] bg-[#F2F2F2] flex items-center justify-center text-secondary-dark-80 overflow-hidden">
-              <Image
-                src={selectedProperty.image}
-                alt={selectedProperty.title}
-                width={320}
-                height={150}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="p-4">
-              <div className="text-[14px] text-secondary-dark-80">
-                {selectedProperty.price}{selectedProperty.isMonthly ? '/month' : ''}
-              </div>
-              <div className="text-[16px] font-semibold">{selectedProperty.title}</div>
-              <div className="text-[12px] text-secondary-dark-60 mt-1">{selectedProperty.location}</div>
-              <div className="flex items-center gap-3 mt-3 text-[12px] text-secondary-dark-80">
-                <span className='flex items-center gap-[6px]'><Bed className="w-4 h-4"/> {selectedProperty.beds} Beds</span>
-                <span className='flex items-center gap-[6px]'><Bath className="w-4 h-4"/> {selectedProperty.baths} Baths</span>
-                <span className='flex items-center gap-[6px]'><Area className="w-4 h-4"/> {selectedProperty.area}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <PropertyPopup 
+          property={selectedProperty}
+          popupPosition={popupPosition}
+          onClose={() => setSelectedId(null)}
+        />
       )}
     </div>
   )
 }
-
-

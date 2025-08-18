@@ -7,20 +7,9 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerFooter,
-} from '@/components/ui/drawer'
-import { Button } from '@/components/ui/button'
-
-export interface FilterCriteria {
-  type: 'sale' | 'rent'
-  category: string
-  bedrooms: string
-  bathrooms: string
-  floorArea: string
-  minYear: string
-  maxYear: string
-  minPrice: string
-  maxPrice: string
-}
+} from '../shadCn/drawer'
+import { Button } from '../shadCn/button'
+import { FilterCriteria } from '@/app/types/search-property'
 
 interface FilterModalProps {
   isOpen: boolean

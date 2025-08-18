@@ -4,12 +4,13 @@ import React, { useState } from 'react'
 import SearchForm from '../components/ui/SearchForm'
 import SectionContainer from '../components/ui/SectionContainer'
 import SectionHeader from '../components/ui/SectionHeader'
-import FilterModal, { FilterCriteria } from '../components/ui/FilterModal'
-import CandleIcon from '@assets/icons/candle.svg'
+import FilterModal from '../components/ui/FilterModal'
+import MoreFilterButton from '../components/ui/MoreFilterButton'
+import { FilterCriteria } from '../types/search-property'
 import dynamic from 'next/dynamic'
 
-const SearchMap = dynamic(() => import('./SearchMap'), { ssr: false })
-const SearchResults = dynamic(() => import('./SearchResults'), { ssr: false })
+const SearchMap = dynamic(() => import('../components/ui/search-property/SearchMap'), { ssr: false })
+const SearchResults = dynamic(() => import('../components/ui/search-property/SearchResults'), { ssr: false })
 
 export default function SearchPropertyPage() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
@@ -36,14 +37,7 @@ export default function SearchPropertyPage() {
             <SearchForm buttonText="Browse" />
           </div>
           <div className="relative w-full lg:w-auto">
-            <button 
-              type="button" 
-              onClick={() => setIsFilterModalOpen(true)}
-              className="w-full lg:w-auto md:flex lg:mt-[40px] lg:h-[96px] h-[58px] lg:flex-col flex justify-center lg:px-[32px] px-[24px] lg:py:20px py-[16px] bg-[#E7DCFF] rounded-[15px] items-center gap-[12px] border border-[#191A23] hover:bg-[#DCC9FF] transition-colors"
-            >
-              <CandleIcon className="w-5 h-5" />
-              <span className='text-[16px] leading-[20px] font-semibold font-hanken'>More Filter</span>
-            </button>
+            <MoreFilterButton onClick={() => setIsFilterModalOpen(true)} />
             
             {/* Filter Modal positioned relative to button */}
             <FilterModal 
