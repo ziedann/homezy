@@ -41,13 +41,22 @@ export default function SearchResults({ className = '', filterCriteria }: Search
             category = 'realty'
           }
           
+          // Generate slug from title
+          const slug = property.title
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .trim()
+          
           return {
             ...property,
             isFeatured: index === 0 || index === 2, // Make first and third property featured
             type: index % 2 === 0 ? 'sale' : 'rent' as 'sale' | 'rent',
             category: category,
             yearBuilt: 2020 + (index % 5),
-            priceValue: parseInt(property.price.replace(/[^0-9]/g, '')) || 0
+            priceValue: parseInt(property.price.replace(/[^0-9]/g, '')) || 0,
+            slug: slug
           }
         })
         
@@ -219,6 +228,7 @@ export default function SearchResults({ className = '', filterCriteria }: Search
               isMonthly={property.isMonthly}
               isFeatured={property.isFeatured}
               layoutMode={viewMode}
+              slug={property.slug}
             />
           ))}
         </div>

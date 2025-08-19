@@ -14,6 +14,7 @@ export interface Property {
   category?: string
   yearBuilt?: number
   priceValue?: number
+  slug?: string
 }
 
 export interface FilterCriteria {

@@ -21,7 +21,7 @@ export default function SearchPropertyPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FBFAFF]">
+    <main className="min-h-screen bg-gray-50">
       <SectionContainer>
         {/* Header Section */}
         <SectionHeader

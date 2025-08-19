@@ -14,7 +14,14 @@ export default function Navbar() {
   const pathname = usePathname()
 
   const getNavbarBackground = () => {
-    return pathname === '/search-property' ? 'bg-[#FBFAFF]' : 'bg-[#F7F2FF]'
+    // Check if we're on search-property or any property detail page
+    const isSearchProperty = pathname === '/search-property'
+    const isPropertyDetail = pathname.startsWith('/property/')
+    
+    if (isSearchProperty || isPropertyDetail) {
+      return 'bg-gray-50' // Match the property detail page background
+    }
+    return 'bg-[#F7F2FF]' // Default background for other pages
   }
 
   useEffect(() => {
@@ -81,7 +88,7 @@ export default function Navbar() {
 
   return (
     <nav className={`navbar ${getNavbarBackground()} relative`}>
-      <div className="lg:max-w-[1160px] md:max-w-[720px] w-[90%] mx-auto">
+      <div className="lg:max-w-[1160px] md:max-w-[720px] w-full mx-auto px-4 md:px-5 lg:px-0">
         <div className="flex items-center justify-between md:h-[100px] h-[70px]">
           {/* Logo */}
           <Logo className="lg:h-[40px] md:h-[32px] h-[24px] w-auto" />
