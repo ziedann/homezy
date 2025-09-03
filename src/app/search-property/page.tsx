@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import SearchPropertyClient from './SearchPropertyClient'
+import SearchPropertyClient from './SearchPropertyPage'
 
 export const metadata: Metadata = {
   title: 'Search Properties',

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Drawer,
   DrawerContent,
@@ -27,6 +27,8 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
   const [selectedBathroomsLabel, setSelectedBathroomsLabel] = useState<string>('')
   const [selectedFloorArea, setSelectedFloorArea] = useState<string>('')
   const [selectedFloorAreaLabel, setSelectedFloorAreaLabel] = useState<string>('')
+  const [selectedLocation, setSelectedLocation] = useState<string>('')
+  const [selectedLocationLabel, setSelectedLocationLabel] = useState<string>('')
   const [minYear, setMinYear] = useState<string>('')
   const [minYearLabel, setMinYearLabel] = useState<string>('')
   const [maxYear, setMaxYear] = useState<string>('')
@@ -39,6 +41,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
   const [isBathroomsOpen, setIsBathroomsOpen] = useState(false)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [isFloorAreaOpen, setIsFloorAreaOpen] = useState(false)
+  const [isLocationOpen, setIsLocationOpen] = useState(false)
   const [isMinYearOpen, setIsMinYearOpen] = useState(false)
   const [isMaxYearOpen, setIsMaxYearOpen] = useState(false)
   
@@ -47,34 +50,62 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
   
   const modalRef = useRef<HTMLDivElement>(null)
 
-  // Dropdown options
+  // Filter options
   const bedroomOptions = [
-    { value: '1', label: '1 bed' },    // Studio apartments from API
-    { value: '2', label: '2 beds' },  // Modern Downtown Apartment, Greenwich Village Loft, Chelsea Modern Apartment
-    { value: '3', label: '3 beds' },  // Beach Pros Realty Inc., Beacon Homes LLC, Herringbone Realty, Tribeca Penthouse
+    { value: '1', label: '1 bed' },
+    { value: '2', label: '2 beds' },
+    { value: '3', label: '3 beds' },
   ]
 
   const bathroomOptions = [
-    { value: '1', label: '1 bath' },  // Brooklyn Heights Studio, Greenwich Village Loft, Upper West Side Studio
-    { value: '2', label: '2 baths' }, // Beach Pros Realty Inc., Beacon Homes LLC, Modern Downtown Apartment, Chelsea Modern Apartment
-    { value: '3', label: '3 baths' }, // Tribeca Penthouse
+    { value: '1', label: '1 bath' },
+    { value: '2', label: '2 baths' },
+    { value: '3', label: '3 baths' },
   ]
 
   const categoryOptions = [
-    { value: 'studio', label: 'Studio' },        // Brooklyn Heights Studio, Upper West Side Studio
-    { value: 'apartment', label: 'Apartment' },  // Modern Downtown Apartment, Chelsea Modern Apartment
-    { value: 'loft', label: 'Loft' },           // Greenwich Village Loft
-    { value: 'penthouse', label: 'Penthouse' },  // Tribeca Penthouse
-    { value: 'realty', label: 'Realty' },       // Beach Pros Realty Inc., Herringbone Realty, Beacon Homes LLC
+    { value: 'studio', label: 'Studio' },
+    { value: 'apartment', label: 'Apartment' },
+    { value: 'loft', label: 'Loft' },
+    { value: 'penthouse', label: 'Penthouse' },
+    { value: 'realty', label: 'Realty' },
   ]
 
   const floorAreaOptions = [
-    { value: '3x4', label: '3x4 m²' },   // Brooklyn Heights Studio (12 m²)
-    { value: '3x5', label: '3x5 m²' },   // Upper West Side Studio (15 m²)
-    { value: '4x5', label: '4x5 m²' },   // Greenwich Village Loft (20 m²)
-    { value: '4x6', label: '4x6 m²' },   // Modern Downtown Apartment, Chelsea Modern Apartment (24 m²)
-    { value: '5x7', label: '5x7 m²' },   // Beach Pros Realty Inc., Beacon Homes LLC, Herringbone Realty (35 m²)
-    { value: '6x8', label: '6x8 m²' },   // Tribeca Penthouse (48 m²)
+    { value: '3x4', label: '3x4 m²' },
+    { value: '3x5', label: '3x5 m²' },
+    { value: '4x5', label: '4x5 m²' },
+    { value: '4x6', label: '4x6 m²' },
+    { value: '5x7', label: '5x7 m²' },
+    { value: '6x8', label: '6x8 m²' },
+  ]
+
+  const locationOptions = [
+    { value: 'Manhattan', label: 'Manhattan' },
+    { value: 'Chelsea', label: 'Chelsea' },
+    { value: 'Greenwich Village', label: 'Greenwich Village' },
+    { value: 'East Village', label: 'East Village' },
+    { value: 'SoHo', label: 'SoHo' },
+    { value: 'Tribeca', label: 'TriBeCa' },
+    { value: 'Upper West Side', label: 'Upper West Side' },
+    { value: 'Upper East Side', label: 'Upper East Side' },
+    { value: 'Murray Hill', label: 'Murray Hill' },
+    { value: 'NoMad', label: 'NoMad' },
+    { value: 'Times Square', label: 'Times Square' },
+    { value: 'Financial District', label: 'Financial District' },
+    { value: 'Midtown West', label: 'Midtown West' },
+    { value: 'Central Park West', label: 'Central Park West' },
+    { value: 'East Harlem', label: 'East Harlem' },
+    { value: 'Lower East Side', label: 'Lower East Side' },
+    { value: 'Gramercy', label: 'Gramercy' },
+    { value: 'Flatiron', label: 'Flatiron' },
+    { value: 'Brooklyn Heights', label: 'Brooklyn Heights' },
+    { value: 'Williamsburg', label: 'Williamsburg' },
+    { value: 'Dumbo', label: 'Dumbo' },
+    { value: 'Park Slope', label: 'Park Slope' },
+    { value: 'Long Island City', label: 'Long Island City' },
+    { value: 'Staten Island', label: 'Staten Island' },
+    { value: 'New Jersey', label: 'New Jersey' },
   ]
 
   const yearOptions = [
@@ -118,9 +149,9 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
         const rect = dropdownRef.current.getBoundingClientRect()
         const spaceBelow = window.innerHeight - rect.bottom
         const spaceAbove = rect.top
-        const dropdownHeight = 250 // Approximate height of dropdown
+        const dropdownHeight = 250
         
-        // If there's not enough space below but enough space above, show above
+        // Show above if not enough space below but enough space above
         if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
           setShouldShowAbove(true)
         } else if (showAbove) {
@@ -196,11 +227,68 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
     setIsBathroomsOpen(false)
     setIsCategoryOpen(false)
     setIsFloorAreaOpen(false)
+    setIsLocationOpen(false)
     setIsMinYearOpen(false)
     setIsMaxYearOpen(false)
   }
 
+  // Clear individual fields
+  const clearCategory = () => {
+    setSelectedCategory('')
+    setSelectedCategoryLabel('')
+  }
 
+  const clearBedrooms = () => {
+    setSelectedBedrooms('')
+    setSelectedBedroomsLabel('')
+  }
+
+  const clearBathrooms = () => {
+    setSelectedBathrooms('')
+    setSelectedBathroomsLabel('')
+  }
+
+  const clearFloorArea = () => {
+    setSelectedFloorArea('')
+    setSelectedFloorAreaLabel('')
+  }
+
+  const clearLocation = () => {
+    setSelectedLocation('')
+    setSelectedLocationLabel('')
+  }
+
+  const clearYearBuilt = () => {
+    setMinYear('')
+    setMinYearLabel('')
+    setMaxYear('')
+    setMaxYearLabel('')
+  }
+
+  const clearPriceRange = () => {
+    setMinPrice('')
+    setMaxPrice('')
+  }
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setSelectedType('sale')
+    clearCategory()
+    clearBedrooms()
+    clearBathrooms()
+    clearFloorArea()
+    clearLocation()
+    clearYearBuilt()
+    clearPriceRange()
+    closeAllDropdowns()
+  }
+
+  // Check if any filter is active
+  const hasActiveFilters = () => {
+    return selectedCategory || selectedBedrooms || selectedBathrooms || 
+           selectedFloorArea || selectedLocation || minYear || maxYear || 
+           minPrice || maxPrice
+  }
 
   // Handle click outside to close modal (for desktop)
   useEffect(() => {
@@ -211,7 +299,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
       }
     }
 
-    if (isOpen && !isMobile) { // Only for desktop
+    if (isOpen && !isMobile) {
       document.addEventListener('mousedown', handleClickOutside)
     }
 
@@ -267,7 +355,17 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
 
       {/* Category */}
       <div>
-        <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Category</label>
+        <div className="flex items-center justify-between mb-[12px]">
+          <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23]">Category</label>
+          {selectedCategory && (
+            <button
+              onClick={clearCategory}
+              className="text-[12px] text-[#6B7280] hover:text-[#EF4444] transition-colors underline"
+            >
+              Clear
+            </button>
+          )}
+        </div>
         <CustomDropdown
           isOpen={isCategoryOpen}
           setIsOpen={setIsCategoryOpen}
@@ -286,7 +384,17 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
       <div className="grid grid-cols-2 gap-4">
         {/* Bedrooms */}
         <div>
-          <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Bedrooms</label>
+          <div className="flex items-center justify-between mb-[12px]">
+            <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23]">Bedrooms</label>
+            {selectedBedrooms && (
+              <button
+                onClick={clearBedrooms}
+                className="text-[12px] text-[#6B7280] hover:text-[#EF4444] transition-colors underline"
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <CustomDropdown
             isOpen={isBedroomsOpen}
             setIsOpen={setIsBedroomsOpen}
@@ -303,7 +411,17 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
 
         {/* Bathrooms */}
         <div>
-          <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Bathrooms</label>
+          <div className="flex items-center justify-between mb-[12px]">
+            <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23]">Bathrooms</label>
+            {selectedBathrooms && (
+              <button
+                onClick={clearBathrooms}
+                className="text-[12px] text-[#6B7280] hover:text-[#EF4444] transition-colors underline"
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <CustomDropdown
             isOpen={isBathroomsOpen}
             setIsOpen={setIsBathroomsOpen}
@@ -321,7 +439,17 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
 
               {/* Floor Area */}
         <div>
-          <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Floor Area</label>
+          <div className="flex items-center justify-between mb-[12px]">
+            <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23]">Floor Area</label>
+            {selectedFloorArea && (
+              <button
+                onClick={clearFloorArea}
+                className="text-[12px] text-[#6B7280] hover:text-[#EF4444] transition-colors underline"
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <CustomDropdown
             isOpen={isFloorAreaOpen}
             setIsOpen={setIsFloorAreaOpen}
@@ -332,8 +460,35 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
               setSelectedFloorAreaLabel(label)
             }}
             options={floorAreaOptions}
-            placeholder="Category"
+            placeholder="Select Area"
             showAbove={true}
+          />
+        </div>
+
+        {/* Location */}
+        <div>
+          <div className="flex items-center justify-between mb-[12px]">
+            <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23]">Location</label>
+            {selectedLocation && (
+              <button
+                onClick={clearLocation}
+                className="text-[12px] text-[#6B7280] hover:text-[#EF4444] transition-colors underline"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+          <CustomDropdown
+            isOpen={isLocationOpen}
+            setIsOpen={setIsLocationOpen}
+            selectedValue={selectedLocation}
+            selectedLabel={selectedLocationLabel}
+            onSelect={(value, label) => {
+              setSelectedLocation(value)
+              setSelectedLocationLabel(label)
+            }}
+            options={locationOptions}
+            placeholder="Select Location"
           />
         </div>
 
@@ -394,11 +549,8 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
         {/* Clear Price Range */}
         {(minPrice || maxPrice) && (
           <button
-            onClick={() => {
-              setMinPrice('')
-              setMaxPrice('')
-            }}
-            className="text-[14px] text-[#6B7280] hover:text-[#374151] mt-2 underline"
+            onClick={clearPriceRange}
+            className="text-[12px] text-[#6B7280] hover:text-[#EF4444] mt-2 underline transition-colors"
           >
             Clear price range
           </button>
@@ -407,7 +559,17 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
 
               {/* Year Built */}
         <div>
-          <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Year Built</label>
+          <div className="flex items-center justify-between mb-[12px]">
+            <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23]">Year Built</label>
+            {(minYear || maxYear) && (
+              <button
+                onClick={clearYearBuilt}
+                className="text-[12px] text-[#6B7280] hover:text-[#EF4444] transition-colors underline"
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <CustomDropdown
               isOpen={isMinYearOpen}
@@ -437,6 +599,21 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
             />
           </div>
         </div>
+
+        {/* Clear All Filters */}
+        {hasActiveFilters() && (
+          <div className="pt-4 border-t border-[#F1F5F9]">
+            <button
+              onClick={clearAllFilters}
+              className="w-full py-3 px-4 bg-[#FEF2F2] border border-[#FECACA] rounded-[12px] text-[14px] font-medium text-[#DC2626] hover:bg-[#FEE2E2] hover:border-[#FCA5A5] transition-colors flex items-center justify-center gap-2"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-[#DC2626]">
+                <path d="M6 6L10 10M10 6L6 10M15 8C15 11.866 11.866 15 8 15C4.134 15 1 11.866 1 8C1 4.134 4.134 1 8 1C11.866 1 15 4.134 15 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Clear All Filters
+            </button>
+          </div>
+        )}
     </div>
   )
 
@@ -446,17 +623,13 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
       setIsMobile(window.innerWidth < 1024)
     }
     
-    // Check on mount
     checkMobile()
-    
-    // Check on resize
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   return (
     <>
-            {/* Mobile Drawer using shadcn Drawer */}
       {isMobile ? (
         <Drawer open={isOpen} onOpenChange={onClose}>
           <DrawerContent className="h-[90vh] px-0 rounded-t-[32px] flex flex-col">
@@ -487,6 +660,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
                       bedrooms: selectedBedrooms,
                       bathrooms: selectedBathrooms,
                       floorArea: selectedFloorArea,
+                      location: selectedLocation,
                       minYear: minYear,
                       maxYear: maxYear,
                       minPrice: minPrice,
@@ -511,7 +685,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
           </DrawerContent>
         </Drawer>
       ) : (
-        /* Desktop Modal */
+        // Desktop Modal
         <div ref={modalRef} className="absolute top-full right-0 mt-2 z-[1001] w-[440px]">
           {isOpen && (
             <div className="bg-white rounded-[24px] shadow-2xl max-h-[80vh] overflow-hidden border border-[#E5E7EB]">
@@ -543,6 +717,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
                         bedrooms: selectedBedrooms,
                         bathrooms: selectedBathrooms,
                         floorArea: selectedFloorArea,
+                        location: selectedLocation,
                         minYear: minYear,
                         maxYear: maxYear,
                         minPrice: minPrice,

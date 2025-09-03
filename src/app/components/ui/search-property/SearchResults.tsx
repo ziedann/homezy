@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Property, SearchResultsProps } from '@/app/types/search-property'
 import PropertyCard from '../PropertyCard'
 import ViewToggle from '../ViewToggle'
@@ -27,36 +27,12 @@ export default function SearchResults({ className = '', filterCriteria }: Search
         }
         const data = await response.json()
         
-        // Enhance properties with additional filter data based on actual API data
+        // Properties already have all required fields from the API
         const enhancedProperties = data.properties.map((property: Property, index: number) => {
-          // Extract category from title
-          let category = 'apartment' // default
-          if (property.title.toLowerCase().includes('studio')) {
-            category = 'studio'
-          } else if (property.title.toLowerCase().includes('loft')) {
-            category = 'loft'
-          } else if (property.title.toLowerCase().includes('penthouse')) {
-            category = 'penthouse'
-          } else if (property.title.toLowerCase().includes('realty')) {
-            category = 'realty'
-          }
-          
-          // Generate slug from title
-          const slug = property.title
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .trim()
-          
           return {
             ...property,
-            isFeatured: index === 0 || index === 2, // Make first and third property featured
-            type: index % 2 === 0 ? 'sale' : 'rent' as 'sale' | 'rent',
-            category: category,
-            yearBuilt: 2020 + (index % 5),
-            priceValue: parseInt(property.price.replace(/[^0-9]/g, '')) || 0,
-            slug: slug
+            // Set featured status for some properties for visual variety
+            isFeatured: property.isFeatured || index === 0 || index === 2 || index === 5
           }
         })
         
@@ -81,45 +57,30 @@ export default function SearchResults({ className = '', filterCriteria }: Search
 
     const filtered = originalProperties.filter((property) => {
       // Type filter (sale/rent)
-      if (filterCriteria.type && property.type !== filterCriteria.type) {
-        return false
-      }
+      if (filterCriteria.type && property.type !== filterCriteria.type) return false
 
       // Category filter
-      if (filterCriteria.category && property.category !== filterCriteria.category) {
-        return false
-      }
+      if (filterCriteria.category && property.category !== filterCriteria.category) return false
 
       // Bedrooms filter
-      if (filterCriteria.bedrooms && property.beds.toString() !== filterCriteria.bedrooms) {
-        return false
-      }
+      if (filterCriteria.bedrooms && property.beds.toString() !== filterCriteria.bedrooms) return false
 
       // Bathrooms filter
-      if (filterCriteria.bathrooms && property.baths.toString() !== filterCriteria.bathrooms) {
-        return false
-      }
+      if (filterCriteria.bathrooms && property.baths.toString() !== filterCriteria.bathrooms) return false
 
-      // Floor area filter (based on actual area format from API)
-      if (filterCriteria.floorArea && property.area !== filterCriteria.floorArea) {
-        return false
-      }
+      // Floor area filter
+      if (filterCriteria.floorArea && property.area !== filterCriteria.floorArea) return false
 
       // Price range filter
-      if (filterCriteria.minPrice && property.priceValue && property.priceValue < parseInt(filterCriteria.minPrice)) {
-        return false
-      }
-      if (filterCriteria.maxPrice && property.priceValue && property.priceValue > parseInt(filterCriteria.maxPrice)) {
-        return false
-      }
+      if (filterCriteria.minPrice && property.priceValue && property.priceValue < parseInt(filterCriteria.minPrice)) return false
+      if (filterCriteria.maxPrice && property.priceValue && property.priceValue > parseInt(filterCriteria.maxPrice)) return false
 
       // Year built filter
-      if (filterCriteria.minYear && property.yearBuilt && property.yearBuilt < parseInt(filterCriteria.minYear)) {
-        return false
-      }
-      if (filterCriteria.maxYear && property.yearBuilt && property.yearBuilt > parseInt(filterCriteria.maxYear)) {
-        return false
-      }
+      if (filterCriteria.minYear && property.yearBuilt && property.yearBuilt < parseInt(filterCriteria.minYear)) return false
+      if (filterCriteria.maxYear && property.yearBuilt && property.yearBuilt > parseInt(filterCriteria.maxYear)) return false
+
+      // Location filter
+      if (filterCriteria.location && property.neighborhood !== filterCriteria.location) return false
 
       return true
     })
@@ -141,17 +102,8 @@ export default function SearchResults({ className = '', filterCriteria }: Search
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const goToPrevious = () => {
-    if (currentPage > 1) {
-      goToPage(currentPage - 1)
-    }
-  }
-
-  const goToNext = () => {
-    if (currentPage < totalPages) {
-      goToPage(currentPage + 1)
-    }
-  }
+  const goToPrevious = () => currentPage > 1 && goToPage(currentPage - 1)
+  const goToNext = () => currentPage < totalPages && goToPage(currentPage + 1)
 
   if (loading) {
     return (

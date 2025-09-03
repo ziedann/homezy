@@ -41,18 +41,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
-  // Dynamic property pages - enhanced with better SEO URLs
-  const propertyPages = Array.from({ length: 9 }, (_, i) => {
+  // Dynamic property pages - all 30 properties
+  const propertyPages = Array.from({ length: 30 }, (_, i) => {
     const propertyTitles = [
-      'luxury-beach-front-house-malibu',
-      'modern-downtown-apartment-manhattan', 
-      'spacious-family-home-brooklyn',
-      'contemporary-studio-chelsea',
-      'elegant-townhouse-upper-east-side',
-      'waterfront-loft-greenwich',
-      'penthouse-suite-tribeca',
-      'charming-brownstone-west-village',
-      'luxury-condo-soho'
+      'beach-pros-realty',
+      'beacon-homes-realty', 
+      'downtown-apartment',
+      'brooklyn-studio',
+      'herringbone-realty',
+      'greenwich-loft',
+      'chelsea-apartment',
+      'west-side-studio',
+      'tribeca-penthouse',
+      'cozy-east-village-studio',
+      'modern-soho-loft',
+      'luxury-murray-hill-apartment',
+      'williamsburg-studio',
+      'premium-financial-district-penthouse',
+      'upper-east-side-condo',
+      'brooklyn-heights-townhouse',
+      'midtown-west-loft',
+      'central-park-west-penthouse',
+      'compact-east-harlem-studio',
+      'budget-friendly-queens-studio',
+      'trendy-dumbo-loft',
+      'high-end-nomad-apartment',
+      'luxury-times-square-penthouse',
+      'charming-park-slope-apartment',
+      'spacious-chelsea-condo',
+      'renovated-lower-east-side-loft',
+      'elite-gramercy-realty',
+      'modern-flatiron-apartment',
+      'exclusive-tribeca-penthouse',
+      'vintage-east-village-apartment'
     ]
     
     return {

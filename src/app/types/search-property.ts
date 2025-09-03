@@ -15,6 +15,7 @@ export interface Property {
   yearBuilt?: number
   priceValue?: number
   slug?: string
+  neighborhood?: string
 }
 
 export interface FilterCriteria {
@@ -27,6 +28,7 @@ export interface FilterCriteria {
   maxYear: string
   minPrice: string
   maxPrice: string
+  location: string
 }
 
 export interface SearchResultsProps {

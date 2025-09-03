@@ -1,14 +1,15 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import SearchForm from '../components/ui/SearchForm'
 import SectionContainer from '../components/ui/SectionContainer'
 import SectionHeader from '../components/ui/SectionHeader'
 import FilterModal from '../components/ui/FilterModal'
 import MoreFilterButton from '../components/ui/MoreFilterButton'
 import { FilterCriteria } from '../types/search-property'
-import dynamic from 'next/dynamic'
 
+// Dynamic imports for better performance
 const SearchMap = dynamic(() => import('../components/ui/search-property/SearchMap'), { ssr: false })
 const SearchResults = dynamic(() => import('../components/ui/search-property/SearchResults'), { ssr: false })
 
@@ -28,7 +29,6 @@ export default function SearchPropertyClient() {
           title="Search Properties"
           browseText=""
           showArrowIcon={false}
-          className=""
         />
         
         {/* Search Form */}
@@ -38,8 +38,6 @@ export default function SearchPropertyClient() {
           </div>
           <div className="relative w-full lg:w-auto">
             <MoreFilterButton onClick={() => setIsFilterModalOpen(true)} />
-            
-            {/* Filter Modal positioned relative to button */}
             <FilterModal 
               isOpen={isFilterModalOpen} 
               onClose={() => setIsFilterModalOpen(false)}
@@ -61,4 +59,3 @@ export default function SearchPropertyClient() {
     </main>
   )
 }
-
