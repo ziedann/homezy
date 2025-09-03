@@ -1,6 +1,102 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Font optimization to prevent layout shift */
+@layer base {
+  :root {
+    --font-hanken: 'Hanken Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-syne: 'Syne', Georgia, 'Times New Roman', serif;
+  }
+  
+  /* Prevent invisible text during font swap period */
+  .font-hanken {
+    font-family: var(--font-hanken);
+    font-display: swap;
+  }
+  
+  .font-syne {
+    font-family: var(--font-syne);
+    font-display: swap;
+  }
+  
+  /* Optimize image loading */
+  img {
+    height: auto;
+    max-width: 100%;
+  }
+  
+  /* Prevent layout shift for skeleton loading */
+  .skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}
+
+/* Performance optimizations */
+@layer components {
+  /* Optimize scrolling performance */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+  
+  /* Reduce paint times */
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  /* Optimize animations */
+  .transition-optimized {
+    transition-property: transform, opacity;
+    transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+  
+  /* Prevent layout shift for dynamic content */
+  .aspect-ratio-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+  
+  .aspect-ratio-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+  
+  .aspect-ratio-1-1 {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* Web Vitals optimizations */
+@layer utilities {
+  /* Force GPU acceleration for smooth animations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Contain layout shifts */
+  .contain-layout {
+    contain: layout;
+  }
+  
+  .contain-paint {
+    contain: paint;
+  }
+  
+  .contain-size {
+    contain: size;
+  }
+}
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

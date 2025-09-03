@@ -7,6 +7,7 @@ import homeIcon1 from "@assets/icons/home-icon-1.webp";
 import homeIcon2 from "@assets/icons/home-icon-2.webp";
 import HeroImage from "@assets/images/hero-image.png";
 import PatternHero from "@assets/images/pattern-hero.svg";
+import OptimizedImage from "@/app/components/ui/OptimizedImage";
 import HeadingLine from "@/app/components/ui/HeadingLine";
 import SearchForm from "@/app/components/ui/SearchForm";
 
@@ -29,13 +30,16 @@ export default function HeroSection() {
         {/* Hero Image */}
         <div className="absolute inset-0 bottom-0 z-10">
           <div className="w-full h-full flex items-end">
-            <Image
+            <OptimizedImage
               src={HeroImage}
-              alt="Modern house exterior"
+              alt="Modern house exterior showcasing beautiful property"
               className="w-full lg:h-[620px] md:h-[400px] h-[300px] object-cover object-bottom mb-[40px]"
               width={1920}
               height={520}
               priority
+              quality={90}
+              placeholder="blur"
+              sizes="100vw"
             />
           </div>
         </div>
