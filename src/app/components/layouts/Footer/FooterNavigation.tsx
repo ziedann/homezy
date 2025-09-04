@@ -2,35 +2,28 @@ import React from 'react'
 import FooterLinks from './FooterLinks'
 
 const pagesLinks = [
-  { href: '', text: 'Home V1' },
-  { href: '', text: 'Home V2' },
-  { href: '', text: 'Search Properties V1' },
-  { href: '', text: 'Search Properties V2' },
-  { href: '', text: 'Property Details V1' },
-  { href: '', text: 'Property Details V2' },
-  { href: '', text: 'Agent List V1' },
-  { href: '', text: 'Agent List V2' },
+  { href: '/', text: 'Home' },
+  { href: '/search-property', text: 'Search Properties' },
+  { href: '#', text: 'Property Details' },
+  { href: '#', text: 'Agent List' },
 ]
 
 const agentLinks = [
-  { href: '', text: 'Agent Details V1' },
-  { href: '', text: 'Agent Details V2' },
-  { href: '', text: 'About Us V1' },
-  { href: '', text: 'About Us V2' },
-  { href: '', text: 'Contact Us V1' },
-  { href: '', text: 'Contact Us V2' },
-  { href: '', text: 'FAQ' },
+  { href: '#', text: 'Agent Details' },
+  { href: '#', text: 'About Us' },
+  { href: '#', text: 'Contact Us' },
+  { href: '#', text: 'FAQ' },
 ]
 
 const utilityLinks = [
-  { href: '', text: 'Sign In' },
-  { href: '', text: 'Sign Up' },
-  { href: '', text: 'Forgot Password' },
-  { href: '', text: 'Reset Password' },
-  { href: '', text: '404 Error Page' },
-  { href: '', text: 'Style Guides' },
-  { href: '', text: 'Licenses' },
-  { href: '', text: 'Change Log' },
+  { href: '#', text: 'Sign In' },
+  { href: '#', text: 'Sign Up' },
+  { href: '#', text: 'Forgot Password' },
+  { href: '#', text: 'Reset Password' },
+  { href: '#', text: '404 Error Page' },
+  { href: '#', text: 'Style Guides' },
+  { href: '#', text: 'Licenses' },
+  { href: '#', text: 'Change Log' },
 ]
 
 export default function FooterNavigation() {

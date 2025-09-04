@@ -7,15 +7,15 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   {
     label: 'Home',
-    href: '/routes/homepage'
+    href: '/'
   },
   {
     label: 'Properties',
-    href: '/routes/search-property'
+    href: '/search-property'
   },
   {
     label: 'Agents',
-    href: '/'
+    href: '#'
   },
   {
     label: 'Pages',

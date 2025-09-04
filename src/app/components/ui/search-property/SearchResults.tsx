@@ -15,7 +15,7 @@ export default function SearchResults({ className = '', filterCriteria }: Search
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 6
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -99,7 +99,7 @@ export default function SearchResults({ className = '', filterCriteria }: Search
   // Pagination handlers
   const goToPage = (page: number) => {
     setCurrentPage(page)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    // Removed automatic scroll to top for better UX
   }
 
   const goToPrevious = () => currentPage > 1 && goToPage(currentPage - 1)
@@ -113,7 +113,7 @@ export default function SearchResults({ className = '', filterCriteria }: Search
           <div className="h-8 bg-gray-200 rounded w-24 animate-pulse"></div>
         </div>
         <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6">
-          {[...Array(3)].map((_, index) => (
+          {[...Array(6)].map((_, index) => (
             <div key={index} className="animate-pulse">
               <div className="aspect-[368/280] bg-gray-200 rounded-[15px] mb-4"></div>
               <div className="space-y-3">
