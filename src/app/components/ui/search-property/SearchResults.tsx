@@ -6,7 +6,7 @@ import PropertyCard from '../PropertyCard'
 import ViewToggle from '../ViewToggle'
 import Pagination from '../Pagination'
 
-export default function SearchResults({ className = '', filterCriteria }: SearchResultsProps) {
+export default function SearchResults({ className = '', filterCriteria, hasSearched = false }: SearchResultsProps) {
   const [originalProperties, setOriginalProperties] = useState<Property[]>([])
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
@@ -104,6 +104,7 @@ export default function SearchResults({ className = '', filterCriteria }: Search
 
   const goToPrevious = () => currentPage > 1 && goToPage(currentPage - 1)
   const goToNext = () => currentPage < totalPages && goToPage(currentPage + 1)
+
 
   if (loading) {
     return (

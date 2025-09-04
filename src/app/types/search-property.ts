@@ -34,6 +34,7 @@ export interface FilterCriteria {
 export interface SearchResultsProps {
   className?: string
   filterCriteria?: FilterCriteria | null
+  hasSearched?: boolean
 }
 
 export interface SearchMapProps {

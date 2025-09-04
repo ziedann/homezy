@@ -10,13 +10,18 @@ import ButtonText from '@/app/components/ui/ButtonText'
 
 interface SearchFormProps {
   buttonText?: string
+  onSearch?: () => void
 }
 
-export default function SearchForm({ buttonText = 'Browse Property' }: SearchFormProps) {
+export default function SearchForm({ buttonText = 'Browse Property', onSearch }: SearchFormProps) {
   const router = useRouter()
 
   const handleBrowseProperty = () => {
-    router.push('/search-property')
+    if (onSearch) {
+      onSearch()
+    } else {
+      router.push('/search-property')
+    }
   }
 
   return (

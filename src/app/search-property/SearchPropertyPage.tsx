@@ -15,10 +15,18 @@ const SearchResults = dynamic(() => import('../components/ui/search-property/Sea
 
 export default function SearchPropertyClient() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
-  const [currentFilter, setCurrentFilter] = useState<FilterCriteria | null>(null)
+  const [savedFilters, setSavedFilters] = useState<FilterCriteria | null>(null)
+  const [activeFilters, setActiveFilters] = useState<FilterCriteria | null>(null)
+  const [hasSearched, setHasSearched] = useState(true) // Show all data by default
 
   const handleApplyFilter = (criteria: FilterCriteria) => {
-    setCurrentFilter(criteria)
+    setSavedFilters(criteria)
+    // Don't trigger search, just save the filters
+  }
+
+  const handleSearch = () => {
+    setActiveFilters(savedFilters)
+    setHasSearched(true)
   }
 
   return (
@@ -34,7 +42,7 @@ export default function SearchPropertyClient() {
         {/* Search Form */}
         <div className="flex lg:flex-row flex-col gap-[16px] lg:gap-[24px]">
           <div className="flex-1">
-            <SearchForm buttonText="Browse" />
+            <SearchForm buttonText="Browse" onSearch={handleSearch} />
           </div>
           <div className="relative w-full lg:w-auto">
             <MoreFilterButton onClick={() => setIsFilterModalOpen(true)} />
@@ -53,7 +61,7 @@ export default function SearchPropertyClient() {
 
         {/* Search Results Section */}
         <div className="mt-12">
-          <SearchResults filterCriteria={currentFilter} />
+          <SearchResults filterCriteria={activeFilters} hasSearched={hasSearched} />
         </div>
       </SectionContainer>
     </main>
