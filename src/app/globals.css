@@ -6,7 +6,7 @@
 @layer base {
   :root {
     --font-hanken: 'Hanken Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-syne: 'Syne', Georgia, 'Times New Roman', serif;
+    --font-syne: 'Syne', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
   
   /* Prevent invisible text during font swap period */
@@ -16,8 +16,15 @@
   }
   
   .font-syne {
-    font-family: var(--font-syne);
+    font-family: var(--font-syne), 'Syne', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-display: swap;
+    font-weight: 500;
+  }
+  
+  /* Specific heading styles to ensure Syne font is applied */
+  h1.font-syne {
+    font-family: 'Syne', var(--font-syne), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-weight: 500 !important;
   }
   
   /* Optimize image loading */

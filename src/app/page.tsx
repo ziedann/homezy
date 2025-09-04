@@ -1,4 +1,7 @@
+'use client'
+
 import React from 'react'
+import { Metadata } from 'next'
 import HeroSection from '@/app/components/sections/HeroSection'
 import FeaturedSection from '@/app/components/sections/FeaturedSection'
 import BenefitsSection from '@/app/components/sections/BenefitsSection'
