@@ -79,7 +79,7 @@ module.exports = {
   		],
   		syne: [
   			'var(--font-syne)',
-  			'sans-serif'
+  			'serif'
   		],
   		sans: [
   			'var(--font-hanken)',
