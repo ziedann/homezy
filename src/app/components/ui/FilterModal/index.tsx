@@ -17,9 +17,10 @@ interface FilterModalProps {
   onApplyFilter: (criteria: FilterCriteria) => void
   onClearFilters?: (clearedFields: string[]) => void
   currentSaleRent?: 'sale' | 'rent' | null
+  currentSavedFilters?: FilterCriteria | null
 }
 
-export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFilters, currentSaleRent }: FilterModalProps) {
+export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFilters, currentSaleRent, currentSavedFilters }: FilterModalProps) {
   const [selectedType, setSelectedType] = useState<'sale' | 'rent' | null>(currentSaleRent || null)
   const [selectedBedrooms, setSelectedBedrooms] = useState<string>('')
   const [selectedBedroomsLabel, setSelectedBedroomsLabel] = useState<string>('')
@@ -472,13 +473,42 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFil
     </div>
   )
 
-  // Sync with currentSaleRent prop when modal opens or prop changes
+  // Sync with parent state when modal opens or props change
   useEffect(() => {
     if (isOpen) {
-      // If currentSaleRent is null or undefined, set to clear state
+      // Sync sale/rent type
       setSelectedType(currentSaleRent || null)
+      
+      // Sync saved filters
+      if (currentSavedFilters) {
+        setSelectedBedrooms(currentSavedFilters.bedrooms || '')
+        setSelectedBedroomsLabel(currentSavedFilters.bedrooms ? `${currentSavedFilters.bedrooms} bed${currentSavedFilters.bedrooms !== '1' ? 's' : ''}` : '')
+        setSelectedBathrooms(currentSavedFilters.bathrooms || '')
+        setSelectedBathroomsLabel(currentSavedFilters.bathrooms ? `${currentSavedFilters.bathrooms} bath${currentSavedFilters.bathrooms !== '1' ? 's' : ''}` : '')
+        setSelectedFloorArea(currentSavedFilters.floorArea || '')
+        setSelectedFloorAreaLabel(currentSavedFilters.floorArea || '')
+        setMinYear(currentSavedFilters.minYear || '')
+        setMinYearLabel(currentSavedFilters.minYear || '')
+        setMaxYear(currentSavedFilters.maxYear || '')
+        setMaxYearLabel(currentSavedFilters.maxYear || '')
+      } else {
+        // Clear saved filters if no current saved filters
+        setSelectedBedrooms('')
+        setSelectedBedroomsLabel('')
+        setSelectedBathrooms('')
+        setSelectedBathroomsLabel('')
+        setSelectedFloorArea('')
+        setSelectedFloorAreaLabel('')
+        setMinYear('')
+        setMinYearLabel('')
+        setMaxYear('')
+        setMaxYearLabel('')
+      }
+      
+      // Close dropdowns
+      closeAllDropdowns()
     }
-  }, [isOpen, currentSaleRent])
+  }, [isOpen, currentSaleRent, currentSavedFilters])
 
   // Check if we're on mobile or desktop
   useEffect(() => {

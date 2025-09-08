@@ -24,7 +24,7 @@ export default function SearchPropertyClient() {
   const [activeFilters, setActiveFilters] = useState<FilterCriteria | null>(null)
   const [hasSearched, setHasSearched] = useState(true) // Show all data by default
   const [isLoading, setIsLoading] = useState(false)
-  const [saleRentType, setSaleRentType] = useState<'sale' | 'rent' | null>('rent')
+  const [saleRentType, setSaleRentType] = useState<'sale' | 'rent' | null>(null)
   const [quickFilters, setQuickFilters] = useState<{
     location: { value: string; label: string }
     price: { value: string; label: string }
@@ -101,12 +101,14 @@ export default function SearchPropertyClient() {
     // Set sale/rent type from query params
     if (saleRent === 'sale' || saleRent === 'rent') {
       setSaleRentType(saleRent)
+    } else {
+      setSaleRentType(null) // Clear state if no saleRent param
     }
 
     // Create FilterCriteria from query params
     if (location || price || type || saleRent || minPrice || maxPrice || bedrooms || bathrooms || floorArea || minYear || maxYear) {
       const filterCriteria: FilterCriteria = {
-        type: saleRent === 'sale' || saleRent === 'rent' ? saleRent : 'rent', // Use saleRent param or default to rent
+        type: saleRent === 'sale' || saleRent === 'rent' ? saleRent : null, // Use saleRent param or null for clear state
         category: type || '',
         bedrooms: bedrooms || '',
         bathrooms: bathrooms || '',
@@ -244,7 +246,7 @@ export default function SearchPropertyClient() {
       // Convert pending filters to FilterCriteria format
       const priceRange = pendingFilters.price.value !== 'all' ? pendingFilters.price.value.split('-') : ['', '']
       const filterCriteria: FilterCriteria = {
-        type: saleRentType || 'rent', // Use current sale/rent type or default to rent
+        type: saleRentType, // Use current sale/rent type (can be null for clear state)
         category: pendingFilters.type.value !== 'all' ? pendingFilters.type.value : '',
         bedrooms: savedFilters?.bedrooms || '',
         bathrooms: savedFilters?.bathrooms || '',
@@ -299,7 +301,8 @@ export default function SearchPropertyClient() {
     }
     
     // Count sale/rent type if it's set (this is also from modal)
-    if (saleRentType) count++
+    // Only count if it's not null (clear state)
+    if (saleRentType !== null) count++
     
     return count
   }
@@ -378,6 +381,7 @@ export default function SearchPropertyClient() {
                 }
               }}
               currentSaleRent={saleRentType}
+              currentSavedFilters={savedFilters}
             />
           </div>
         </div>
