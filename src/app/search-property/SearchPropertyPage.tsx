@@ -283,6 +283,27 @@ export default function SearchPropertyClient() {
     return locationCoordinates[location as keyof typeof locationCoordinates] || locationCoordinates.all
   }
 
+  // Function to count active filters (only for modal filters, not quick filters)
+  const getActiveFilterCount = () => {
+    let count = 0
+    
+    // Only count saved filters from modal (not quick filters from FilterDropdown)
+    if (savedFilters) {
+      if (savedFilters.bedrooms) count++
+      if (savedFilters.bathrooms) count++
+      if (savedFilters.floorArea) count++
+      if (savedFilters.minYear) count++
+      if (savedFilters.maxYear) count++
+      if (savedFilters.minPrice) count++
+      if (savedFilters.maxPrice) count++
+    }
+    
+    // Count sale/rent type if it's set (this is also from modal)
+    if (saleRentType) count++
+    
+    return count
+  }
+
   const clearAllFilters = async () => {
     // Show loading state
     setIsLoading(true)
@@ -339,7 +360,10 @@ export default function SearchPropertyClient() {
             />
           </div>
           <div className="relative w-full lg:w-auto">
-            <MoreFilterButton onClick={() => setIsFilterModalOpen(true)} />
+            <MoreFilterButton 
+              onClick={() => setIsFilterModalOpen(true)} 
+              filterCount={getActiveFilterCount()}
+            />
             <FilterModal 
               isOpen={isFilterModalOpen} 
               onClose={() => setIsFilterModalOpen(false)}

@@ -237,7 +237,10 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFil
     setMaxYearLabel('')
     closeAllDropdowns()
     
-    // Don't notify parent immediately - wait for Apply Filter
+    // Notify parent about clearing all filters
+    if (onClearFilters) {
+      onClearFilters(['saleRent', 'bedrooms', 'bathrooms', 'floorArea', 'minYear', 'maxYear', 'minPrice', 'maxPrice'])
+    }
   }
 
   // Check if any filter is active
