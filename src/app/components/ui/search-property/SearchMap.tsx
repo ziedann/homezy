@@ -161,6 +161,14 @@ export default function SearchMap({
     }
   }
   
+  // Update map view when center or zoom changes
+  useEffect(() => {
+    if (!mapRef.current) return
+    
+    const map = mapRef.current
+    map.setView(center, zoom)
+  }, [center, zoom])
+
   // Update popup position on map move/zoom
   useEffect(() => {
     if (!mapRef.current || !selectedId || properties.length === 0) return
@@ -199,6 +207,7 @@ export default function SearchMap({
           />
         ))}
       </MapContainer>
+
 
       {/* Property Popup */}
       {shouldShowPopup && (

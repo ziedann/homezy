@@ -15,33 +15,27 @@ interface FilterModalProps {
   isOpen: boolean
   onClose: () => void
   onApplyFilter: (criteria: FilterCriteria) => void
+  onClearFilters?: (clearedFields: string[]) => void
+  currentSaleRent?: 'sale' | 'rent' | null
 }
 
-export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterModalProps) {
-  const [selectedType, setSelectedType] = useState<'sale' | 'rent'>('sale')
-  const [selectedCategory, setSelectedCategory] = useState<string>('')
-  const [selectedCategoryLabel, setSelectedCategoryLabel] = useState<string>('')
+export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFilters, currentSaleRent }: FilterModalProps) {
+  const [selectedType, setSelectedType] = useState<'sale' | 'rent' | null>(currentSaleRent || null)
   const [selectedBedrooms, setSelectedBedrooms] = useState<string>('')
   const [selectedBedroomsLabel, setSelectedBedroomsLabel] = useState<string>('')
   const [selectedBathrooms, setSelectedBathrooms] = useState<string>('')
   const [selectedBathroomsLabel, setSelectedBathroomsLabel] = useState<string>('')
   const [selectedFloorArea, setSelectedFloorArea] = useState<string>('')
   const [selectedFloorAreaLabel, setSelectedFloorAreaLabel] = useState<string>('')
-  const [selectedLocation, setSelectedLocation] = useState<string>('')
-  const [selectedLocationLabel, setSelectedLocationLabel] = useState<string>('')
   const [minYear, setMinYear] = useState<string>('')
   const [minYearLabel, setMinYearLabel] = useState<string>('')
   const [maxYear, setMaxYear] = useState<string>('')
   const [maxYearLabel, setMaxYearLabel] = useState<string>('')
-  const [minPrice, setMinPrice] = useState<string>('')
-  const [maxPrice, setMaxPrice] = useState<string>('')
   
   // Dropdown open states
   const [isBedroomsOpen, setIsBedroomsOpen] = useState(false)
   const [isBathroomsOpen, setIsBathroomsOpen] = useState(false)
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [isFloorAreaOpen, setIsFloorAreaOpen] = useState(false)
-  const [isLocationOpen, setIsLocationOpen] = useState(false)
   const [isMinYearOpen, setIsMinYearOpen] = useState(false)
   const [isMaxYearOpen, setIsMaxYearOpen] = useState(false)
   
@@ -63,14 +57,6 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
     { value: '3', label: '3 baths' },
   ]
 
-  const categoryOptions = [
-    { value: 'studio', label: 'Studio' },
-    { value: 'apartment', label: 'Apartment' },
-    { value: 'loft', label: 'Loft' },
-    { value: 'penthouse', label: 'Penthouse' },
-    { value: 'realty', label: 'Realty' },
-  ]
-
   const floorAreaOptions = [
     { value: '3x4', label: '3x4 m²' },
     { value: '3x5', label: '3x5 m²' },
@@ -78,34 +64,6 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
     { value: '4x6', label: '4x6 m²' },
     { value: '5x7', label: '5x7 m²' },
     { value: '6x8', label: '6x8 m²' },
-  ]
-
-  const locationOptions = [
-    { value: 'Manhattan', label: 'Manhattan' },
-    { value: 'Chelsea', label: 'Chelsea' },
-    { value: 'Greenwich Village', label: 'Greenwich Village' },
-    { value: 'East Village', label: 'East Village' },
-    { value: 'SoHo', label: 'SoHo' },
-    { value: 'Tribeca', label: 'TriBeCa' },
-    { value: 'Upper West Side', label: 'Upper West Side' },
-    { value: 'Upper East Side', label: 'Upper East Side' },
-    { value: 'Murray Hill', label: 'Murray Hill' },
-    { value: 'NoMad', label: 'NoMad' },
-    { value: 'Times Square', label: 'Times Square' },
-    { value: 'Financial District', label: 'Financial District' },
-    { value: 'Midtown West', label: 'Midtown West' },
-    { value: 'Central Park West', label: 'Central Park West' },
-    { value: 'East Harlem', label: 'East Harlem' },
-    { value: 'Lower East Side', label: 'Lower East Side' },
-    { value: 'Gramercy', label: 'Gramercy' },
-    { value: 'Flatiron', label: 'Flatiron' },
-    { value: 'Brooklyn Heights', label: 'Brooklyn Heights' },
-    { value: 'Williamsburg', label: 'Williamsburg' },
-    { value: 'Dumbo', label: 'Dumbo' },
-    { value: 'Park Slope', label: 'Park Slope' },
-    { value: 'Long Island City', label: 'Long Island City' },
-    { value: 'Staten Island', label: 'Staten Island' },
-    { value: 'New Jersey', label: 'New Jersey' },
   ]
 
   const yearOptions = [
@@ -225,37 +183,34 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
   const closeAllDropdowns = () => {
     setIsBedroomsOpen(false)
     setIsBathroomsOpen(false)
-    setIsCategoryOpen(false)
     setIsFloorAreaOpen(false)
-    setIsLocationOpen(false)
     setIsMinYearOpen(false)
     setIsMaxYearOpen(false)
   }
 
-  // Clear individual fields
-  const clearCategory = () => {
-    setSelectedCategory('')
-    setSelectedCategoryLabel('')
+  // Clear sale/rent toggle
+  const clearSaleRent = () => {
+    setSelectedType(null) // Clear selection
+    // Don't notify parent immediately - wait for Apply Filter
   }
 
+  // Clear individual fields
   const clearBedrooms = () => {
     setSelectedBedrooms('')
     setSelectedBedroomsLabel('')
+    // Don't notify parent immediately - wait for Apply Filter
   }
 
   const clearBathrooms = () => {
     setSelectedBathrooms('')
     setSelectedBathroomsLabel('')
+    // Don't notify parent immediately - wait for Apply Filter
   }
 
   const clearFloorArea = () => {
     setSelectedFloorArea('')
     setSelectedFloorAreaLabel('')
-  }
-
-  const clearLocation = () => {
-    setSelectedLocation('')
-    setSelectedLocationLabel('')
+    // Don't notify parent immediately - wait for Apply Filter
   }
 
   const clearYearBuilt = () => {
@@ -263,31 +218,32 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
     setMinYearLabel('')
     setMaxYear('')
     setMaxYearLabel('')
-  }
-
-  const clearPriceRange = () => {
-    setMinPrice('')
-    setMaxPrice('')
+    // Don't notify parent immediately - wait for Apply Filter
   }
 
   // Clear all filters
   const clearAllFilters = () => {
-    setSelectedType('sale')
-    clearCategory()
-    clearBedrooms()
-    clearBathrooms()
-    clearFloorArea()
-    clearLocation()
-    clearYearBuilt()
-    clearPriceRange()
+    // Clear all local states
+    setSelectedType(null)
+    setSelectedBedrooms('')
+    setSelectedBedroomsLabel('')
+    setSelectedBathrooms('')
+    setSelectedBathroomsLabel('')
+    setSelectedFloorArea('')
+    setSelectedFloorAreaLabel('')
+    setMinYear('')
+    setMinYearLabel('')
+    setMaxYear('')
+    setMaxYearLabel('')
     closeAllDropdowns()
+    
+    // Don't notify parent immediately - wait for Apply Filter
   }
 
   // Check if any filter is active
   const hasActiveFilters = () => {
-    return selectedCategory || selectedBedrooms || selectedBathrooms || 
-           selectedFloorArea || selectedLocation || minYear || maxYear || 
-           minPrice || maxPrice
+    return selectedType !== null || selectedBedrooms || selectedBathrooms || 
+           selectedFloorArea || minYear || maxYear
   }
 
   // Handle click outside to close modal (for desktop)
@@ -330,55 +286,42 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
   const FilterContent = () => (
     <div className="space-y-6">
       {/* For Sale / For Rent Toggle */}
-      <div className="flex gap-2 bg-[#F5F5F7] rounded-[16px] p-1">
-        <button
-          onClick={() => setSelectedType('sale')}
-          className={`flex-1 py-3 px-6 rounded-[12px] font-semibold text-[16px] font-hanken transition-all duration-200 ${
-            selectedType === 'sale'
-              ? 'bg-[#191A23] text-white shadow-sm'
-              : 'bg-transparent text-[#6B7280] hover:text-[#374151]'
-          }`}
-        >
-          For Sale
-        </button>
-        <button
-          onClick={() => setSelectedType('rent')}
-          className={`flex-1 py-3 px-6 rounded-[12px] font-semibold text-[16px] transition-all duration-200 ${
-            selectedType === 'rent'
-              ? 'bg-[#191A23] text-white shadow-sm'
-              : 'bg-transparent text-[#6B7280] hover:text-[#374151]'
-          }`}
-        >
-          For Rent
-        </button>
-      </div>
-
-      {/* Category */}
       <div>
         <div className="flex items-center justify-between mb-[12px]">
-          <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23]">Category</label>
-          {selectedCategory && (
+          <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23]">Property Type</label>
+          {selectedType && (
             <button
-              onClick={clearCategory}
+              onClick={clearSaleRent}
               className="text-[12px] text-[#6B7280] hover:text-[#EF4444] transition-colors underline"
             >
               Clear
             </button>
           )}
         </div>
-        <CustomDropdown
-          isOpen={isCategoryOpen}
-          setIsOpen={setIsCategoryOpen}
-          selectedValue={selectedCategory}
-          selectedLabel={selectedCategoryLabel}
-          onSelect={(value, label) => {
-            setSelectedCategory(value)
-            setSelectedCategoryLabel(label)
-          }}
-          options={categoryOptions}
-          placeholder="Category"
-        />
+        <div className="flex gap-2 bg-[#F5F5F7] rounded-[16px] p-1">
+          <button
+            onClick={() => setSelectedType('sale')}
+            className={`flex-1 py-3 px-6 rounded-[12px] font-semibold text-[16px] font-hanken transition-all duration-200 ${
+              selectedType === 'sale'
+                ? 'bg-[#191A23] text-white shadow-sm'
+                : 'bg-transparent text-[#6B7280] hover:text-[#374151]'
+            }`}
+          >
+            For Sale
+          </button>
+          <button
+            onClick={() => setSelectedType('rent')}
+            className={`flex-1 py-3 px-6 rounded-[12px] font-semibold text-[16px] transition-all duration-200 ${
+              selectedType === 'rent'
+                ? 'bg-[#191A23] text-white shadow-sm'
+                : 'bg-transparent text-[#6B7280] hover:text-[#374151]'
+            }`}
+          >
+            For Rent
+          </button>
+        </div>
       </div>
+
 
       {/* Bedrooms and Bathrooms Row */}
       <div className="grid grid-cols-2 gap-4">
@@ -465,97 +408,6 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
           />
         </div>
 
-        {/* Location */}
-        <div>
-          <div className="flex items-center justify-between mb-[12px]">
-            <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23]">Location</label>
-            {selectedLocation && (
-              <button
-                onClick={clearLocation}
-                className="text-[12px] text-[#6B7280] hover:text-[#EF4444] transition-colors underline"
-              >
-                Clear
-              </button>
-            )}
-          </div>
-          <CustomDropdown
-            isOpen={isLocationOpen}
-            setIsOpen={setIsLocationOpen}
-            selectedValue={selectedLocation}
-            selectedLabel={selectedLocationLabel}
-            onSelect={(value, label) => {
-              setSelectedLocation(value)
-              setSelectedLocationLabel(label)
-            }}
-            options={locationOptions}
-            placeholder="Select Location"
-          />
-        </div>
-
-      {/* Price Range */}
-      <div>
-        <label className="block text-[16px] leading-[20px] font-hanken font-semibold text-[#191A23] mb-[12px]">Price Range</label>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#6B7280] text-[16px]">$</span>
-            <input
-              type="number"
-              value={minPrice}
-              onChange={(e) => setMinPrice(e.target.value)}
-              placeholder="Min Price"
-              className="w-full pl-8 pr-4 py-4 border border-[#E5E7EB] rounded-[16px] bg-white text-[#191A23] text-[16px] placeholder:text-[#6B7280] focus:outline-none focus:border-[#9CA3AF] focus:ring-0"
-            />
-          </div>
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#6B7280] text-[16px]">$</span>
-            <input
-              type="number"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-              placeholder="Max Price"
-              className="w-full pl-8 pr-4 py-4 border border-[#E5E7EB] rounded-[16px] bg-white text-[#191A23] text-[16px] placeholder:text-[#6B7280] focus:outline-none focus:border-[#9CA3AF] focus:ring-0"
-            />
-          </div>
-        </div>
-        
-        {/* Quick Price Options */}
-        <div className="mt-3">
-          <div className="flex flex-wrap gap-2">
-            {[
-              { label: 'Under $2K', min: '', max: '2000' },
-              { label: '$2K - $3K', min: '2000', max: '3000' },
-              { label: '$3K - $4K', min: '3000', max: '4000' },
-              { label: 'Over $4K', min: '4000', max: '' },
-            ].map((range) => (
-              <button
-                key={range.label}
-                onClick={() => {
-                  setMinPrice(range.min)
-                  setMaxPrice(range.max)
-                }}
-                className="px-3 py-2 text-[14px] bg-[#F8FAFC] border border-[#E5E7EB] rounded-[8px] text-[#6B7280] hover:bg-[#F1F5F9] hover:text-[#374151] transition-colors"
-              >
-                {range.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Price Range Validation */}
-        {minPrice && maxPrice && parseInt(minPrice) > parseInt(maxPrice) && (
-          <p className="text-red-500 text-[14px] mt-2">Min price cannot be greater than max price</p>
-        )}
-        
-        {/* Clear Price Range */}
-        {(minPrice || maxPrice) && (
-          <button
-            onClick={clearPriceRange}
-            className="text-[12px] text-[#6B7280] hover:text-[#EF4444] mt-2 underline transition-colors"
-          >
-            Clear price range
-          </button>
-        )}
-      </div>
 
               {/* Year Built */}
         <div>
@@ -617,6 +469,14 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
     </div>
   )
 
+  // Sync with currentSaleRent prop when modal opens or prop changes
+  useEffect(() => {
+    if (isOpen) {
+      // If currentSaleRent is null or undefined, set to clear state
+      setSelectedType(currentSaleRent || null)
+    }
+  }, [isOpen, currentSaleRent])
+
   // Check if we're on mobile or desktop
   useEffect(() => {
     const checkMobile = () => {
@@ -655,16 +515,16 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
                 <Button
                   onClick={() => {
                     const filterCriteria: FilterCriteria = {
-                      type: selectedType,
-                      category: selectedCategory,
+                      type: selectedType, // Pass null if clear state
+                      category: '',
                       bedrooms: selectedBedrooms,
                       bathrooms: selectedBathrooms,
                       floorArea: selectedFloorArea,
-                      location: selectedLocation,
+                      location: '',
                       minYear: minYear,
                       maxYear: maxYear,
-                      minPrice: minPrice,
-                      maxPrice: maxPrice,
+                      minPrice: '',
+                      maxPrice: '',
                     }
                     onApplyFilter(filterCriteria)
                     onClose()
@@ -712,16 +572,16 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter }: FilterMo
                   <Button
                     onClick={() => {
                       const filterCriteria: FilterCriteria = {
-                        type: selectedType,
-                        category: selectedCategory,
+                        type: selectedType, // Pass null if clear state
+                        category: '',
                         bedrooms: selectedBedrooms,
                         bathrooms: selectedBathrooms,
                         floorArea: selectedFloorArea,
-                        location: selectedLocation,
+                        location: '',
                         minYear: minYear,
                         maxYear: maxYear,
-                        minPrice: minPrice,
-                        maxPrice: maxPrice,
+                        minPrice: '',
+                        maxPrice: '',
                       }
                       onApplyFilter(filterCriteria)
                       onClose()

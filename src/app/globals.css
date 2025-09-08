@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Shimmer animation for skeleton loading */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 /* Font optimization to prevent layout shift */
 @layer base {
   :root {

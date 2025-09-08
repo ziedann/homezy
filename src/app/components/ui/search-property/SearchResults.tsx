@@ -5,8 +5,9 @@ import { Property, SearchResultsProps } from '@/app/types/search-property'
 import PropertyCard from '../PropertyCard'
 import ViewToggle from '../ViewToggle'
 import Pagination from '../Pagination'
+import SkeletonSearchPropertyCard from '../SkeletonSearchPropertyCard'
 
-export default function SearchResults({ className = '', filterCriteria, hasSearched = false }: SearchResultsProps) {
+export default function SearchResults({ className = '', filterCriteria, hasSearched = false, isLoading = false, onClearFilters }: SearchResultsProps) {
   const [originalProperties, setOriginalProperties] = useState<Property[]>([])
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
@@ -80,7 +81,7 @@ export default function SearchResults({ className = '', filterCriteria, hasSearc
       if (filterCriteria.maxYear && property.yearBuilt && property.yearBuilt > parseInt(filterCriteria.maxYear)) return false
 
       // Location filter
-      if (filterCriteria.location && property.neighborhood !== filterCriteria.location) return false
+      if (filterCriteria.location && property.location !== filterCriteria.location) return false
 
       return true
     })
@@ -106,25 +107,31 @@ export default function SearchResults({ className = '', filterCriteria, hasSearc
   const goToNext = () => currentPage < totalPages && goToPage(currentPage + 1)
 
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className={`w-full ${className}`}>
-        <div className="flex items-center justify-between mb-6">
-          <div className="h-8 bg-gray-200 rounded w-32 animate-pulse"></div>
-          <div className="h-8 bg-gray-200 rounded w-24 animate-pulse"></div>
+        {/* Results Header Skeleton */}
+        <div className="flex items-center justify-between mb-6 animate-pulse">
+          <div className="h-8 bg-[#E5E7EB] rounded-[4px] w-32" />
+          <div className="h-8 bg-[#E5E7EB] rounded-[4px] w-24" />
         </div>
+        
+        {/* Property Cards Skeleton */}
         <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6">
           {[...Array(6)].map((_, index) => (
-            <div key={index} className="animate-pulse">
-              <div className="aspect-[368/280] bg-gray-200 rounded-[15px] mb-4"></div>
-              <div className="space-y-3">
-                <div className="h-6 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-              </div>
-            </div>
+            <SkeletonSearchPropertyCard key={index} />
           ))}
         </div>
+        
+        {/* Loading Message */}
+        {isLoading && (
+          <div className="flex items-center justify-center py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 border-2 border-[#191A23] border-t-transparent rounded-full animate-spin" />
+              <span className="text-[#191A23] font-medium">Searching properties...</span>
+            </div>
+          </div>
+        )}
       </div>
     )
   }
@@ -194,7 +201,7 @@ export default function SearchResults({ className = '', filterCriteria, hasSearc
               No properties match your current filter criteria. Try adjusting your filters to see more results.
             </p>
             <button 
-              onClick={() => window.location.reload()} 
+              onClick={onClearFilters} 
               className="px-6 py-3 bg-[#191A23] text-white rounded-[16px] hover:bg-[#2A2B3D] transition-colors"
             >
               Clear All Filters

@@ -19,7 +19,7 @@ export interface Property {
 }
 
 export interface FilterCriteria {
-  type: 'sale' | 'rent'
+  type: 'sale' | 'rent' | null
   category: string
   bedrooms: string
   bathrooms: string
@@ -35,6 +35,8 @@ export interface SearchResultsProps {
   className?: string
   filterCriteria?: FilterCriteria | null
   hasSearched?: boolean
+  isLoading?: boolean
+  onClearFilters?: () => void
 }
 
 export interface SearchMapProps {

@@ -45,61 +45,88 @@ export default function Pagination({
         </svg>
       </button>
       
-      {/* Page Numbers */}
+      {/* Page Numbers - Smart pagination like the image */}
       {(() => {
         const pages = []
-        const showPages = 5 // Maximum pages to show
-        let startPage = Math.max(1, currentPage - Math.floor(showPages / 2))
-        let endPage = Math.min(totalPages, startPage + showPages - 1)
+        const maxVisiblePages = 5 // Show 5 pages max like in the image
         
-        // Adjust start if we're near the end
-        if (endPage - startPage + 1 < showPages) {
-          startPage = Math.max(1, endPage - showPages + 1)
+        // Always show first page
+        pages.push(
+          <button
+            key={1}
+            onClick={() => onPageChange(1)}
+            className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+              currentPage === 1
+                ? 'bg-[#191A23] text-white'
+                : 'border border-[#E7DCFF] hover:bg-[#F7F2FF] text-[#686A79]'
+            }`}
+          >
+            1
+          </button>
+        )
+        
+        // Calculate range around current page
+        let startPage = Math.max(2, currentPage - 1)
+        let endPage = Math.min(totalPages - 1, currentPage + 2)
+        
+        // Adjust if we're near the beginning
+        if (currentPage <= 3) {
+          endPage = Math.min(5, totalPages - 1)
         }
         
-        // Show first page if not included
-        if (startPage > 1) {
+        // Adjust if we're near the end
+        if (currentPage >= totalPages - 2) {
+          startPage = Math.max(2, totalPages - 4)
+        }
+        
+        // Show ellipsis after first page if needed
+        if (startPage > 2) {
           pages.push(
-            <button
-              key={1}
-              onClick={() => onPageChange(1)}
-              className="w-10 h-10 rounded-lg border border-[#E7DCFF] hover:bg-[#F7F2FF] transition-colors font-medium text-[#686A79]"
-            >
-              1
-            </button>
+            <span key="ellipsis-start" className="px-2 text-[#686A79] font-medium">
+              ...
+            </span>
           )
-          if (startPage > 2) {
-            pages.push(<span key="dots1" className="px-2 text-[#686A79]">...</span>)
-          }
         }
         
-        // Show page range
+        // Show middle pages
         for (let i = startPage; i <= endPage; i++) {
+          if (i !== 1 && i !== totalPages) {
+            pages.push(
+              <button
+                key={i}
+                onClick={() => onPageChange(i)}
+                className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                  currentPage === i
+                    ? 'bg-[#191A23] text-white'
+                    : 'border border-[#E7DCFF] hover:bg-[#F7F2FF] text-[#686A79]'
+                }`}
+              >
+                {i}
+              </button>
+            )
+          }
+        }
+        
+        // Show ellipsis before last page if needed
+        if (endPage < totalPages - 1) {
           pages.push(
-            <button
-              key={i}
-              onClick={() => onPageChange(i)}
-              className={`w-10 h-10 rounded-lg font-medium transition-colors ${
-                currentPage === i
-                  ? 'bg-[#191A23] text-white'
-                  : 'border border-[#E7DCFF] hover:bg-[#F7F2FF] text-[#686A79]'
-              }`}
-            >
-              {i}
-            </button>
+            <span key="ellipsis-end" className="px-2 text-[#686A79] font-medium">
+              ...
+            </span>
           )
         }
         
-        // Show last page if not included
-        if (endPage < totalPages) {
-          if (endPage < totalPages - 1) {
-            pages.push(<span key="dots2" className="px-2 text-[#686A79]">...</span>)
-          }
+        // Always show last page (if more than 1 page)
+        if (totalPages > 1) {
           pages.push(
             <button
               key={totalPages}
               onClick={() => onPageChange(totalPages)}
-              className="w-10 h-10 rounded-lg border border-[#E7DCFF] hover:bg-[#F7F2FF] transition-colors font-medium text-[#686A79]"
+              className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                currentPage === totalPages
+                  ? 'bg-[#191A23] text-white'
+                  : 'border border-[#E7DCFF] hover:bg-[#F7F2FF] text-[#686A79]'
+              }`}
             >
               {totalPages}
             </button>
