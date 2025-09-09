@@ -57,8 +57,11 @@ export default function SearchResults({ className = '', filterCriteria, hasSearc
     }
 
     const filtered = originalProperties.filter((property) => {
-      // Type filter (sale/rent)
-      if (filterCriteria.type && property.type !== filterCriteria.type) return false
+      // Type filter (sale/rent) - Check both type and isMonthly property
+      if (filterCriteria.type) {
+        if (filterCriteria.type === 'rent' && !property.isMonthly) return false
+        if (filterCriteria.type === 'sale' && property.isMonthly) return false
+      }
 
       // Category filter
       if (filterCriteria.category && property.category !== filterCriteria.category) return false
@@ -73,8 +76,14 @@ export default function SearchResults({ className = '', filterCriteria, hasSearc
       if (filterCriteria.floorArea && property.area !== filterCriteria.floorArea) return false
 
       // Price range filter
-      if (filterCriteria.minPrice && property.priceValue && property.priceValue < parseInt(filterCriteria.minPrice)) return false
-      if (filterCriteria.maxPrice && property.priceValue && property.priceValue > parseInt(filterCriteria.maxPrice)) return false
+      if (filterCriteria.minPrice && property.priceValue) {
+        const minPrice = parseInt(filterCriteria.minPrice)
+        if (property.priceValue < minPrice) return false
+      }
+      if (filterCriteria.maxPrice && property.priceValue) {
+        const maxPrice = parseInt(filterCriteria.maxPrice)
+        if (property.priceValue > maxPrice) return false
+      }
 
       // Year built filter
       if (filterCriteria.minYear && property.yearBuilt && property.yearBuilt < parseInt(filterCriteria.minYear)) return false

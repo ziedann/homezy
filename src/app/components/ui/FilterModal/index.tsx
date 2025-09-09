@@ -21,7 +21,7 @@ interface FilterModalProps {
 }
 
 export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFilters, currentSaleRent, currentSavedFilters }: FilterModalProps) {
-  const [selectedType, setSelectedType] = useState<'sale' | 'rent' | null>(currentSaleRent || null)
+  const [selectedType, setSelectedType] = useState<'sale' | 'rent' | null>(currentSaleRent || 'rent')
   const [selectedBedrooms, setSelectedBedrooms] = useState<string>('')
   const [selectedBedroomsLabel, setSelectedBedroomsLabel] = useState<string>('')
   const [selectedBathrooms, setSelectedBathrooms] = useState<string>('')
@@ -477,7 +477,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFil
   useEffect(() => {
     if (isOpen) {
       // Sync sale/rent type
-      setSelectedType(currentSaleRent || null)
+      setSelectedType(currentSaleRent || 'rent')
       
       // Sync saved filters
       if (currentSavedFilters) {

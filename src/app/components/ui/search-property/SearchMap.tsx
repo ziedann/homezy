@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { DivIcon, LatLngExpression, Map as LeafletMap } from 'leaflet'
-import { Property, SearchMapProps, PopupPosition } from '@/app/types/search-property'
+import { Property, SearchMapProps, PopupPosition, FilterCriteria } from '@/app/types/search-property'
 import PropertyPopup from '../PropertyPopup'
 
 const MapContainer = dynamic(
@@ -103,10 +103,12 @@ export default function SearchMap({
   center = [40.742, -73.98],
   zoom = 12,
   hideZoomControls = false,
+  filterCriteria,
 }: SearchMapProps) {
   const tileUrl = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
   
-  const [properties, setProperties] = useState<Property[]>([])
+  const [allProperties, setAllProperties] = useState<Property[]>([])
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [popupPosition, setPopupPosition] = useState<PopupPosition | null>(null)
   const mapRef = useRef<LeafletMap | null>(null)
@@ -118,7 +120,8 @@ export default function SearchMap({
       try {
         const response = await fetch('/api/properties')
         const data = await response.json()
-        setProperties(data.properties)
+        setAllProperties(data.properties)
+        setFilteredProperties(data.properties)
       } catch (error) {
         console.error('Failed to fetch properties:', error)
       }
@@ -126,12 +129,61 @@ export default function SearchMap({
     
     fetchProperties()
   }, [])
+
+  // Filter properties based on criteria
+  useEffect(() => {
+    if (!filterCriteria) {
+      setFilteredProperties(allProperties)
+      return
+    }
+
+    const filtered = allProperties.filter((property) => {
+      // Type filter (sale/rent) - Check both type and isMonthly property
+      if (filterCriteria.type) {
+        if (filterCriteria.type === 'rent' && !property.isMonthly) return false
+        if (filterCriteria.type === 'sale' && property.isMonthly) return false
+      }
+
+      // Category filter
+      if (filterCriteria.category && property.category !== filterCriteria.category) return false
+
+      // Bedrooms filter
+      if (filterCriteria.bedrooms && property.beds.toString() !== filterCriteria.bedrooms) return false
+
+      // Bathrooms filter
+      if (filterCriteria.bathrooms && property.baths.toString() !== filterCriteria.bathrooms) return false
+
+      // Floor area filter
+      if (filterCriteria.floorArea && property.area !== filterCriteria.floorArea) return false
+
+      // Price range filter
+      if (filterCriteria.minPrice && property.priceValue) {
+        const minPrice = parseInt(filterCriteria.minPrice)
+        if (property.priceValue < minPrice) return false
+      }
+      if (filterCriteria.maxPrice && property.priceValue) {
+        const maxPrice = parseInt(filterCriteria.maxPrice)
+        if (property.priceValue > maxPrice) return false
+      }
+
+      // Year built filter
+      if (filterCriteria.minYear && property.yearBuilt && property.yearBuilt < parseInt(filterCriteria.minYear)) return false
+      if (filterCriteria.maxYear && property.yearBuilt && property.yearBuilt > parseInt(filterCriteria.maxYear)) return false
+
+      // Location filter
+      if (filterCriteria.location && property.location !== filterCriteria.location) return false
+
+      return true
+    })
+
+    setFilteredProperties(filtered)
+  }, [filterCriteria, allProperties])
   
   // Calculate popup position below marker
   const updatePopupPosition = (propertyId: number) => {
     if (!mapRef.current || !containerRef.current) return
     
-    const property = properties.find(p => p.id === propertyId)
+    const property = filteredProperties.find(p => p.id === propertyId)
     if (!property) return
     
     const point = mapRef.current.latLngToContainerPoint(property.coordinates)
@@ -147,7 +199,7 @@ export default function SearchMap({
     setSelectedId(propertyId)
     // Add delay to ensure map is ready
     setTimeout(() => {
-      if (mapRef.current && properties.length > 0) {
+      if (mapRef.current && filteredProperties.length > 0) {
         updatePopupPosition(propertyId)
       }
     }, 300)
@@ -171,7 +223,7 @@ export default function SearchMap({
 
   // Update popup position on map move/zoom
   useEffect(() => {
-    if (!mapRef.current || !selectedId || properties.length === 0) return
+    if (!mapRef.current || !selectedId || filteredProperties.length === 0) return
     
     const map = mapRef.current
     const updatePosition = () => updatePopupPosition(selectedId)
@@ -185,7 +237,7 @@ export default function SearchMap({
     }
   }, [selectedId])
   
-  const selectedProperty = properties.find(p => p.id === selectedId)
+  const selectedProperty = filteredProperties.find(p => p.id === selectedId)
   
   // Show popup when we have selected property and either position or fallback to center
   const shouldShowPopup = selectedId && selectedProperty
@@ -196,7 +248,7 @@ export default function SearchMap({
         <TileLayer url={tileUrl} attribution='' />
         <MapEventHandler onMapReady={handleMapReady} />
 
-        {properties.map((property) => (
+        {filteredProperties.map((property) => (
           <Marker
             key={property.id}
             position={property.coordinates}

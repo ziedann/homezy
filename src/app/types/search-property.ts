@@ -43,6 +43,7 @@ export interface SearchMapProps {
   center?: [number, number]
   zoom?: number
   hideZoomControls?: boolean
+  filterCriteria?: FilterCriteria | null
 }
 
 export interface PopupPosition {

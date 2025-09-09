@@ -24,7 +24,7 @@ export default function SearchPropertyClient() {
   const [activeFilters, setActiveFilters] = useState<FilterCriteria | null>(null)
   const [hasSearched, setHasSearched] = useState(true) // Show all data by default
   const [isLoading, setIsLoading] = useState(false)
-  const [saleRentType, setSaleRentType] = useState<'sale' | 'rent' | null>(null)
+  const [saleRentType, setSaleRentType] = useState<'sale' | 'rent' | null>('rent')
   const [quickFilters, setQuickFilters] = useState<{
     location: { value: string; label: string }
     price: { value: string; label: string }
@@ -102,26 +102,39 @@ export default function SearchPropertyClient() {
     if (saleRent === 'sale' || saleRent === 'rent') {
       setSaleRentType(saleRent)
     } else {
-      setSaleRentType(null) // Clear state if no saleRent param
+      setSaleRentType('rent') // Default to rent if no saleRent param
     }
 
-    // Create FilterCriteria from query params
-    if (location || price || type || saleRent || minPrice || maxPrice || bedrooms || bathrooms || floorArea || minYear || maxYear) {
-      const filterCriteria: FilterCriteria = {
-        type: saleRent === 'sale' || saleRent === 'rent' ? saleRent : null, // Use saleRent param or null for clear state
-        category: type || '',
-        bedrooms: bedrooms || '',
-        bathrooms: bathrooms || '',
-        floorArea: floorArea || '',
-        minYear: minYear || '',
-        maxYear: maxYear || '',
-        location: location || '',
-        minPrice: minPrice || '',
-        maxPrice: maxPrice || ''
+    // Create FilterCriteria from query params or use defaults
+    let initialMinPrice = minPrice || ''
+    let initialMaxPrice = maxPrice || ''
+    
+    // If no minPrice/maxPrice from URL but we have price from dropdown, parse it
+    if (!minPrice && !maxPrice && price) {
+      if (price.includes('+')) {
+        initialMinPrice = price.replace('+', '')
+        initialMaxPrice = '999999'
+      } else if (price.includes('-')) {
+        const priceRange = price.split('-')
+        initialMinPrice = priceRange[0] || ''
+        initialMaxPrice = priceRange[1] || ''
       }
-      setActiveFilters(filterCriteria)
-      setHasSearched(true)
     }
+    
+    const filterCriteria: FilterCriteria = {
+      type: saleRent === 'sale' || saleRent === 'rent' ? saleRent : 'rent', // Use saleRent param or 'rent' as default
+      category: type || '',
+      bedrooms: bedrooms || '',
+      bathrooms: bathrooms || '',
+      floorArea: floorArea || '',
+      minYear: minYear || '',
+      maxYear: maxYear || '',
+      location: location || '',
+      minPrice: initialMinPrice,
+      maxPrice: initialMaxPrice
+    }
+    setActiveFilters(filterCriteria)
+    setHasSearched(true)
     
     isInitialized.current = true
   }, [searchParams])
@@ -196,8 +209,8 @@ export default function SearchPropertyClient() {
     
     // Handle saleRentType based on criteria.type
     if (criteria.type === null || criteria.type === undefined) {
-      // Clear state - will be handled when Browse is clicked
-      setSaleRentType(null)
+      // Reset to default rent state
+      setSaleRentType('rent')
     } else {
       // Set the selected type
       setSaleRentType(criteria.type as 'sale' | 'rent')
@@ -244,7 +257,22 @@ export default function SearchPropertyClient() {
       updateQueryParams(urlFilters, additionalParams)
       
       // Convert pending filters to FilterCriteria format
-      const priceRange = pendingFilters.price.value !== 'all' ? pendingFilters.price.value.split('-') : ['', '']
+      let minPrice = ''
+      let maxPrice = ''
+      
+      if (pendingFilters.price.value !== 'all') {
+        if (pendingFilters.price.value.includes('+')) {
+          // Handle "6000+" case
+          minPrice = pendingFilters.price.value.replace('+', '')
+          maxPrice = '999999'
+        } else if (pendingFilters.price.value.includes('-')) {
+          // Handle range cases like "2500-4000"
+          const priceRange = pendingFilters.price.value.split('-')
+          minPrice = priceRange[0] || ''
+          maxPrice = priceRange[1] || ''
+        }
+      }
+      
       const filterCriteria: FilterCriteria = {
         type: saleRentType, // Use current sale/rent type (can be null for clear state)
         category: pendingFilters.type.value !== 'all' ? pendingFilters.type.value : '',
@@ -254,8 +282,8 @@ export default function SearchPropertyClient() {
         minYear: savedFilters?.minYear || '',
         maxYear: savedFilters?.maxYear || '',
         location: pendingFilters.location.value !== 'all' ? pendingFilters.location.label : '',
-        minPrice: priceRange[0] || '',
-        maxPrice: pendingFilters.price.value.includes('+') ? '999999' : (priceRange[1] || '')
+        minPrice: minPrice,
+        maxPrice: maxPrice
       }
       
       setActiveFilters(filterCriteria)
@@ -323,12 +351,23 @@ export default function SearchPropertyClient() {
       setQuickFilters(allFilters)
       setPendingFilters(allFilters)
       
-      // Reset sale/rent type to clear state
-      setSaleRentType(null)
+      // Reset sale/rent type to default state
+      setSaleRentType('rent')
       setSavedFilters(null)
       
-      // Clear active filters (show all data)
-      setActiveFilters(null)
+      // Clear active filters but keep default rent type
+      setActiveFilters({
+        type: 'rent',
+        category: '',
+        bedrooms: '',
+        bathrooms: '',
+        floorArea: '',
+        minYear: '',
+        maxYear: '',
+        location: '',
+        minPrice: '',
+        maxPrice: ''
+      })
       setHasSearched(true)
       
       // Clear URL params - use replace to avoid back button issues
@@ -373,7 +412,7 @@ export default function SearchPropertyClient() {
               onApplyFilter={handleApplyFilter}
               onClearFilters={(clearedFields) => {
                 setSavedFilters(null)
-                setSaleRentType(null) // Set to null for clear state
+                setSaleRentType('rent') // Set to rent for default state
                 
                 // Clear specific params from URL based on cleared fields
                 if (clearedFields && clearedFields.length > 0) {
@@ -395,6 +434,7 @@ export default function SearchPropertyClient() {
               hideZoomControls={isFilterModalOpen}
               center={getMapView().center}
               zoom={getMapView().zoom}
+              filterCriteria={activeFilters}
             />
           )}
         </div>

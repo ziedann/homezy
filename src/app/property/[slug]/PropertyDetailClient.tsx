@@ -27,6 +27,7 @@ import Call from "@assets/icons/call.svg";
 import CalendarPurple from "@assets/icons/calendar-purple.svg";
 import ClockPurple from "@assets/icons/clock-purple.svg";
 import MessageText from "@assets/icons/message-text.svg";
+import PhotoGalleryModal from "@/app/components/ui/PhotoGalleryModal";
 
 // Import high-quality images
 import DetailImage1 from "@assets/images/detail-image-1.png";
@@ -53,6 +54,10 @@ export default function PropertyDetailClient() {
   });
 
   const [similarProperties, setSimilarProperties] = useState<any[]>([]);
+  
+  // Photo gallery modal state
+  const [isPhotoGalleryOpen, setIsPhotoGalleryOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   // Toggle accordion function
   const toggleAccordion = (section: keyof typeof accordionState) => {
@@ -60,6 +65,16 @@ export default function PropertyDetailClient() {
       ...prev,
       [section]: !prev[section]
     }));
+  };
+
+  // Photo gallery handlers
+  const openPhotoGallery = (imageIndex: number = 0) => {
+    setSelectedImageIndex(imageIndex);
+    setIsPhotoGalleryOpen(true);
+  };
+
+  const closePhotoGallery = () => {
+    setIsPhotoGalleryOpen(false);
   };
 
   // Generate company name based on property title
@@ -342,7 +357,10 @@ export default function PropertyDetailClient() {
           {/* Desktop Layout */}
           <div className="hidden md:flex gap-[32px] h-[500px] w-full max-w-[1160px] mx-auto">
             {/* Main Large Image - Left Side */}
-            <div className="relative w-[763px] h-full rounded-[15px] overflow-hidden">
+            <div 
+              className="relative w-[763px] h-full rounded-[15px] overflow-hidden"
+              onClick={() => openPhotoGallery(0)}
+            >
               <Image
                 src={DetailImage1}
                 alt={property.title}
@@ -356,7 +374,10 @@ export default function PropertyDetailClient() {
             {/* Right Side Images Column */}
             <div className="w-[365px] h-full flex flex-col gap-[32px]">
               {/* Top Right Image */}
-              <div className="relative h-[234px] rounded-[15px] overflow-hidden">
+              <div 
+                className="relative h-[234px] rounded-[15px] overflow-hidden"
+                onClick={() => openPhotoGallery(1)}
+              >
                 <Image
                   src={DetailImage2}
                   alt="Interior view"
@@ -367,24 +388,31 @@ export default function PropertyDetailClient() {
               </div>
 
               {/* Bottom Right Image with Show All Photos overlay */}
-              <div className="relative h-[234px] rounded-[15px] overflow-hidden">
+              <div 
+                className="relative h-[234px] rounded-[15px] overflow-hidden"
+              >
                 <Image
                   src={DetailImage3}
                   alt="Kitchen view"
                   width={365}
                   height={234}
                   className="w-full h-full object-cover"
+                  onClick={() => openPhotoGallery(2)}
                 />
                 {/* Show All Photos Button Overlay */}
-                <div className="absolute inset-0 ">
-                  <div className="absolute bottom-[16px] right-[16px]">
-                    <button className="flex items-center gap-[8px] px-[20px] py-[16px] bg-white border border-[#191A23] rounded-[15px]">
-                      <Gallery className="w-4 h-4 text-[#191A23]" />
-                      <span className="text-[16px] leading-[20px] font-bold font-hanken text-[#191A23]">
-                        Show All Photos
-                      </span>
-                    </button>
-                  </div>
+                <div className="absolute bottom-[16px] right-[16px]">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openPhotoGallery(2);
+                    }}
+                    className="flex items-center gap-[8px] px-[20px] py-[16px] bg-white border border-[#191A23] rounded-[15px] hover:!bg-gray-200 hover:!border-gray-400 hover:!shadow-lg transition-all duration-300 cursor-pointer"
+                  >
+                    <Gallery className="w-4 h-4 text-[#191A23] transition-colors" />
+                    <span className="text-[16px] leading-[20px] font-bold font-hanken text-[#191A23] transition-colors">
+                      Show All Photos
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -394,7 +422,10 @@ export default function PropertyDetailClient() {
           <div className="md:hidden">
             <div className="flex gap-[8px] h-[169px] mb-[16px]">
               {/* Main Large Image - Left Side */}
-              <div className="relative flex-[2] rounded-[10px] overflow-hidden">
+              <div 
+                className="relative flex-[2] rounded-[10px] overflow-hidden"
+                onClick={() => openPhotoGallery(0)}
+              >
                 <Image
                   src={DetailImage1}
                   alt={property.title}
@@ -407,7 +438,10 @@ export default function PropertyDetailClient() {
               {/* Right Side Images Column */}
               <div className="flex-1 flex flex-col gap-[8px]">
                 {/* Top Right Image */}
-                <div className="relative flex-1 rounded-[10px] overflow-hidden">
+                <div 
+                  className="relative flex-1 rounded-[10px] overflow-hidden"
+                  onClick={() => openPhotoGallery(1)}
+                >
                   <Image
                     src={DetailImage2}
                     alt="Interior view"
@@ -417,7 +451,10 @@ export default function PropertyDetailClient() {
                 </div>
 
                 {/* Bottom Right Image */}
-                <div className="relative flex-1 rounded-[10px] overflow-hidden">
+                <div 
+                  className="relative flex-1 rounded-[10px] overflow-hidden"
+                  onClick={() => openPhotoGallery(2)}
+                >
                   <Image
                     src={DetailImage3}
                     alt="Kitchen view"
@@ -429,9 +466,12 @@ export default function PropertyDetailClient() {
             </div>
 
             {/* Full Width Show All Photos Button */}
-            <button className="w-full flex items-center justify-center gap-[6px] px-[16px] py-[12px] bg-white border border-[#191A23] rounded-[15px] hover:bg-gray-50 transition-colors">
-              <Gallery className="w-4 h-4 text-[#191A23]" />
-              <span className="text-[14px] leading-[18px] font-bold font-hanken text-[#191A23]">
+            <button 
+              onClick={() => openPhotoGallery(0)}
+              className="w-full flex items-center justify-center gap-[6px] px-[16px] py-[12px] bg-white border border-[#191A23] rounded-[15px] hover:!bg-gray-200 hover:!border-gray-400 hover:!shadow-lg transition-all duration-300 cursor-pointer"
+            >
+              <Gallery className="w-4 h-4 text-[#191A23] transition-colors" />
+              <span className="text-[14px] leading-[18px] font-bold font-hanken text-[#191A23] transition-colors">
                 Show All Photos
               </span>
             </button>
@@ -993,6 +1033,16 @@ export default function PropertyDetailClient() {
             </div>
           </div>
       </SectionContainer>
+
+      {/* Photo Gallery Modal */}
+      <PhotoGalleryModal
+        isOpen={isPhotoGalleryOpen}
+        onClose={closePhotoGallery}
+        propertyTitle={property?.title || ''}
+        propertyAddress={property?.location || ''}
+        propertyPrice={property?.price || ''}
+        initialImageIndex={selectedImageIndex}
+      />
     </div>
   );
 }
