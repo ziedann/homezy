@@ -1,41 +1,36 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import Head from "next/head";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+
 import { Property } from "@/app/types/search-property";
 import SectionContainer from "@/app/components/ui/SectionContainer";
 import PropertyCard from "@/app/components/ui/PropertyCard";
+import PhotoGalleryModal from "@/app/components/ui/PhotoGalleryModal";
+
 import Bed from "@assets/icons/bed.svg";
 import Bath from "@assets/icons/bath.svg";
 import Area from "@assets/icons/surface-area.svg";
 import Repair from "@assets/icons/repair.svg";
-import Location from "@assets/icons/location.svg";
-import Agent1 from "@assets/images/agent-1.png";
 import Play from "@assets/icons/play.svg";
 import ArrowLeft from "@assets/icons/arrow-left.svg";
-import Sparkles from "@assets/icons/sparkles.svg";
 import Gallery from "@assets/icons/gallery.svg";
 import Share from "@assets/icons/share.svg";
-import Phone from "@assets/icons/phone.svg";
 import Call from "@assets/icons/call.svg";
-import CalendarPurple from "@assets/icons/calendar-purple.svg";
+import Calendar from "@assets/icons/calendar.svg";
 import ClockPurple from "@assets/icons/clock-purple.svg";
 import MessageText from "@assets/icons/message-text.svg";
-import PhotoGalleryModal from "@/app/components/ui/PhotoGalleryModal";
+import SmsPurple from "@assets/icons/sms-purple.svg";
 
-// Import high-quality images
 import DetailImage1 from "@assets/images/detail-image-1.png";
 import DetailImage2 from "@assets/images/detail-image-2.png";
 import DetailImage3 from "@assets/images/detail-image-3.png";
-import FeaturedListing1 from "@assets/images/featured-listing-1.png";
-import FeaturedListing2 from "@assets/images/featured-listing-2.png";
-import FeaturedListing3 from "@assets/images/featured-listing-3.png";
+import Agent1 from "@assets/images/agent-1.png";
 
 export default function PropertyDetailClient() {
   const params = useParams();
@@ -44,22 +39,20 @@ export default function PropertyDetailClient() {
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
-  // Accordion state management
+  const [similarProperties, setSimilarProperties] = useState<any[]>([]);
+  const [isPhotoGalleryOpen, setIsPhotoGalleryOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<'schedule' | 'quote'>('schedule');
   const [accordionState, setAccordionState] = useState({
-    interiorDetails: true,  // Default open
+    interiorDetails: true,
     propertySize: false,
     landArea: false,
     yearBuild: false
   });
 
-  const [similarProperties, setSimilarProperties] = useState<any[]>([]);
-  
-  // Photo gallery modal state
-  const [isPhotoGalleryOpen, setIsPhotoGalleryOpen] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const dateInputRef = useRef<HTMLInputElement>(null);
+  const timeInputRef = useRef<HTMLInputElement>(null);
 
-  // Toggle accordion function
   const toggleAccordion = (section: keyof typeof accordionState) => {
     setAccordionState(prev => ({
       ...prev,
@@ -67,7 +60,6 @@ export default function PropertyDetailClient() {
     }));
   };
 
-  // Photo gallery handlers
   const openPhotoGallery = (imageIndex: number = 0) => {
     setSelectedImageIndex(imageIndex);
     setIsPhotoGalleryOpen(true);
@@ -77,7 +69,6 @@ export default function PropertyDetailClient() {
     setIsPhotoGalleryOpen(false);
   };
 
-  // Generate company name based on property title
   const getCompanyName = (title: string) => {
     const companies = [
       'Beach Pros Realty Inc.',
@@ -88,7 +79,6 @@ export default function PropertyDetailClient() {
       'Prime Real Estate'
     ];
     
-    // Use title hash to consistently assign company
     const hash = title.split('').reduce((a, b) => {
       a = ((a << 5) - a) + b.charCodeAt(0);
       return a & a;
@@ -101,18 +91,14 @@ export default function PropertyDetailClient() {
     const fetchPropertyDetail = async () => {
       try {
         setLoading(true);
-
-        // First fetch all properties
         const response = await fetch("/api/properties");
         if (!response.ok) {
           throw new Error("Failed to fetch properties");
         }
         const data = await response.json();
 
-        // Generate slug for each property and find the matching one
         const enhancedProperties = data.properties.map(
           (property: Property, index: number) => {
-            // Extract category from title
             let category = "apartment";
             if (property.title.toLowerCase().includes("studio")) {
               category = "studio";
@@ -124,7 +110,6 @@ export default function PropertyDetailClient() {
               category = "realty";
             }
 
-            // Generate slug from title
             const generatedSlug = property.title
               .toLowerCase()
               .replace(/[^a-z0-9\s-]/g, "")
@@ -144,7 +129,6 @@ export default function PropertyDetailClient() {
           }
         );
 
-        // Find the property with matching slug
         const foundProperty = enhancedProperties.find(
           (prop: any) => prop.slug === slug
         );
@@ -155,7 +139,6 @@ export default function PropertyDetailClient() {
 
         setProperty(foundProperty);
         
-        // Get similar properties (exclude current property and take first 3)
         const similarProps = enhancedProperties
           .filter((p: any) => p.id !== foundProperty.id)
           .slice(0, 3)
@@ -180,15 +163,10 @@ export default function PropertyDetailClient() {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 py-8">
-          {/* Back button skeleton */}
           <div className="mb-6">
             <div className="h-10 w-32 bg-gray-200 rounded animate-pulse"></div>
           </div>
-
-          {/* Image skeleton */}
           <div className="aspect-[16/9] bg-gray-200 rounded-[24px] animate-pulse mb-8"></div>
-
-          {/* Content skeleton */}
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
               <div className="h-8 bg-gray-200 rounded w-3/4 animate-pulse"></div>
@@ -219,9 +197,7 @@ export default function PropertyDetailClient() {
         </Head>
         <div className="text-center">
           <div className="text-6xl mb-4">🏠</div>
-          <h1 className="text-2xl font-bold text-[#191A23] mb-2">
-            Property Not Found
-          </h1>
+          <h1 className="text-2xl font-bold text-[#191A23] mb-2">Property Not Found</h1>
           <p className="text-[#6B7280] mb-6">
             {error || "The property you are looking for does not exist."}
           </p>
@@ -237,7 +213,6 @@ export default function PropertyDetailClient() {
     );
   }
 
-  // Generate structured data for property
   const propertySchema = {
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
@@ -341,7 +316,6 @@ export default function PropertyDetailClient() {
         />
       </Head>
       <SectionContainer>
-        {/* Breadcrumb */}
         <div className="mb-6">
           <Link
             href="/search-property"
@@ -352,11 +326,8 @@ export default function PropertyDetailClient() {
           </Link>
         </div>
 
-        {/* Property Images Gallery */}
         <div className="mb-8">
-          {/* Desktop Layout */}
           <div className="hidden md:flex gap-[32px] h-[500px] w-full max-w-[1160px] mx-auto">
-            {/* Main Large Image - Left Side */}
             <div 
               className="relative w-[763px] h-full rounded-[15px] overflow-hidden"
               onClick={() => openPhotoGallery(0)}
@@ -371,9 +342,7 @@ export default function PropertyDetailClient() {
               />
             </div>
 
-            {/* Right Side Images Column */}
             <div className="w-[365px] h-full flex flex-col gap-[32px]">
-              {/* Top Right Image */}
               <div 
                 className="relative h-[234px] rounded-[15px] overflow-hidden"
                 onClick={() => openPhotoGallery(1)}
@@ -387,10 +356,7 @@ export default function PropertyDetailClient() {
                 />
               </div>
 
-              {/* Bottom Right Image with Show All Photos overlay */}
-              <div 
-                className="relative h-[234px] rounded-[15px] overflow-hidden"
-              >
+              <div className="relative h-[234px] rounded-[15px] overflow-hidden">
                 <Image
                   src={DetailImage3}
                   alt="Kitchen view"
@@ -399,14 +365,13 @@ export default function PropertyDetailClient() {
                   className="w-full h-full object-cover"
                   onClick={() => openPhotoGallery(2)}
                 />
-                {/* Show All Photos Button Overlay */}
                 <div className="absolute bottom-[16px] right-[16px]">
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
                       openPhotoGallery(2);
                     }}
-                    className="flex items-center gap-[8px] px-[20px] py-[16px] bg-white border border-[#191A23] rounded-[15px] hover:!bg-gray-200 hover:!border-gray-400 hover:!shadow-lg transition-all duration-300 cursor-pointer"
+                    className="flex items-center gap-[8px] px-[20px] py-[16px] bg-white border border-[#191A23] rounded-[15px] hover:bg-gray-200 hover:!border-gray-400 hover:!shadow-lg transition-all duration-300 cursor-pointer"
                   >
                     <Gallery className="w-4 h-4 text-[#191A23] transition-colors" />
                     <span className="text-[16px] leading-[20px] font-bold font-hanken text-[#191A23] transition-colors">
@@ -418,10 +383,8 @@ export default function PropertyDetailClient() {
             </div>
           </div>
 
-          {/* Mobile Layout */}
           <div className="md:hidden">
             <div className="flex gap-[8px] h-[169px] mb-[16px]">
-              {/* Main Large Image - Left Side */}
               <div 
                 className="relative flex-[2] rounded-[10px] overflow-hidden"
                 onClick={() => openPhotoGallery(0)}
@@ -435,9 +398,7 @@ export default function PropertyDetailClient() {
                 />
               </div>
 
-              {/* Right Side Images Column */}
               <div className="flex-1 flex flex-col gap-[8px]">
-                {/* Top Right Image */}
                 <div 
                   className="relative flex-1 rounded-[10px] overflow-hidden"
                   onClick={() => openPhotoGallery(1)}
@@ -450,7 +411,6 @@ export default function PropertyDetailClient() {
                   />
                 </div>
 
-                {/* Bottom Right Image */}
                 <div 
                   className="relative flex-1 rounded-[10px] overflow-hidden"
                   onClick={() => openPhotoGallery(2)}
@@ -465,7 +425,6 @@ export default function PropertyDetailClient() {
               </div>
             </div>
 
-            {/* Full Width Show All Photos Button */}
             <button 
               onClick={() => openPhotoGallery(0)}
               className="w-full flex items-center justify-center gap-[6px] px-[16px] py-[12px] bg-white border border-[#191A23] rounded-[15px] hover:!bg-gray-200 hover:!border-gray-400 hover:!shadow-lg transition-all duration-300 cursor-pointer"
@@ -478,20 +437,16 @@ export default function PropertyDetailClient() {
           </div>
         </div>
 
-        {/* Property Info Section */}
         <div className="grid lg:grid-cols-3 gap-8 mb-8">
-          {/* Left Column - Property Information */}
           <div className="lg:col-span-2">
-            {/* Header with Share Button */}
             <div className="flex flex-col lg:flex-row items-start lg:justify-between gap-[24px] mb-[32px]">
               <div className="flex flex-col gap-[8px]">
-              <h1 className="text-[28px] lg:text-[40px] leading-[36px] lg:leading-[48px] font-bold font-syne text-[#191A23]">
-                {property.title}
-              </h1>
-              {/* Location */}
-              <div className="text-[20px] leading-[30px] text-[#686A79] font-light font-hanken">
-                {property.location}
-              </div>
+                <h1 className="text-[28px] lg:text-[40px] leading-[36px] lg:leading-[48px] font-bold font-syne text-[#191A23]">
+                  {property.title}
+                </h1>
+                <div className="text-[20px] leading-[30px] text-[#686A79] font-light font-hanken">
+                  {property.location}
+                </div>
               </div>
               <button className="flex items-center gap-[8px] lg:px-[32px] lg:py-[16px] px-[24px] py-[10px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-gray-50 transition-colors">
                 <Share className="w-4 h-4" />
@@ -499,7 +454,6 @@ export default function PropertyDetailClient() {
               </button>
             </div>
 
-            {/* Property Features */}
             <div className="bg-[#F7F2FF] border border-[#E7DCFF] rounded-[15px] lg:py-[20px] lg:px-[40px] py-[24px] px-[32px] mb-[56px]">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div>
@@ -549,7 +503,6 @@ export default function PropertyDetailClient() {
               </div>
             </div>
 
-            {/* Description */}
             <div className="flex flex-col gap-[24px]">
               <h3 className="text-[20px] leading-[28px] lg:text-[24px] lg:leading-[32px] font-semibold font-syne text-[#191A23]">
                 Description
@@ -578,128 +531,176 @@ export default function PropertyDetailClient() {
               </button>
             </div>
             <div className="hidden lg:block w-full h-[1px] bg-[#CCD0D8] my-[56px]"></div>
-
           </div>
-          
 
-                     {/* Right Column - Price & Tour Request */}
-           <div>
-             <div className="bg-[#F3F2FF] rounded-[20px] p-[24px] sticky top-4 border border-[#E5E4FF]">
-               {/* Price */}
-               <div className="mb-[24px]">
-                 <div className="text-[14px] text-[#8B8B8B] font-medium mb-[8px]">Price</div>
-                 <div className="text-[28px] font-bold text-[#1F1F1F]">
-                   {property.price}
-                 </div>
-               </div>
+          <div>
+            <div className="bg-[#F3F2FF] rounded-[20px] p-[24px] sticky top-4 border border-[#191A23]">
+              <div className="lg:mb-[24px] mb-[16px]">
+                <div className="text-[14px] text-[#8B8B8B] font-medium mb-[8px]">Price</div>
+                <div className="lg:text-[42px] lg:leading-[48px] text-[32px] leading-[38px] font-bold text-[#1F1F1F] font-syne">
+                  {property.price}
+                </div>
+              </div>
 
-               <hr className="border-[#E5E4FF] mb-[24px]" />
+              <hr className="border-[#E5E4FF] mb-[24px]" />
 
-               {/* Request a home tour */}
-               <div>
-                 <h3 className="text-[18px] font-bold text-[#1F1F1F] mb-[16px]">
-                   Request a home tour
-                 </h3>
+              <div>
+                <h3 className="text-[18px] font-bold text-[#1F1F1F] mb-[16px] font-syne">
+                  Request a home tour
+                </h3>
 
-                 {/* Tour Type Tabs */}
-                 <div className="flex mb-[20px] border-b border-[#E8E8E8]">
-                   <button className="flex items-center gap-2 px-0 py-3 text-[#1F1F1F] text-[14px] font-medium relative border-b-2 border-[#1F1F1F] mr-6">
-                     <CalendarPurple className="w-4 h-4" style={{filter: 'brightness(0) saturate(0)'}} />
-                     <span>Schedule a Tour</span>
-                   </button>
-                   <button className="flex items-center gap-2 px-0 py-3 text-[#BEBEBE] text-[14px] font-medium hover:text-[#1F1F1F] transition-colors">
-                     <MessageText className="w-4 h-4 text-[#BEBEBE]" />
-                     <span>Request Quote</span>
-                   </button>
-                 </div>
+                <div className="flex justify-between w-full mb-[20px] border-b border-[#E8E8E8]">
+                  <button 
+                    onClick={() => setActiveTab('schedule')}
+                    className={`flex items-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
+                      activeTab === 'schedule' 
+                        ? 'text-[#1F1F1F] border-b-2 border-[#1F1F1F]' 
+                        : 'text-[#BEBEBE] hover:text-[#B592FF]'
+                    }`}
+                  >
+                    <Calendar className={`w-4 h-4 transition-colors ${activeTab === 'schedule' ? 'text-[#1F1F1F]' : 'text-[#BEBEBE] group-hover:text-[#B592FF]'}`} />
+                    <span>Schedule a Tour</span>
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('quote')}
+                    className={`flex items-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
+                      activeTab === 'quote' 
+                        ? 'text-[#1F1F1F] border-b-2 border-[#1F1F1F]' 
+                        : 'text-[#BEBEBE] hover:text-[#B592FF]'
+                    }`}
+                  >
+                    <MessageText className={`w-4 h-4 transition-colors ${activeTab === 'quote' ? 'text-[#1F1F1F]' : 'text-[#BEBEBE] group-hover:text-[#B592FF]'}`} />
+                    <span>Request Quote</span>
+                  </button>
+                </div>
 
-                 {/* Form */}
-                 <form className="space-y-4">
-                   {/* Phone Number */}
-                   <div className="relative">
-                     <div className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
-                       <Call className="w-4 h-4 text-[#B592FF]" />
-                       <span className="text-[14px] text-[#B592FF] font-medium">Phone Number</span>
-                     </div>
-                     <select className="w-full pl-[130px] pr-10 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#BEBEBE] bg-white appearance-none">
-                       <option></option>
-                     </select>
-                     <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                       <svg className="w-4 h-4 text-[#BEBEBE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                       </svg>
-                     </div>
-                   </div>
+                <form className="space-y-4">
+                  {activeTab === 'schedule' ? (
+                    <>
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                          <Call className="w-4 h-4 text-[#B592FF]" />
+                        </div>
+                        <input
+                          type="tel"
+                          placeholder="Phone Number"
+                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE]"
+                        />
+                      </div>
 
-                   {/* Select Date */}
-                   <div className="relative">
-                     <div className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
-                       <CalendarPurple className="w-4 h-4" />
-                       <span className="text-[14px] text-[#B592FF] font-medium">Select Date</span>
-                     </div>
-                     <select className="w-full pl-[115px] pr-10 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#BEBEBE] bg-white appearance-none">
-                       <option></option>
-                     </select>
-                     <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                       <svg className="w-4 h-4 text-[#BEBEBE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                       </svg>
-                     </div>
-                   </div>
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => dateInputRef.current?.showPicker()}>
+                          <Calendar className="w-4 h-4 text-[#B592FF]" />
+                        </div>
+                        <input
+                          ref={dateInputRef}
+                          type="date"
+                          placeholder="Select Date"
+                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE] [&::-webkit-calendar-picker-indicator]:hidden"
+                        />
+                      </div>
 
-                   {/* Time */}
-                   <div className="relative">
-                     <div className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
-                       <ClockPurple className="w-4 h-4" />
-                       <span className="text-[14px] text-[#B592FF] font-medium">11:00 AM</span>
-                     </div>
-                     <select className="w-full pl-[95px] pr-10 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#BEBEBE] bg-white appearance-none">
-                       <option></option>
-                     </select>
-                     <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                       <svg className="w-4 h-4 text-[#BEBEBE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                       </svg>
-                     </div>
-                   </div>
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => timeInputRef.current?.showPicker()}>
+                          <ClockPurple className="w-4 h-4 text-[#B592FF]" />
+                        </div>
+                        <input
+                          ref={timeInputRef}
+                          type="time"
+                          defaultValue="00:00"
+                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white [&::-webkit-calendar-picker-indicator]:hidden"
+                        />
+                      </div>
 
-                   {/* Phone Input */}
-                   <div className="relative">
-                     <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                       <MessageText className="w-4 h-4 text-[#B592FF]" />
-                     </div>
-                     <input
-                       type="tel"
-                       placeholder="+ 1 234 567 890"
-                       className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] bg-white text-[#1F1F1F] placeholder-[#BEBEBE]"
-                     />
-                   </div>
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                          <SmsPurple className="w-4 h-4 text-[#B592FF]" />
+                        </div>
+                        <input
+                          type="email"
+                          placeholder="Email Address"
+                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] bg-white text-[#1F1F1F] placeholder-[#BEBEBE]"
+                        />
+                      </div>
 
-                   <button
-                     type="submit"
-                     className="w-full bg-[#1F1F1F] text-white py-4 rounded-[12px] font-bold hover:bg-[#2F2F2F] transition-colors text-[14px] mt-6"
-                   >
-                     Schedule a Tour
-                   </button>
-                 </form>
-               </div>
-             </div>
-           </div>
+                      <button
+                        type="submit"
+                        className="w-full bg-[#1F1F1F] text-white py-4 rounded-[12px] font-bold hover:bg-[#2F2F2F] transition-colors text-[14px] mt-6"
+                      >
+                        Schedule a Tour
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                          <Call className="w-4 h-4 text-[#B592FF]" />
+                        </div>
+                        <input
+                          type="tel"
+                          placeholder="Phone Number"
+                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE]"
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => dateInputRef.current?.showPicker()}>
+                          <Calendar className="w-4 h-4 text-[#B592FF]" />
+                        </div>
+                        <input
+                          ref={dateInputRef}
+                          type="date"
+                          placeholder="dd/mm/yyyy"
+                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE] [&::-webkit-calendar-picker-indicator]:hidden"
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => timeInputRef.current?.showPicker()}>
+                          <ClockPurple className="w-4 h-4 text-[#B592FF]" />
+                        </div>
+                        <input
+                          ref={timeInputRef}
+                          type="time"
+                          defaultValue="00:00"
+                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white [&::-webkit-calendar-picker-indicator]:hidden"
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                          <SmsPurple className="w-4 h-4 text-[#B592FF]" />
+                        </div>
+                        <input
+                          type="email"
+                          placeholder="Email Address"
+                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE]"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full bg-[#1F1F1F] text-white py-4 rounded-[12px] font-bold hover:bg-[#2F2F2F] transition-colors text-[14px] mt-6"
+                      >
+                        Request Quote
+                      </button>
+                    </>
+                  )}
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Separator Line - Desktop: Full width, Mobile: Below price card */}
         <div className="lg:hidden w-full h-[1px] bg-[#CCD0D8] mb-8"></div>
 
-        {/* Property Details Section - Same width as left column */}
         <div className="lg:w-2/3 w-full mb-8">
           <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
             Property Details
           </h2>
           
           <div className="space-y-[32px]">
-            {/* Interior Details Accordion */}
             <div className="border border-[#E5E7EB] rounded-[15px] overflow-hidden bg-white">
-              {/* Header - Colored Background */}
               <button 
                 onClick={() => toggleAccordion('interiorDetails')}
                 className="w-full flex items-center justify-between p-[16px] bg-[#F7F2FF] hover:bg-[#F0E9FF] transition-colors"
@@ -717,7 +718,6 @@ export default function PropertyDetailClient() {
                 </svg>
               </button>
               
-              {/* Interior Details Content - White Background */}
               <div 
                 className={`overflow-hidden transition-all duration-300 ease-in-out bg-white ${
                   accordionState.interiorDetails 
@@ -726,75 +726,71 @@ export default function PropertyDetailClient() {
                 }`}
               >
                 <div className="px-[16px] py-[16px]">
-                <div className="space-y-[16px]">
-                  <div>
-                    <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Interior Details</h4>
-                    <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
-                      <div className="flex items-center lg:w-[274px]">
-                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Basement: Partial,Storage Space</p>
+                  <div className="space-y-[16px]">
+                    <div>
+                      <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Interior Details</h4>
+                      <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
+                        <div className="flex items-center lg:w-[274px]">
+                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Basement: Partial,Storage Space</p>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Number of Rooms: 10</p>
+                        </div>
                       </div>
+                    </div>
+
+                    <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
+
+                    <div>
+                      <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Beds & Baths</h4>
+                      <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
+                        <div className="flex items-center lg:w-[274px]">
+                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Bedrooms: 5</p>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Bathrooms: 5</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
+
+                    <div>
+                      <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Dimensions and Layout</h4>
                       <div className="flex items-center">
                         <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Number of Rooms: 10</p>
+                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Living Area: 2500 Square Feet</p>
+                      </div>
+                    </div>
+
+                    <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
+
+                    <div>
+                      <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Heating & Cooling</h4>
+                      <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
+                        <div className="flex items-center lg:w-[274px]">
+                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Heating: Central</p>
+                        </div>
+                        <div className="flex items-center lg:w-[218px]">
+                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Has Heating</p>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Heating Fuel: Central</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Separator Line */}
-                  <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
-
-                  <div>
-                    <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Beds & Baths</h4>
-                    <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
-                      <div className="flex items-center lg:w-[274px]">
-                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Bedrooms: 5</p>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Bathrooms: 5</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Separator Line */}
-                  <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
-
-                  <div>
-                    <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Dimensions and Layout</h4>
-                    <div className="flex items-center">
-                      <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                      <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Living Area: 2500 Square Feet</p>
-                    </div>
-                  </div>
-
-                  {/* Separator Line */}
-                  <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
-
-                  <div>
-                    <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Heating & Cooling</h4>
-                    <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
-                      <div className="flex items-center lg:w-[274px]">
-                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Heating: Central</p>
-                      </div>
-                      <div className="flex items-center lg:w-[218px]">
-                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Has Heating</p>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Heating Fuel: Central</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 </div>
               </div>
             </div>
 
-            {/* Property Size Accordion */}
             <div className="border border-[#E5E7EB] rounded-[16px] overflow-hidden bg-white">
               <button 
                 onClick={() => toggleAccordion('propertySize')}
@@ -813,7 +809,6 @@ export default function PropertyDetailClient() {
                 </svg>
               </button>
               
-              {/* Property Size Content */}
               <div 
                 className={`overflow-hidden transition-all duration-300 ease-in-out bg-white ${
                   accordionState.propertySize 
@@ -841,7 +836,6 @@ export default function PropertyDetailClient() {
               </div>
             </div>
 
-            {/* Land Area Accordion */}
             <div className="border border-[#E5E7EB] rounded-[16px] overflow-hidden bg-white">
               <button 
                 onClick={() => toggleAccordion('landArea')}
@@ -860,7 +854,6 @@ export default function PropertyDetailClient() {
                 </svg>
               </button>
               
-              {/* Land Area Content */}
               <div 
                 className={`overflow-hidden transition-all duration-300 ease-in-out bg-white ${
                   accordionState.landArea 
@@ -888,7 +881,6 @@ export default function PropertyDetailClient() {
               </div>
             </div>
 
-            {/* Year Build Accordion */}
             <div className="border border-[#E5E7EB] rounded-[16px] overflow-hidden bg-white">
               <button 
                 onClick={() => toggleAccordion('yearBuild')}
@@ -907,7 +899,6 @@ export default function PropertyDetailClient() {
                 </svg>
               </button>
               
-              {/* Year Build Content */}
               <div 
                 className={`overflow-hidden transition-all duration-300 ease-in-out bg-white ${
                   accordionState.yearBuild 
@@ -935,106 +926,96 @@ export default function PropertyDetailClient() {
               </div>
             </div>
           </div>
-        <div className="w-full h-[1px] bg-[#CCD0D8] my-[56px]"></div>
-
+          <div className="w-full h-[1px] bg-[#CCD0D8] my-[56px]"></div>
         </div>
-                {/* Separator Line */}
-        
-                  {/* Listing by Agent Section */}
-          <div className="lg:w-2/3 w-full mb-[24px]">
-            <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
-              Listing by Agent
-            </h2>
-            
-            <div className="bg-[#F7F2FF] border border-[#E7DCFF] rounded-[15px] p-[24px]">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-[24px] lg:gap-[16px]">
-                {/* Agent Info */}
-                <div className="flex items-center gap-[16px]">
-                  {/* Agent Avatar */}
-                  <div className="w-[64px] h-[64px] rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                    <Image
-                      src={Agent1} 
-                      alt="Edwin Martins"
-                      width={64}
-                      height={64}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  
-                  {/* Agent Details */}
-                  <div>
-                    <h3 className="text-[20px] leading-[24px] font-bold font-syne text-[#191A23] mb-[4px]">
-                      Edwin Martins
-                    </h3>
-                    <p className="text-[16px] leading-[20px] font-light text-[#667389] font-hanken">
-                      Property Advisor
-                    </p>
-                  </div>
+
+        <div className="lg:w-2/3 w-full mb-[24px]">
+          <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
+            Listing by Agent
+          </h2>
+          
+          <div className="bg-[#F7F2FF] border border-[#E7DCFF] rounded-[15px] p-[24px]">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-[24px] lg:gap-[16px]">
+              <div className="flex items-center gap-[16px]">
+                <div className="w-[64px] h-[64px] rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
+                  <Image
+                    src={Agent1} 
+                    alt="Edwin Martins"
+                    width={64}
+                    height={64}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 
-                {/* Action Buttons */}
-                <div className="flex flex-col lg:flex-row gap-[12px] lg:gap-[16px] w-full lg:w-auto">
-                  <button className="w-full lg:w-auto px-[24px] py-[16px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-[#F0E9FF] transition-colors">
-                    <span className="text-[16px] leading-[20px] font-bold">Ask Question</span>
-                  </button>
-                  <button className="w-full lg:w-auto px-[24px] py-[16px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-[#F0E9FF] transition-colors">
-                    <span className="text-[16px] leading-[20px] font-bold">Contact Agent</span>
-                  </button>
+                <div>
+                  <h3 className="text-[20px] leading-[24px] font-bold font-syne text-[#191A23] mb-[4px]">
+                    Edwin Martins
+                  </h3>
+                  <p className="text-[16px] leading-[20px] font-light text-[#667389] font-hanken">
+                    Property Advisor
+                  </p>
                 </div>
+              </div>
+              
+              <div className="flex flex-col lg:flex-row gap-[12px] lg:gap-[16px] w-full lg:w-auto">
+                <button className="w-full lg:w-auto px-[24px] py-[16px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-[#F0E9FF] transition-colors">
+                  <span className="text-[16px] leading-[20px] font-bold">Ask Question</span>
+                </button>
+                <button className="w-full lg:w-auto px-[24px] py-[16px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-[#F0E9FF] transition-colors">
+                  <span className="text-[16px] leading-[20px] font-bold">Contact Agent</span>
+                </button>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Map View Section */}
-          <div className="lg:w-2/3 w-full mb-[24px]">
-            <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
-              Map View
-            </h2>
-            
-            <div className="w-full h-[300px] lg:h-[400px] rounded-[15px] overflow-hidden border border-[#E5E7EB]">
-              <MapContainer
-                center={[40.7589, -73.9851]} // New York coordinates
-                zoom={12}
-                scrollWheelZoom={false}
-                className="w-full h-full"
-                zoomControl={true}
-              >
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-              </MapContainer>
-            </div>
+        <div className="lg:w-2/3 w-full mb-[24px]">
+          <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
+            Map View
+          </h2>
+          
+          <div className="w-full h-[300px] lg:h-[400px] rounded-[15px] overflow-hidden border border-[#E5E7EB]">
+            <MapContainer
+              center={[40.7589, -73.9851]}
+              zoom={12}
+              scrollWheelZoom={false}
+              className="w-full h-full"
+              zoomControl={true}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+            </MapContainer>
           </div>
+        </div>
 
-          {/* Similar Listings Section */}
-          <div className="w-full mb-[24px]">
-            <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
-              Similar Listings
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {similarProperties.map((property, index) => (
-                <PropertyCard
-                  key={index}
-                  price={property.price}
-                  title={property.title}
-                  location={property.location}
-                  beds={property.beds}
-                  baths={property.baths}
-                  area={property.area}
-                  image={property.image}
-                  isFeatured={property.isFeatured}
-                  isMonthly={property.isMonthly}
-                  slug={property.slug}
-                  layoutMode="grid"
-                />
-              ))}
-            </div>
+        <div className="w-full mb-[24px]">
+          <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
+            Similar Listings
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {similarProperties.map((property, index) => (
+              <PropertyCard
+                key={index}
+                price={property.price}
+                title={property.title}
+                location={property.location}
+                beds={property.beds}
+                baths={property.baths}
+                area={property.area}
+                image={property.image}
+                isFeatured={property.isFeatured}
+                isMonthly={property.isMonthly}
+                slug={property.slug}
+                layoutMode="grid"
+              />
+            ))}
           </div>
+        </div>
       </SectionContainer>
 
-      {/* Photo Gallery Modal */}
       <PhotoGalleryModal
         isOpen={isPhotoGalleryOpen}
         onClose={closePhotoGallery}
@@ -1046,8 +1027,3 @@ export default function PropertyDetailClient() {
     </div>
   );
 }
-
-
-
-
-
