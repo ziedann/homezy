@@ -102,7 +102,7 @@ export default function SearchPropertyClient() {
     if (saleRent === 'sale' || saleRent === 'rent') {
       setSaleRentType(saleRent)
     } else {
-      setSaleRentType('rent') // Default to rent if no saleRent param
+      setSaleRentType(null) // Clear state if no saleRent param
     }
 
     // Create FilterCriteria from query params or use defaults
@@ -122,7 +122,7 @@ export default function SearchPropertyClient() {
     }
     
     const filterCriteria: FilterCriteria = {
-      type: saleRent === 'sale' || saleRent === 'rent' ? saleRent : 'rent', // Use saleRent param or 'rent' as default
+      type: saleRent === 'sale' || saleRent === 'rent' ? saleRent : null, // Use saleRent param or null if no param
       category: type || '',
       bedrooms: bedrooms || '',
       bathrooms: bathrooms || '',
@@ -134,6 +134,12 @@ export default function SearchPropertyClient() {
       maxPrice: initialMaxPrice
     }
     setActiveFilters(filterCriteria)
+    
+    // Clear saved filters if no URL parameters (fresh page load)
+    if (!saleRent && !type && !bedrooms && !bathrooms && !floorArea && !minYear && !maxYear && !location && !minPrice && !maxPrice) {
+      setSavedFilters(null)
+    }
+    
     setHasSearched(true)
     
     isInitialized.current = true

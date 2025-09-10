@@ -104,6 +104,7 @@ export default function SearchMap({
   zoom = 12,
   hideZoomControls = false,
   filterCriteria,
+  showEmptyState = true,
 }: SearchMapProps) {
   const tileUrl = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
   
@@ -241,6 +242,21 @@ export default function SearchMap({
   
   // Show popup when we have selected property and either position or fallback to center
   const shouldShowPopup = selectedId && selectedProperty
+
+  // Show empty state if no properties found and showEmptyState is true
+  if (filteredProperties.length === 0 && showEmptyState) {
+    return (
+      <div className="relative w-full h-[400px] rounded-[16px] overflow-hidden border border-[#191A23] bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🗺️</div>
+          <h3 className="text-xl font-semibold text-[#191A23] mb-2">No Properties on Map</h3>
+          <p className="text-[#6B7280] text-sm">
+            No properties match your current filter criteria.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div ref={containerRef} className={`relative w-full h-[400px] rounded-[16px] overflow-hidden border border-[#191A23] bg-white z-[1] ${hideZoomControls ? 'hide-zoom-controls' : ''}`}>

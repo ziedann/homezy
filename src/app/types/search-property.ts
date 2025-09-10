@@ -44,6 +44,7 @@ export interface SearchMapProps {
   zoom?: number
   hideZoomControls?: boolean
   filterCriteria?: FilterCriteria | null
+  showEmptyState?: boolean
 }
 
 export interface PopupPosition {
