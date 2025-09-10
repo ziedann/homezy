@@ -12,6 +12,8 @@ import { Property } from "@/app/types/search-property";
 import SectionContainer from "@/app/components/ui/SectionContainer";
 import PropertyCard from "@/app/components/ui/PropertyCard";
 import PhotoGalleryModal from "@/app/components/ui/PhotoGalleryModal";
+import { DatePicker } from "@/components/ui/DatePicker";
+import { TimePicker } from "@/components/ui/TimePicker";
 
 import Bed from "@assets/icons/bed.svg";
 import Bath from "@assets/icons/bath.svg";
@@ -49,9 +51,17 @@ export default function PropertyDetailClient() {
     landArea: false,
     yearBuild: false
   });
-
-  const dateInputRef = useRef<HTMLInputElement>(null);
-  const timeInputRef = useRef<HTMLInputElement>(null);
+  // State untuk Schedule a Tour tab
+  const [scheduleDate, setScheduleDate] = useState<Date | undefined>(undefined);
+  const [scheduleTime, setScheduleTime] = useState<string>("");
+  const [schedulePhone, setSchedulePhone] = useState<string>("");
+  const [scheduleEmail, setScheduleEmail] = useState<string>("");
+  
+  // State untuk Request Quote tab
+  const [quoteDate, setQuoteDate] = useState<Date | undefined>(undefined);
+  const [quoteTime, setQuoteTime] = useState<string>("");
+  const [quotePhone, setQuotePhone] = useState<string>("");
+  const [quoteEmail, setQuoteEmail] = useState<string>("");
 
   const toggleAccordion = (section: keyof typeof accordionState) => {
     setAccordionState(prev => ({
@@ -365,7 +375,7 @@ export default function PropertyDetailClient() {
                   className="w-full h-full object-cover"
                   onClick={() => openPhotoGallery(2)}
                 />
-                <div className="absolute bottom-[16px] right-[16px]">
+                  <div className="absolute bottom-[16px] right-[16px]">
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
@@ -375,9 +385,9 @@ export default function PropertyDetailClient() {
                   >
                     <Gallery className="w-4 h-4 text-[#191A23] transition-colors" />
                     <span className="text-[16px] leading-[20px] font-bold font-hanken text-[#191A23] transition-colors">
-                      Show All Photos
-                    </span>
-                  </button>
+                        Show All Photos
+                      </span>
+                    </button>
                 </div>
               </div>
             </div>
@@ -441,12 +451,12 @@ export default function PropertyDetailClient() {
           <div className="lg:col-span-2">
             <div className="flex flex-col lg:flex-row items-start lg:justify-between gap-[24px] mb-[32px]">
               <div className="flex flex-col gap-[8px]">
-                <h1 className="text-[28px] lg:text-[40px] leading-[36px] lg:leading-[48px] font-bold font-syne text-[#191A23]">
-                  {property.title}
-                </h1>
-                <div className="text-[20px] leading-[30px] text-[#686A79] font-light font-hanken">
-                  {property.location}
-                </div>
+              <h1 className="text-[28px] lg:text-[40px] leading-[36px] lg:leading-[48px] font-bold font-syne text-[#191A23]">
+                {property.title}
+              </h1>
+              <div className="text-[20px] leading-[30px] text-[#686A79] font-light font-hanken">
+                {property.location}
+              </div>
               </div>
               <button className="flex items-center gap-[8px] lg:px-[32px] lg:py-[16px] px-[24px] py-[10px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-gray-50 transition-colors">
                 <Share className="w-4 h-4" />
@@ -532,85 +542,76 @@ export default function PropertyDetailClient() {
             </div>
             <div className="hidden lg:block w-full h-[1px] bg-[#CCD0D8] my-[56px]"></div>
           </div>
-
-          <div>
+          
+           <div>
             <div className="bg-[#F3F2FF] rounded-[20px] p-[24px] sticky top-4 border border-[#191A23]">
               <div className="lg:mb-[24px] mb-[16px]">
-                <div className="text-[14px] text-[#8B8B8B] font-medium mb-[8px]">Price</div>
+                 <div className="text-[14px] text-[#8B8B8B] font-medium mb-[8px]">Price</div>
                 <div className="lg:text-[42px] lg:leading-[48px] text-[32px] leading-[38px] font-bold text-[#1F1F1F] font-syne">
-                  {property.price}
-                </div>
-              </div>
+                   {property.price}
+                 </div>
+               </div>
 
-              <hr className="border-[#E5E4FF] mb-[24px]" />
+               <hr className="border-[#E5E4FF] mb-[24px]" />
 
-              <div>
+               <div>
                 <h3 className="text-[18px] font-bold text-[#1F1F1F] mb-[16px] font-syne">
-                  Request a home tour
-                </h3>
+                   Request a home tour
+                 </h3>
 
-                <div className="flex w-full mb-[20px] border-b border-[#E8E8E8]">
-                  <button 
-                    onClick={() => setActiveTab('schedule')}
-                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
-                      activeTab === 'schedule' 
-                        ? 'text-[#1F1F1F] border-b-2 border-[#1F1F1F]' 
-                        : 'text-[#BEBEBE] hover:text-[#B592FF]'
-                    }`}
-                  >
-                    <Calendar className={`w-4 h-4 transition-colors ${activeTab === 'schedule' ? 'text-[#1F1F1F]' : 'text-[#BEBEBE] group-hover:text-[#B592FF]'}`} />
-                    <span>Schedule a Tour</span>
-                  </button>
-                  <button 
-                    onClick={() => setActiveTab('quote')}
-                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
-                      activeTab === 'quote' 
-                        ? 'text-[#1F1F1F] border-b-2 border-[#1F1F1F]' 
-                        : 'text-[#BEBEBE] hover:text-[#B592FF]'
-                    }`}
-                  >
-                    <MessageText className={`w-4 h-4 transition-colors ${activeTab === 'quote' ? 'text-[#1F1F1F]' : 'text-[#BEBEBE] group-hover:text-[#B592FF]'}`} />
-                    <span>Request Quote</span>
-                  </button>
-                </div>
+                 <div className="flex w-full mb-[20px] border-b border-[#E8E8E8]">
+                   <button 
+                     onClick={() => setActiveTab('schedule')}
+                     className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
+                       activeTab === 'schedule' 
+                         ? 'text-[#1F1F1F] border-b-2 border-[#1F1F1F]' 
+                         : 'text-[#BEBEBE] hover:text-[#B592FF]'
+                     }`}
+                   >
+                     <Calendar className={`w-4 h-4 transition-colors ${activeTab === 'schedule' ? 'text-[#1F1F1F]' : 'text-[#BEBEBE] group-hover:text-[#B592FF]'}`} />
+                     <span>Schedule a Tour</span>
+                   </button>
+                   <button 
+                     onClick={() => setActiveTab('quote')}
+                     className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
+                       activeTab === 'quote' 
+                         ? 'text-[#1F1F1F] border-b-2 border-[#1F1F1F]' 
+                         : 'text-[#BEBEBE] hover:text-[#B592FF]'
+                     }`}
+                   >
+                     <MessageText className={`w-4 h-4 transition-colors ${activeTab === 'quote' ? 'text-[#1F1F1F]' : 'text-[#BEBEBE] group-hover:text-[#B592FF]'}`} />
+                     <span>Request Quote</span>
+                   </button>
+                 </div>
 
-                <form className="space-y-4">
+                 <form className="space-y-4">
                   {activeTab === 'schedule' ? (
                     <>
-                      <div className="relative">
+                   <div className="relative">
                         <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                          <Call className="w-4 h-4 text-[#B592FF]" />
-                        </div>
+                       <Call className="w-4 h-4 text-[#B592FF]" />
+                     </div>
                         <input
                           type="tel"
                           placeholder="Phone Number"
+                          value={schedulePhone}
+                          onChange={(e) => setSchedulePhone(e.target.value)}
                           className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE]"
                         />
-                      </div>
+                     </div>
 
-                      <div className="relative">
-                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => dateInputRef.current?.showPicker()}>
-                          <Calendar className="w-4 h-4 text-[#B592FF]" />
-                        </div>
-                        <input
-                          ref={dateInputRef}
-                          type="date"
-                          placeholder="Select Date"
-                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE] [&::-webkit-calendar-picker-indicator]:hidden"
-                        />
-                      </div>
+                      <DatePicker
+                        value={scheduleDate}
+                        onChange={setScheduleDate}
+                        placeholder="Select Date"
+                        minDate={new Date()}
+                      />
 
-                      <div className="relative">
-                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => timeInputRef.current?.showPicker()}>
-                          <ClockPurple className="w-4 h-4 text-[#B592FF]" />
-                        </div>
-                        <input
-                          ref={timeInputRef}
-                          type="time"
-                          defaultValue="00:00"
-                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white [&::-webkit-calendar-picker-indicator]:hidden"
-                        />
-                      </div>
+                      <TimePicker
+                        value={scheduleTime}
+                        onChange={setScheduleTime}
+                        placeholder="Select Time"
+                      />
 
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
@@ -619,9 +620,11 @@ export default function PropertyDetailClient() {
                         <input
                           type="email"
                           placeholder="Email Address"
+                          value={scheduleEmail}
+                          onChange={(e) => setScheduleEmail(e.target.value)}
                           className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] bg-white text-[#1F1F1F] placeholder-[#BEBEBE]"
                         />
-                      </div>
+                   </div>
 
                       <button
                         type="submit"
@@ -632,64 +635,57 @@ export default function PropertyDetailClient() {
                     </>
                   ) : (
                     <>
-                      <div className="relative">
+                   <div className="relative">
                         <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                           <Call className="w-4 h-4 text-[#B592FF]" />
-                        </div>
+                     </div>
                         <input
                           type="tel"
                           placeholder="Phone Number"
+                          value={quotePhone}
+                          onChange={(e) => setQuotePhone(e.target.value)}
                           className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE]"
                         />
-                      </div>
+                     </div>
 
-                      <div className="relative">
-                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => dateInputRef.current?.showPicker()}>
-                          <Calendar className="w-4 h-4 text-[#B592FF]" />
-                        </div>
-                        <input
-                          ref={dateInputRef}
-                          type="date"
-                          placeholder="dd/mm/yyyy"
-                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE] [&::-webkit-calendar-picker-indicator]:hidden"
-                        />
-                      </div>
+                      <DatePicker
+                        value={quoteDate}
+                        onChange={setQuoteDate}
+                        placeholder="Select Date"
+                        minDate={new Date()}
+                      />
 
-                      <div className="relative">
-                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => timeInputRef.current?.showPicker()}>
-                          <ClockPurple className="w-4 h-4 text-[#B592FF]" />
-                        </div>
-                        <input
-                          ref={timeInputRef}
-                          type="time"
-                          defaultValue="00:00"
-                          className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white [&::-webkit-calendar-picker-indicator]:hidden"
-                        />
-                      </div>
+                      <TimePicker
+                        value={quoteTime}
+                        onChange={setQuoteTime}
+                        placeholder="Select Time"
+                      />
 
-                      <div className="relative">
-                        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                   <div className="relative">
+                     <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                           <SmsPurple className="w-4 h-4 text-[#B592FF]" />
-                        </div>
-                        <input
+                     </div>
+                     <input
                           type="email"
                           placeholder="Email Address"
+                          value={quoteEmail}
+                          onChange={(e) => setQuoteEmail(e.target.value)}
                           className="w-full pl-12 pr-4 py-4 border border-[#E8E8E8] rounded-[12px] focus:outline-none focus:border-[#B592FF] transition-colors text-[14px] text-[#1F1F1F] bg-white placeholder-[#BEBEBE]"
-                        />
-                      </div>
+                     />
+                   </div>
 
-                      <button
-                        type="submit"
-                        className="w-full bg-[#1F1F1F] text-white py-4 rounded-[12px] font-bold hover:bg-[#2F2F2F] transition-colors text-[14px] mt-6"
-                      >
+                   <button
+                     type="submit"
+                     className="w-full bg-[#1F1F1F] text-white py-4 rounded-[12px] font-bold hover:bg-[#2F2F2F] transition-colors text-[14px] mt-6"
+                   >
                         Request Quote
-                      </button>
+                   </button>
                     </>
                   )}
-                </form>
-              </div>
-            </div>
-          </div>
+                 </form>
+               </div>
+             </div>
+           </div>
         </div>
 
         <div className="lg:hidden w-full h-[1px] bg-[#CCD0D8] mb-8"></div>
@@ -726,67 +722,67 @@ export default function PropertyDetailClient() {
                 }`}
               >
                 <div className="px-[16px] py-[16px]">
-                  <div className="space-y-[16px]">
-                    <div>
-                      <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Interior Details</h4>
-                      <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
-                        <div className="flex items-center lg:w-[274px]">
-                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Basement: Partial,Storage Space</p>
-                        </div>
-                        <div className="flex items-center">
-                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Number of Rooms: 10</p>
-                        </div>
+                <div className="space-y-[16px]">
+                  <div>
+                    <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Interior Details</h4>
+                    <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
+                      <div className="flex items-center lg:w-[274px]">
+                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Basement: Partial,Storage Space</p>
                       </div>
-                    </div>
-
-                    <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
-
-                    <div>
-                      <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Beds & Baths</h4>
-                      <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
-                        <div className="flex items-center lg:w-[274px]">
-                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Bedrooms: 5</p>
-                        </div>
-                        <div className="flex items-center">
-                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Bathrooms: 5</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
-
-                    <div>
-                      <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Dimensions and Layout</h4>
                       <div className="flex items-center">
                         <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Living Area: 2500 Square Feet</p>
-                      </div>
-                    </div>
-
-                    <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
-
-                    <div>
-                      <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Heating & Cooling</h4>
-                      <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
-                        <div className="flex items-center lg:w-[274px]">
-                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Heating: Central</p>
-                        </div>
-                        <div className="flex items-center lg:w-[218px]">
-                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Has Heating</p>
-                        </div>
-                        <div className="flex items-center">
-                          <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
-                          <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Heating Fuel: Central</p>
-                        </div>
+                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Number of Rooms: 10</p>
                       </div>
                     </div>
                   </div>
+
+                  <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
+
+                  <div>
+                    <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Beds & Baths</h4>
+                    <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
+                      <div className="flex items-center lg:w-[274px]">
+                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Bedrooms: 5</p>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Bathrooms: 5</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
+
+                  <div>
+                    <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Dimensions and Layout</h4>
+                    <div className="flex items-center">
+                      <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                      <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Living Area: 2500 Square Feet</p>
+                    </div>
+                  </div>
+
+                  <div className="w-full h-[1px] bg-[#D6D7E0]"></div>
+
+                  <div>
+                    <h4 className="text-[16px] leading-[26px] font-light text-[#9CA3AF] mb-[16px]">Heating & Cooling</h4>
+                    <div className="flex flex-col lg:flex-row lg:gap-[8px] gap-[8px]">
+                      <div className="flex items-center lg:w-[274px]">
+                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Heating: Central</p>
+                      </div>
+                      <div className="flex items-center lg:w-[218px]">
+                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Has Heating</p>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-[6px] h-[6px] bg-[#191A23] rounded-full mr-[8px]"></div>
+                        <p className="text-[16px] leading-[20px] text-[#191A23] font-bold">Heating Fuel: Central</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -926,94 +922,94 @@ export default function PropertyDetailClient() {
               </div>
             </div>
           </div>
-          <div className="w-full h-[1px] bg-[#CCD0D8] my-[56px]"></div>
+        <div className="w-full h-[1px] bg-[#CCD0D8] my-[56px]"></div>
         </div>
-
-        <div className="lg:w-2/3 w-full mb-[24px]">
-          <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
-            Listing by Agent
-          </h2>
-          
-          <div className="bg-[#F7F2FF] border border-[#E7DCFF] rounded-[15px] p-[24px]">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-[24px] lg:gap-[16px]">
-              <div className="flex items-center gap-[16px]">
-                <div className="w-[64px] h-[64px] rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                  <Image
-                    src={Agent1} 
-                    alt="Edwin Martins"
-                    width={64}
-                    height={64}
-                    className="w-full h-full object-cover"
-                  />
+        
+          <div className="lg:w-2/3 w-full mb-[24px]">
+            <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
+              Listing by Agent
+            </h2>
+            
+            <div className="bg-[#F7F2FF] border border-[#E7DCFF] rounded-[15px] p-[24px]">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-[24px] lg:gap-[16px]">
+                <div className="flex items-center gap-[16px]">
+                  <div className="w-[64px] h-[64px] rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
+                    <Image
+                      src={Agent1} 
+                      alt="Edwin Martins"
+                      width={64}
+                      height={64}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-[20px] leading-[24px] font-bold font-syne text-[#191A23] mb-[4px]">
+                      Edwin Martins
+                    </h3>
+                    <p className="text-[16px] leading-[20px] font-light text-[#667389] font-hanken">
+                      Property Advisor
+                    </p>
+                  </div>
                 </div>
                 
-                <div>
-                  <h3 className="text-[20px] leading-[24px] font-bold font-syne text-[#191A23] mb-[4px]">
-                    Edwin Martins
-                  </h3>
-                  <p className="text-[16px] leading-[20px] font-light text-[#667389] font-hanken">
-                    Property Advisor
-                  </p>
+                <div className="flex flex-col lg:flex-row gap-[12px] lg:gap-[16px] w-full lg:w-auto">
+                  <button className="w-full lg:w-auto px-[24px] py-[16px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-[#F0E9FF] transition-colors">
+                    <span className="text-[16px] leading-[20px] font-bold">Ask Question</span>
+                  </button>
+                  <button className="w-full lg:w-auto px-[24px] py-[16px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-[#F0E9FF] transition-colors">
+                    <span className="text-[16px] leading-[20px] font-bold">Contact Agent</span>
+                  </button>
                 </div>
-              </div>
-              
-              <div className="flex flex-col lg:flex-row gap-[12px] lg:gap-[16px] w-full lg:w-auto">
-                <button className="w-full lg:w-auto px-[24px] py-[16px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-[#F0E9FF] transition-colors">
-                  <span className="text-[16px] leading-[20px] font-bold">Ask Question</span>
-                </button>
-                <button className="w-full lg:w-auto px-[24px] py-[16px] border border-[#191A23] text-[#191A23] rounded-[15px] hover:bg-[#F0E9FF] transition-colors">
-                  <span className="text-[16px] leading-[20px] font-bold">Contact Agent</span>
-                </button>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="lg:w-2/3 w-full mb-[24px]">
-          <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
-            Map View
-          </h2>
-          
-          <div className="w-full h-[300px] lg:h-[400px] rounded-[15px] overflow-hidden border border-[#E5E7EB]">
-            <MapContainer
+          <div className="lg:w-2/3 w-full mb-[24px]">
+            <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
+              Map View
+            </h2>
+            
+            <div className="w-full h-[300px] lg:h-[400px] rounded-[15px] overflow-hidden border border-[#E5E7EB]">
+              <MapContainer
               center={[40.7589, -73.9851]}
-              zoom={12}
-              scrollWheelZoom={false}
-              className="w-full h-full"
-              zoomControl={true}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-            </MapContainer>
+                zoom={12}
+                scrollWheelZoom={false}
+                className="w-full h-full"
+                zoomControl={true}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+              </MapContainer>
+            </div>
           </div>
-        </div>
 
-        <div className="w-full mb-[24px]">
-          <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
-            Similar Listings
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {similarProperties.map((property, index) => (
-              <PropertyCard
-                key={index}
-                price={property.price}
-                title={property.title}
-                location={property.location}
-                beds={property.beds}
-                baths={property.baths}
-                area={property.area}
-                image={property.image}
-                isFeatured={property.isFeatured}
-                isMonthly={property.isMonthly}
-                slug={property.slug}
-                layoutMode="grid"
-              />
-            ))}
+          <div className="w-full mb-[24px]">
+            <h2 className="text-[24px] lg:text-[28px] font-bold font-syne text-[#191A23] mb-6">
+              Similar Listings
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {similarProperties.map((property, index) => (
+                <PropertyCard
+                  key={index}
+                  price={property.price}
+                  title={property.title}
+                  location={property.location}
+                  beds={property.beds}
+                  baths={property.baths}
+                  area={property.area}
+                  image={property.image}
+                  isFeatured={property.isFeatured}
+                  isMonthly={property.isMonthly}
+                  slug={property.slug}
+                  layoutMode="grid"
+                />
+              ))}
+            </div>
           </div>
-        </div>
       </SectionContainer>
 
       <PhotoGalleryModal
