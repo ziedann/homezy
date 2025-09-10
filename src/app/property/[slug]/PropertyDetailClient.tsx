@@ -549,10 +549,10 @@ export default function PropertyDetailClient() {
                   Request a home tour
                 </h3>
 
-                <div className="flex justify-between w-full mb-[20px] border-b border-[#E8E8E8]">
+                <div className="flex w-full mb-[20px] border-b border-[#E8E8E8]">
                   <button 
                     onClick={() => setActiveTab('schedule')}
-                    className={`flex items-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
                       activeTab === 'schedule' 
                         ? 'text-[#1F1F1F] border-b-2 border-[#1F1F1F]' 
                         : 'text-[#BEBEBE] hover:text-[#B592FF]'
@@ -563,7 +563,7 @@ export default function PropertyDetailClient() {
                   </button>
                   <button 
                     onClick={() => setActiveTab('quote')}
-                    className={`flex items-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-[14px] font-medium relative transition-colors group ${
                       activeTab === 'quote' 
                         ? 'text-[#1F1F1F] border-b-2 border-[#1F1F1F]' 
                         : 'text-[#BEBEBE] hover:text-[#B592FF]'
