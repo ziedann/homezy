@@ -112,6 +112,7 @@ export default function SearchMap({
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [popupPosition, setPopupPosition] = useState<PopupPosition | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const mapRef = useRef<LeafletMap | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   
@@ -119,12 +120,15 @@ export default function SearchMap({
   useEffect(() => {
     const fetchProperties = async () => {
       try {
+        setIsLoading(true)
         const response = await fetch('/api/properties')
         const data = await response.json()
         setAllProperties(data.properties)
         setFilteredProperties(data.properties)
       } catch (error) {
         console.error('Failed to fetch properties:', error)
+      } finally {
+        setIsLoading(false)
       }
     }
     
@@ -138,46 +142,55 @@ export default function SearchMap({
       return
     }
 
-    const filtered = allProperties.filter((property) => {
-      // Type filter (sale/rent) - Check both type and isMonthly property
-      if (filterCriteria.type) {
-        if (filterCriteria.type === 'rent' && !property.isMonthly) return false
-        if (filterCriteria.type === 'sale' && property.isMonthly) return false
-      }
+    // Show loading state when filtering
+    setIsLoading(true)
 
-      // Category filter
-      if (filterCriteria.category && property.category !== filterCriteria.category) return false
+    // Simulate filtering delay for better UX
+    const filterTimeout = setTimeout(() => {
+      const filtered = allProperties.filter((property) => {
+        // Type filter (sale/rent) - Check both type and isMonthly property
+        if (filterCriteria.type) {
+          if (filterCriteria.type === 'rent' && !property.isMonthly) return false
+          if (filterCriteria.type === 'sale' && property.isMonthly) return false
+        }
 
-      // Bedrooms filter
-      if (filterCriteria.bedrooms && property.beds.toString() !== filterCriteria.bedrooms) return false
+        // Category filter
+        if (filterCriteria.category && property.category !== filterCriteria.category) return false
 
-      // Bathrooms filter
-      if (filterCriteria.bathrooms && property.baths.toString() !== filterCriteria.bathrooms) return false
+        // Bedrooms filter
+        if (filterCriteria.bedrooms && property.beds.toString() !== filterCriteria.bedrooms) return false
 
-      // Floor area filter
-      if (filterCriteria.floorArea && property.area !== filterCriteria.floorArea) return false
+        // Bathrooms filter
+        if (filterCriteria.bathrooms && property.baths.toString() !== filterCriteria.bathrooms) return false
 
-      // Price range filter
-      if (filterCriteria.minPrice && property.priceValue) {
-        const minPrice = parseInt(filterCriteria.minPrice)
-        if (property.priceValue < minPrice) return false
-      }
-      if (filterCriteria.maxPrice && property.priceValue) {
-        const maxPrice = parseInt(filterCriteria.maxPrice)
-        if (property.priceValue > maxPrice) return false
-      }
+        // Floor area filter
+        if (filterCriteria.floorArea && property.area !== filterCriteria.floorArea) return false
 
-      // Year built filter
-      if (filterCriteria.minYear && property.yearBuilt && property.yearBuilt < parseInt(filterCriteria.minYear)) return false
-      if (filterCriteria.maxYear && property.yearBuilt && property.yearBuilt > parseInt(filterCriteria.maxYear)) return false
+        // Price range filter
+        if (filterCriteria.minPrice && property.priceValue) {
+          const minPrice = parseInt(filterCriteria.minPrice)
+          if (property.priceValue < minPrice) return false
+        }
+        if (filterCriteria.maxPrice && property.priceValue) {
+          const maxPrice = parseInt(filterCriteria.maxPrice)
+          if (property.priceValue > maxPrice) return false
+        }
 
-      // Location filter
-      if (filterCriteria.location && property.location !== filterCriteria.location) return false
+        // Year built filter
+        if (filterCriteria.minYear && property.yearBuilt && property.yearBuilt < parseInt(filterCriteria.minYear)) return false
+        if (filterCriteria.maxYear && property.yearBuilt && property.yearBuilt > parseInt(filterCriteria.maxYear)) return false
 
-      return true
-    })
+        // Location filter
+        if (filterCriteria.location && property.location !== filterCriteria.location) return false
 
-    setFilteredProperties(filtered)
+        return true
+      })
+
+      setFilteredProperties(filtered)
+      setIsLoading(false)
+    }, 300) // 300ms delay for better UX
+
+    return () => clearTimeout(filterTimeout)
   }, [filterCriteria, allProperties])
   
   // Calculate popup position below marker
@@ -242,6 +255,21 @@ export default function SearchMap({
   
   // Show popup when we have selected property and either position or fallback to center
   const shouldShowPopup = selectedId && selectedProperty
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="relative w-full h-[400px] rounded-[16px] overflow-hidden border border-[#191A23] bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-[#191A23] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <h3 className="text-xl font-semibold text-[#191A23] mb-2">Loading Map...</h3>
+          <p className="text-[#6B7280] text-sm">
+            Please wait while we load the properties.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   // Show empty state if no properties found and showEmptyState is true
   if (filteredProperties.length === 0 && showEmptyState) {
