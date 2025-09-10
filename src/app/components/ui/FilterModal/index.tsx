@@ -21,7 +21,7 @@ interface FilterModalProps {
 }
 
 export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFilters, currentSaleRent, currentSavedFilters }: FilterModalProps) {
-  const [selectedType, setSelectedType] = useState<'sale' | 'rent' | null>(currentSaleRent || 'rent')
+  const [selectedType, setSelectedType] = useState<'sale' | 'rent' | null>(currentSaleRent || null)
   const [selectedBedrooms, setSelectedBedrooms] = useState<string>('')
   const [selectedBedroomsLabel, setSelectedBedroomsLabel] = useState<string>('')
   const [selectedBathrooms, setSelectedBathrooms] = useState<string>('')
@@ -192,7 +192,10 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFil
   // Clear sale/rent toggle
   const clearSaleRent = () => {
     setSelectedType(null) // Clear selection
-    // Don't notify parent immediately - wait for Apply Filter
+    // Notify parent immediately about clearing sale/rent
+    if (onClearFilters) {
+      onClearFilters(['saleRent'])
+    }
   }
 
   // Clear individual fields
@@ -476,11 +479,9 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFil
   // Sync with parent state when modal opens or props change
   useEffect(() => {
     if (isOpen) {
-      // Sync sale/rent type
-      setSelectedType(currentSaleRent || 'rent')
-      
-      // Sync saved filters
+      // Sync saved filters first
       if (currentSavedFilters) {
+        setSelectedType(currentSavedFilters.type || null)
         setSelectedBedrooms(currentSavedFilters.bedrooms || '')
         setSelectedBedroomsLabel(currentSavedFilters.bedrooms ? `${currentSavedFilters.bedrooms} bed${currentSavedFilters.bedrooms !== '1' ? 's' : ''}` : '')
         setSelectedBathrooms(currentSavedFilters.bathrooms || '')
@@ -492,7 +493,9 @@ export default function FilterModal({ isOpen, onClose, onApplyFilter, onClearFil
         setMaxYear(currentSavedFilters.maxYear || '')
         setMaxYearLabel(currentSavedFilters.maxYear || '')
       } else {
-        // Clear saved filters if no current saved filters
+        // Use currentSaleRent if no saved filters
+        setSelectedType(currentSaleRent || null)
+        // Clear other saved filters if no current saved filters
         setSelectedBedrooms('')
         setSelectedBedroomsLabel('')
         setSelectedBathrooms('')

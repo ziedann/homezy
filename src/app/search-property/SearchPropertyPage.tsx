@@ -24,7 +24,7 @@ export default function SearchPropertyClient() {
   const [activeFilters, setActiveFilters] = useState<FilterCriteria | null>(null)
   const [hasSearched, setHasSearched] = useState(true) // Show all data by default
   const [isLoading, setIsLoading] = useState(false)
-  const [saleRentType, setSaleRentType] = useState<'sale' | 'rent' | null>('rent')
+  const [saleRentType, setSaleRentType] = useState<'sale' | 'rent' | null>(null)
   const [quickFilters, setQuickFilters] = useState<{
     location: { value: string; label: string }
     price: { value: string; label: string }
@@ -209,8 +209,8 @@ export default function SearchPropertyClient() {
     
     // Handle saleRentType based on criteria.type
     if (criteria.type === null || criteria.type === undefined) {
-      // Reset to default rent state
-      setSaleRentType('rent')
+      // Clear sale/rent selection
+      setSaleRentType(null)
     } else {
       // Set the selected type
       setSaleRentType(criteria.type as 'sale' | 'rent')
@@ -412,7 +412,7 @@ export default function SearchPropertyClient() {
               onApplyFilter={handleApplyFilter}
               onClearFilters={(clearedFields) => {
                 setSavedFilters(null)
-                setSaleRentType('rent') // Set to rent for default state
+                setSaleRentType(null) // Clear sale/rent selection
                 
                 // Clear specific params from URL based on cleared fields
                 if (clearedFields && clearedFields.length > 0) {
