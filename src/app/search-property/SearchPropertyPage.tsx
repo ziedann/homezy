@@ -374,7 +374,7 @@ export default function SearchPropertyClient() {
         minPrice: '',
         maxPrice: ''
       })
-      setHasSearched(true)
+    setHasSearched(true)
       
       // Clear URL params - use replace to avoid back button issues
       router.replace('/search-property', { scroll: false })

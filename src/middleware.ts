@@ -9,6 +9,7 @@ export function middleware(request: NextRequest) {
     '/',
     '/search-property',
     '/property',
+    '/post-property',
     '/sign-in',
     '/sign-up',
     '/404',

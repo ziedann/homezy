@@ -34,7 +34,7 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Main Content Container */}
-      <div className="flex-1 flex">
+      <div className="flex-1 flex flex-col lg:flex-row">
         {/* Left Section - Sign In Form (50%) */}
         <div className="w-full lg:w-1/2 flex flex-col px-8 lg:px-16">
           {/* Logo Container - Top */}
@@ -127,7 +127,7 @@ export default function SignInPage() {
                 </div>
 
                 {/* Remember Me & Forgot Password */}
-                <div className="flex items-center">
+                <div className="flex items-center justify-between">
                   <label className="flex items-center">
                     <input
                       type="checkbox"
@@ -139,6 +139,12 @@ export default function SignInPage() {
                       Remember Me
                     </span>
                   </label>
+                  <Link
+                    href="#"
+                    className="text-primary-500 text-[14px] font-medium hover:underline"
+                  >
+                    Forgot Password
+                  </Link>
                 </div>
 
                 {/* Sign In Button */}
@@ -193,7 +199,7 @@ export default function SignInPage() {
         </div>
 
         {/* Right Section - Testimonial (50%) */}
-        <div className="hidden lg:flex lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden">
+        <div className="w-full lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden flex items-center justify-center">
           {/* Background Pattern */}
           <div className="absolute inset-0">
             {/* Pattern Hero SVG */}

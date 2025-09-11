@@ -15,11 +15,12 @@ export default function Navbar() {
   const pathname = usePathname()
 
   const getNavbarBackground = () => {
-    // Check if we're on search-property or any property detail page
+    // Check if we're on search-property, post-property, or any property detail page
     const isSearchProperty = pathname === '/search-property'
+    const isPostProperty = pathname === '/post-property'
     const isPropertyDetail = pathname.startsWith('/property/')
     
-    if (isSearchProperty || isPropertyDetail) {
+    if (isSearchProperty || isPostProperty || isPropertyDetail) {
       return 'bg-gray-50' // Match the property detail page background
     }
     return 'bg-[#F7F2FF]' // Default background for other pages

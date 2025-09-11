@@ -38,7 +38,7 @@ export default function SignUpPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Main Content Container */}
-      <div className="flex-1 flex">
+      <div className="flex-1 flex flex-col lg:flex-row">
         {/* Left Section - Sign Up Form (50%) */}
         <div className="w-full lg:w-1/2 flex flex-col px-8 lg:px-12">
           {/* Logo Container - Top */}
@@ -307,7 +307,7 @@ export default function SignUpPage() {
         </div>
 
         {/* Right Section - Testimonial (50%) */}
-        <div className="hidden lg:flex lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden">
+        <div className="w-full lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden flex items-center justify-center">
           {/* Background Pattern */}
           <div className="absolute inset-0">
             {/* Pattern Hero SVG */}
