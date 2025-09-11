@@ -127,7 +127,7 @@ export default function SignInPage() {
                 </div>
 
                 {/* Remember Me & Forgot Password */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center">
                   <label className="flex items-center">
                     <input
                       type="checkbox"
@@ -139,12 +139,6 @@ export default function SignInPage() {
                       Remember Me
                     </span>
                   </label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-[#191A23] font-hanken font-bold text-[16px] hover:underline"
-                  >
-                    Forgot Password?
-                  </Link>
                 </div>
 
                 {/* Sign In Button */}

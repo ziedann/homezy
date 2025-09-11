@@ -15,8 +15,6 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
   const authPages = [
     '/sign-in',
     '/sign-up', 
-    '/forgot-password',
-    '/reset-password',
     '/404'
   ]
   

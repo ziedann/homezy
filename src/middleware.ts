@@ -11,8 +11,6 @@ export function middleware(request: NextRequest) {
     '/property',
     '/sign-in',
     '/sign-up',
-    '/forgot-password',
-    '/reset-password',
     '/404',
     '/api',
     '/favicon.ico',
