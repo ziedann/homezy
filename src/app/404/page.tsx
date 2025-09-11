@@ -1,10 +1,12 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import Logo from '@assets/icons/logo.svg'
 import ButtonText from '@/app/components/ui/ButtonText'
 import Footer from '@/app/components/layouts/Footer'
 
-export default function NotFound() {
+export default function NotFoundPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}

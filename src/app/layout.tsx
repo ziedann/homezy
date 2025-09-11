@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Hanken_Grotesk } from "next/font/google";
 import { Syne } from "next/font/google";
-import Navbar from "@/app/components/layouts/Navbar";
-import Footer from "@/app/components/layouts/Footer";
+import ConditionalLayout from "@/app/components/layouts/ConditionalLayout";
 import WebVitals from "@/app/components/utils/WebVitals";
 import LogoIcon from "@assets/icons/logo-icon.svg";
 import "./globals.css";
@@ -169,11 +168,9 @@ export default function RootLayout({
       </head>
       <body className="bg-[#FBFAFF] font-hanken">
         <WebVitals />
-        <Navbar />
-        <main id="main-content">
+        <ConditionalLayout>
           {children}
-        </main>
-        <Footer />
+        </ConditionalLayout>
       </body>
     </html>
   );

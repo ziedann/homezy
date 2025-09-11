@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import Logo from '@assets/icons/logo.svg'
 import ArrowDown from '@assets/icons/arrow-down.svg'
 import Menu from '@assets/icons/menu.svg'
@@ -98,11 +99,13 @@ export default function Navbar() {
             {renderNavLinks()}
           </div>
           
-          {/* Contact Button - Desktop */}
+          {/* Sign In Button - Desktop */}
           <div className="hidden lg:block">
-            <NavbarButton>
-              Contact Us
-            </NavbarButton>
+            <Link href="/sign-in">
+              <NavbarButton>
+                Sign In
+              </NavbarButton>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -129,9 +132,14 @@ export default function Navbar() {
                   </a>
                 ))}
                 <div className="pt-4">
-                  <NavbarButton className="w-full">
-                    Contact Us
-                  </NavbarButton>
+                  <Link 
+                    href="/sign-in" 
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <NavbarButton className="w-full">
+                      Sign In
+                    </NavbarButton>
+                  </Link>
                 </div>
               </div>
             </div>

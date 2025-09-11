@@ -20,7 +20,7 @@ export default function SectionHeader({
         {title}
       </h1>
       <div className='inline-flex items-center gap-[8px] lg:mt-0 md:mt-2 mt-1'>
-        <p className='lg:text-[18px] text-[16px] lg:leading-[22px] leading-[20px] font-bold font-hanken'>
+        <p className='lg:text-[18px] text-[16px] lg:leading-[22px] leading-[20px] font-bold font-hanken cursor-pointer'>
           {browseText}
         </p>
         {showArrowIcon && <ArrowRight className='lg:w-[20px] lg:h-[20px] w-[18px] h-[18px]' />}

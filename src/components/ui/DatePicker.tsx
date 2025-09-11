@@ -105,7 +105,7 @@ export function DatePicker({
               return false
             }}
             initialFocus
-            className="p-2 sm:p-4"
+            className="p-2 sm:p-4 [&_.rdp-nav]:flex [&_.rdp-nav]:items-center [&_.rdp-nav]:justify-between [&_.rdp-nav_button]:h-8 [&_.rdp-nav_button]:w-8 [&_.rdp-nav_button]:sm:h-10 [&_.rdp-nav_button]:sm:w-10 [&_.rdp-nav_button]:p-0 [&_.rdp-nav_button]:flex [&_.rdp-nav_button]:items-center [&_.rdp-nav_button]:justify-center [&_.rdp-caption]:flex [&_.rdp-caption]:items-center [&_.rdp-caption]:justify-center [&_.rdp-caption_label]:text-sm [&_.rdp-caption_label]:sm:text-base [&_.rdp-caption_label]:font-medium [&_.rdp-caption_label]:text-[#1F1F1F] [&_.rdp-caption_label]:leading-none"
             classNames={{
               root: "w-full",
               months: "flex flex-col",
@@ -113,7 +113,7 @@ export function DatePicker({
               nav: "flex items-center justify-between px-1 sm:px-2",
               button_previous: "h-8 w-8 sm:h-10 sm:w-10 p-0 hover:bg-[#F8F7FF] hover:text-[#B592FF] rounded-md transition-colors",
               button_next: "h-8 w-8 sm:h-10 sm:w-10 p-0 hover:bg-[#F8F7FF] hover:text-[#B592FF] rounded-md transition-colors",
-              month_caption: "flex justify-center pt-1 relative items-center",
+              month_caption: "flex justify-center items-center",
               caption_label: "text-sm sm:text-base font-medium text-[#1F1F1F]",
               table: "w-full border-collapse space-y-1",
               weekdays: "flex",

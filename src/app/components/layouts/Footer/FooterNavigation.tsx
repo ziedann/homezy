@@ -16,11 +16,11 @@ const agentLinks = [
 ]
 
 const utilityLinks = [
-  { href: '#', text: 'Sign In' },
-  { href: '#', text: 'Sign Up' },
-  { href: '#', text: 'Forgot Password' },
-  { href: '#', text: 'Reset Password' },
-  { href: '#', text: '404 Error Page' },
+  { href: '/sign-in', text: 'Sign In' },
+  { href: '/sign-up', text: 'Sign Up' },
+  { href: '/forgot-password', text: 'Forgot Password' },
+  { href: '/reset-password', text: 'Reset Password' },
+  { href: '/404', text: '404 Error Page' },
   { href: '#', text: 'Style Guides' },
   { href: '#', text: 'Licenses' },
   { href: '#', text: 'Change Log' },
