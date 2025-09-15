@@ -32,11 +32,11 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="bg-white">
       {/* Main Content Container */}
-      <div className="flex-1 flex flex-col lg:flex-row">
+      <div className="min-h-screen lg:h-screen flex flex-col lg:flex-row">
         {/* Left Section - Sign In Form (50%) */}
-        <div className="w-full lg:w-1/2 flex flex-col px-8 lg:px-16">
+        <div className="w-full lg:w-1/2 flex flex-col px-8 lg:px-16 pb-8 lg:pb-0">
           {/* Logo Container - Top */}
           <div className="pt-8 pb-4">
             <Link href="/">
@@ -199,7 +199,7 @@ export default function SignInPage() {
         </div>
 
         {/* Right Section - Testimonial (50%) */}
-        <div className="w-full lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden flex items-center justify-center">
+        <div className="w-full lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden flex items-center justify-center lg:h-screen h-auto py-12 lg:py-0 mt-8 lg:mt-0">
           {/* Background Pattern */}
           <div className="absolute inset-0">
             {/* Pattern Hero SVG */}
@@ -217,7 +217,7 @@ export default function SignInPage() {
           </div>
 
           {/* Testimonial Card */}
-          <div className="flex items-center justify-center w-full p-12 relative z-10">
+          <div className="flex items-center justify-center w-full p-6 lg:p-12 relative z-10">
             <TestimonialCard
               variant="auth"
               review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
@@ -230,7 +230,10 @@ export default function SignInPage() {
         </div>
       </div>
 
-      {/* <Footer /> */}
+      {/* Footer Section - Below the screen */}
+      <div className="bg-white">
+        <Footer />
+      </div>
     </div>
   );
 }

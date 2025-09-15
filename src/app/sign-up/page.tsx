@@ -35,9 +35,11 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <div className="flex-1 flex flex-col lg:flex-row">
-        <div className="w-full lg:w-1/2 flex flex-col px-8 lg:px-12">
+    <div className="bg-white">
+      {/* Main Content Container */}
+      <div className="min-h-screen lg:h-screen flex flex-col lg:flex-row">
+        {/* Left Section - Sign Up Form (50%) */}
+        <div className="w-full lg:w-1/2 flex flex-col px-8 lg:px-12 pb-8 lg:pb-0">
           <div className="pt-[30px]">
             <Link href="/">
               <Logo className="h-8 w-auto" />
@@ -71,7 +73,7 @@ export default function SignUpPage() {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       placeholder="First Name"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
@@ -90,7 +92,7 @@ export default function SignUpPage() {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       placeholder="Last Name"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
@@ -277,7 +279,7 @@ export default function SignUpPage() {
                   Sign Up with Google
                 </button>
 
-                <div className="text-center mt-4">
+                <div className="text-center">
                   <span className="text-dark-60 text-[14px] font-hanken">
                     Already have an account?{" "}
                   </span>
@@ -293,7 +295,8 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        <div className="w-full lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden flex items-center justify-center">
+        {/* Right Section - Testimonial (50%) */}
+        <div className="w-full lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden flex items-center justify-center lg:h-screen h-auto py-12 lg:py-0 mt-8 lg:mt-0">
           <div className="absolute inset-0">
             <div className="absolute bottom-[-50px] right-[-280px]">
               <PatternHero className="w-[1250px] h-full" />
@@ -307,7 +310,8 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          <div className="flex items-center justify-center w-full p-12 relative z-10">
+          {/* Testimonial Card */}
+          <div className="flex items-center justify-center w-full p-6 lg:p-12 relative z-10">
             <TestimonialCard
               variant="auth"
               review="Your company is truly upstanding and is behind its product 100%. It's the perfect solution for our business. It has really helped our business."
@@ -320,7 +324,10 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* <Footer /> */}
+      {/* Footer Section - Below the screen */}
+      <div className="bg-white">
+        <Footer />
+      </div>
     </div>
   );
 }
