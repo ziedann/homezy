@@ -6,7 +6,6 @@ import Logo from "@assets/icons/logo.svg";
 import CloudLine from "@assets/images/cloud-line.svg";
 import PatternHero from "@assets/images/pattern-hero.svg";
 import TestimonialCard from "@/app/components/ui/TestimonialCard";
-import ButtonText from "@/app/components/ui/ButtonText";
 import Footer from "@/app/components/layouts/Footer";
 
 export default function SignUpPage() {
@@ -36,9 +35,7 @@ export default function SignUpPage() {
 
   return (
     <div className="bg-white">
-      {/* Main Content Container */}
       <div className="min-h-screen lg:h-screen flex flex-col lg:flex-row">
-        {/* Left Section - Sign Up Form (50%) */}
         <div className="w-full lg:w-1/2 flex flex-col px-8 lg:px-12 pb-8 lg:pb-0">
           <div className="pt-[30px]">
             <Link href="/">
@@ -295,7 +292,6 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        {/* Right Section - Testimonial (50%) */}
         <div className="w-full lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden flex items-center justify-center lg:h-screen h-auto py-12 lg:py-0 mt-8 lg:mt-0">
           <div className="absolute inset-0">
             <div className="absolute bottom-[-50px] right-[-280px]">
@@ -310,7 +306,6 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          {/* Testimonial Card */}
           <div className="flex items-center justify-center w-full p-6 lg:p-12 relative z-10">
             <TestimonialCard
               variant="auth"
@@ -324,7 +319,6 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* Footer Section - Below the screen */}
       <div className="bg-white">
         <Footer />
       </div>

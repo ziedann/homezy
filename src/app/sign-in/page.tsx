@@ -6,7 +6,6 @@ import Logo from "@assets/icons/logo.svg";
 import CloudLine from "@assets/images/cloud-line.svg";
 import PatternHero from "@assets/images/pattern-hero.svg";
 import TestimonialCard from "@/app/components/ui/TestimonialCard";
-import ButtonText from "@/app/components/ui/ButtonText";
 import Footer from "@/app/components/layouts/Footer";
 
 export default function SignInPage() {
@@ -16,6 +15,8 @@ export default function SignInPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,28 +24,89 @@ export default function SignInPage() {
       ...prev,
       [name]: value,
     }));
+  
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    
+    // Validate individual field on blur
+    if (name === 'email') {
+      if (!value.trim()) {
+        setErrors((prev) => ({ ...prev, email: "Email is required" }));
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        setErrors((prev) => ({ ...prev, email: "Please enter a valid email address" }));
+      }
+    } else if (name === 'password') {
+      if (!value.trim()) {
+        setErrors((prev) => ({ ...prev, password: "Password is required" }));
+      } else if (value.length < 6) {
+        setErrors((prev) => ({ ...prev, password: "Password must be at least 6 characters long" }));
+      }
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    // Password validation
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle sign in logic here
-    console.log("Sign in data:", formData);
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      console.log("Sign in data:", formData);
+      // Here you would typically make an API call to authenticate the user
+      
+    } catch (error) {
+      console.error("Sign in error:", error);
+      setErrors({ general: "An error occurred during sign in. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="bg-white">
-      {/* Main Content Container */}
       <div className="min-h-screen lg:h-screen flex flex-col lg:flex-row">
-        {/* Left Section - Sign In Form (50%) */}
         <div className="w-full lg:w-1/2 flex flex-col px-8 lg:px-16 pb-8 lg:pb-0">
-          {/* Logo Container - Top */}
           <div className="pt-8 pb-4">
             <Link href="/">
               <Logo className="h-8 w-auto" />
             </Link>
           </div>
 
-          {/* Main Content Container - Center */}
           <div className="flex-1 flex flex-col justify-center">
             <div className="max-w-[500px] mx-auto w-full">
               <div className="my-[40px] flex flex-col gap-2">
@@ -57,7 +119,13 @@ export default function SignInPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Email Field */}
+                {/* General Error Message */}
+                {errors.general && (
+                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-[15px] text-[14px]">
+                    {errors.general}
+                  </div>
+                )}
+
                 <div>
                   <label
                     htmlFor="email"
@@ -71,13 +139,18 @@ export default function SignInPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={handleInputBlur}
                     placeholder="Email Address"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className={`w-full px-4 py-3 border rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                      errors.email ? 'border-red-500' : 'border-gray-200'
+                    }`}
                     required
                   />
+                  {errors.email && (
+                    <p className="text-red-500 text-[14px] mt-1">{errors.email}</p>
+                  )}
                 </div>
 
-                {/* Password Field */}
                 <div>
                   <label
                     htmlFor="password"
@@ -92,8 +165,11 @@ export default function SignInPage() {
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
+                      onBlur={handleInputBlur}
                       placeholder="Password"
-                      className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className={`w-full px-4 py-3 pr-12 border rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                        errors.password ? 'border-red-500' : 'border-gray-200'
+                      }`}
                       required
                     />
                     <button
@@ -124,9 +200,11 @@ export default function SignInPage() {
                       </svg>
                     </button>
                   </div>
+                  {errors.password && (
+                    <p className="text-red-500 text-[14px] mt-1">{errors.password}</p>
+                  )}
                 </div>
 
-                {/* Remember Me & Forgot Password */}
                 <div className="flex items-center justify-between">
                   <label className="flex items-center">
                     <input
@@ -147,15 +225,25 @@ export default function SignInPage() {
                   </Link>
                 </div>
 
-                {/* Sign In Button */}
                 <button
                   type="submit"
-                  className="w-full py-4 px-6 bg-[#191A23] text-white rounded-[15px] text-[16px] font-bold hover:bg-[#191A23]/80 transition-all duration-300"
+                  disabled={isSubmitting}
+                  className={`w-full py-4 px-6 rounded-[15px] text-[16px] font-bold transition-all duration-300 ${
+                    isSubmitting
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-[#191A23] hover:bg-[#191A23]/80'
+                  } text-white`}
                 >
-                  Sign In
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Signing In...
+                    </div>
+                  ) : (
+                    'Sign In'
+                  )}
                 </button>
 
-                {/* Google Sign In Button */}
                 <button
                   type="button"
                   className="w-full flex items-center justify-center gap-3 py-4 px-6 border border-gray-200 rounded-[15px] text-dark-100 text-[16px] font-medium hover:bg-gray-50 transition-colors"
@@ -181,7 +269,6 @@ export default function SignInPage() {
                   Sign In with Google
                 </button>
 
-                {/* Sign Up Link */}
                 <div className="text-center">
                   <span className="text-dark-60 text-[14px]">
                     Don't you have an account?{" "}
@@ -198,16 +285,12 @@ export default function SignInPage() {
           </div>
         </div>
 
-        {/* Right Section - Testimonial (50%) */}
         <div className="w-full lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden flex items-center justify-center lg:h-screen h-auto py-12 lg:py-0 mt-8 lg:mt-0">
-          {/* Background Pattern */}
           <div className="absolute inset-0">
-            {/* Pattern Hero SVG */}
             <div className="absolute bottom-[-50px] right-[-280px]">
               <PatternHero className="w-[1250px] h-full" />
             </div>
 
-            {/* Cloud Line Pattern */}
             <div className="absolute top-24 left-10 z-20">
               <CloudLine className="w-[300px] h-full [&_path]:fill-white" />
             </div>
@@ -216,7 +299,6 @@ export default function SignInPage() {
             </div>
           </div>
 
-          {/* Testimonial Card */}
           <div className="flex items-center justify-center w-full p-6 lg:p-12 relative z-10">
             <TestimonialCard
               variant="auth"
@@ -230,7 +312,6 @@ export default function SignInPage() {
         </div>
       </div>
 
-      {/* Footer Section - Below the screen */}
       <div className="bg-white">
         <Footer />
       </div>
