@@ -31,24 +31,19 @@ export default function SignUpPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle sign up logic here
     console.log("Sign up data:", formData);
   };
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Main Content Container */}
       <div className="flex-1 flex flex-col lg:flex-row">
-        {/* Left Section - Sign Up Form (50%) */}
         <div className="w-full lg:w-1/2 flex flex-col px-8 lg:px-12">
-          {/* Logo Container - Top */}
           <div className="pt-[30px]">
             <Link href="/">
               <Logo className="h-8 w-auto" />
             </Link>
           </div>
 
-          {/* Main Content Container - Center */}
           <div className="flex-1 flex flex-col justify-center">
             <div className="max-w-[500px] mx-auto w-full">
               <div className="my-[40px] flex flex-col gap-2">
@@ -60,13 +55,12 @@ export default function SignUpPage() {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* First Name and Last Name Fields - Side by Side */}
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label
                       htmlFor="firstName"
-                      className="block text-dark-100 text-[16px] font-bold mb-2"
+                      className="block text-dark-100 text-[14px] font-bold mb-2"
                     >
                       First Name
                     </label>
@@ -77,7 +71,7 @@ export default function SignUpPage() {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       placeholder="First Name"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       required
                     />
                   </div>
@@ -96,17 +90,16 @@ export default function SignUpPage() {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       placeholder="Last Name"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       required
                     />
                   </div>
                 </div>
 
-                {/* Email Field */}
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-dark-100 text-[16px] font-bold mb-2"
+                    className="block text-dark-100 text-[14px] font-bold mb-2"
                   >
                     Email Address
                   </label>
@@ -117,17 +110,16 @@ export default function SignUpPage() {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="Email Address"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     required
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Password Field */}
                   <div>
                     <label
                       htmlFor="password"
-                      className="block text-dark-100 text-[16px] font-bold mb-2"
+                      className="block text-dark-100 text-[14px] font-bold mb-2"
                     >
                       Password
                     </label>
@@ -139,7 +131,7 @@ export default function SignUpPage() {
                         value={formData.password}
                         onChange={handleInputChange}
                         placeholder="Password"
-                        className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         required
                       />
                       <button
@@ -172,11 +164,10 @@ export default function SignUpPage() {
                     </div>
                   </div>
 
-                  {/* Confirm Password Field */}
                   <div>
                     <label
                       htmlFor="confirmPassword"
-                      className="block text-dark-100 text-[16px] font-bold mb-2"
+                      className="block text-dark-100 text-[14px] font-bold mb-2"
                     >
                       Confirm Password
                     </label>
@@ -188,7 +179,7 @@ export default function SignUpPage() {
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
                         placeholder="Password"
-                        className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         required
                       />
                       <button
@@ -224,8 +215,7 @@ export default function SignUpPage() {
                   </div>
                 </div>
 
-                {/* Terms and Conditions */}
-                <div className="flex items-center">
+                <div className="flex items-center py-2">
                   <input
                     type="checkbox"
                     id="acceptTerms"
@@ -255,18 +245,16 @@ export default function SignUpPage() {
                   </label>
                 </div>
 
-                {/* Sign Up Button */}
                 <button
                   type="submit"
-                  className="w-full py-4 px-6 bg-[#191A23] text-white rounded-[15px] text-[16px] font-bold hover:bg-[#191A23]/80 transition-all duration-300"
+                  className="w-full py-4 px-6 bg-[#191A23] text-white rounded-[15px] text-[14px] font-bold hover:bg-[#191A23]/80 transition-all duration-300"
                 >
                   Sign Up
                 </button>
 
-                {/* Google Sign Up Button */}
                 <button
                   type="button"
-                  className="w-full flex items-center justify-center gap-3 py-4 px-6 border border-gray-200 rounded-[15px] text-dark-100 text-[16px] font-medium hover:bg-gray-50 transition-colors"
+                  className="w-full flex items-center justify-center gap-3 py-4 px-6 border border-gray-200 rounded-[15px] text-dark-100 text-[14px] font-medium hover:bg-gray-50 transition-colors"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path
@@ -289,14 +277,13 @@ export default function SignUpPage() {
                   Sign Up with Google
                 </button>
 
-                {/* Sign In Link */}
-                <div className="text-center">
-                  <span className="text-dark-60 text-[14px]">
+                <div className="text-center mt-4">
+                  <span className="text-dark-60 text-[14px] font-hanken">
                     Already have an account?{" "}
                   </span>
                   <Link
                     href="/sign-in"
-                    className="text-primary-500 text-[14px] font-medium hover:underline"
+                    className="text-primary-500 text-[14px] font-medium font-hanken hover:underline"
                   >
                     Sign In
                   </Link>
@@ -306,16 +293,12 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        {/* Right Section - Testimonial (50%) */}
         <div className="w-full lg:w-1/2 bg-[#CFB9FD] relative overflow-hidden flex items-center justify-center">
-          {/* Background Pattern */}
           <div className="absolute inset-0">
-            {/* Pattern Hero SVG */}
             <div className="absolute bottom-[-50px] right-[-280px]">
               <PatternHero className="w-[1250px] h-full" />
             </div>
 
-            {/* Cloud Line Pattern */}
             <div className="absolute top-24 left-10 z-20">
               <CloudLine className="w-[300px] h-full [&_path]:fill-white" />
             </div>
@@ -324,7 +307,6 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          {/* Testimonial Card */}
           <div className="flex items-center justify-center w-full p-12 relative z-10">
             <TestimonialCard
               variant="auth"
@@ -338,8 +320,7 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

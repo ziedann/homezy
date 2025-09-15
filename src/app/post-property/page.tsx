@@ -1,113 +1,142 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import { Metadata } from 'next'
-import CtaSection from '@/app/components/sections/CtaSection'
-import SectionContainer from '@/app/components/ui/SectionContainer'
-import SectionHeader from '@/app/components/ui/SectionHeader'
-import ButtonText from '@/app/components/ui/ButtonText'
-import Location from '@assets/icons/location.svg'
-import Bed from '@assets/icons/bed.svg'
-import Bath from '@assets/icons/bath.svg'
-import SurfaceArea from '@assets/icons/surface-area.svg'
-import Gallery from '@assets/icons/gallery.svg'
+import React, { useState, useEffect } from "react";
+import CtaSection from "@/app/components/sections/CtaSection";
+import SectionContainer from "@/app/components/ui/SectionContainer";
+import ButtonText from "@/app/components/ui/ButtonText";
+import CustomDropdown from "@/app/components/ui/CustomDropdown";
+import Download from "@assets/icons/download.svg";
 
 export default function PostPropertyPage() {
   const [formData, setFormData] = useState({
-    // Client Details
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    city: '',
-    address: '',
-    
-    // Property Information
-    listingTitle: '',
-    propertyType: '',
-    listingType: '',
-    price: '',
-    landSqft: '',
-    constructionSqft: '',
-    bedrooms: '',
-    bathrooms: '',
-    parkingLots: '',
-    kitchen: '',
-    description: '',
-    
-    // Location Details
-    country: '',
-    cityLocation: '',
-    addressLine1: '',
-    addressLine2: '',
-    state: '',
-    zipCode: '',
-    
-    // Images
-    images: [] as File[]
-  })
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    city: "",
+    address: "",
+
+    listingTitle: "",
+    propertyType: "",
+    propertyTypeLabel: "",
+    listingType: "",
+    listingTypeLabel: "",
+    price: "",
+    landSqft: "",
+    constructionSqft: "",
+    bedrooms: "",
+    bedroomsLabel: "",
+    bathrooms: "",
+    bathroomsLabel: "",
+    parkingLots: "",
+    kitchen: "",
+    description: "",
+
+    country: "",
+    cityLocation: "",
+    addressLine1: "",
+    addressLine2: "",
+    state: "",
+    zipCode: "",
+
+    images: [] as File[],
+  });
+
+  const [isPropertyTypeOpen, setIsPropertyTypeOpen] = useState(false);
+  const [isListingTypeOpen, setIsListingTypeOpen] = useState(false);
 
   const propertyTypes = [
-    'House',
-    'Apartment',
-    'Condo',
-    'Townhouse',
-    'Villa',
-    'Studio',
-    'Penthouse',
-    'Duplex'
-  ]
+    { value: "house", label: "House" },
+    { value: "apartment", label: "Apartment" },
+    { value: "condo", label: "Condo" },
+    { value: "townhouse", label: "Townhouse" },
+    { value: "villa", label: "Villa" },
+    { value: "studio", label: "Studio" },
+    { value: "penthouse", label: "Penthouse" },
+    { value: "duplex", label: "Duplex" },
+  ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+  const listingTypes = [
+    { value: "sale", label: "For Sale" },
+    { value: "rent", label: "For Rent" },
+  ];
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
+  const handleDropdownSelect = (
+    field: string,
+    value: string,
+    label: string
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+      [`${field}Label`]: label,
+    }));
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
-    setFormData(prev => ({
+    const files = Array.from(e.target.files || []);
+    setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...files]
-    }))
-  }
+      images: [...prev.images, ...files],
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Property data:', formData)
-    // Handle form submission here
-  }
+    e.preventDefault();
+    console.log("Property data:", formData);
+  };
+
+  useEffect(() => {
+    return () => {
+      formData.images.forEach((file) => {
+        URL.revokeObjectURL(URL.createObjectURL(file));
+      });
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <main className="pt-[100px]">
-        {/* Hero Section */}
+      <main>
         <SectionContainer>
-          <div className="text-center py-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-dark-100 mb-4">
+          <div className="text-center">
+            <h1 className="text-[40px] md:text-[80px] md:w-[600px] w-[300px] mx-auto text-dark-[#191A23] md:leading-[80px] leading-[40px] tracking-[-0.02em] font-bold font-syne">
               Post a property for sale or rent
             </h1>
           </div>
         </SectionContainer>
 
-        {/* Property Form */}
         <SectionContainer>
           <div className="max-w-4xl mx-auto">
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Client Details */}
-              <div className="bg-white rounded-2xl p-8 border border-gray-200">
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-dark-100 mb-2">Client Details</h2>
-                  <p className="text-gray-600">Amet minim mollit non deserunt ullamco</p>
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white rounded-2xl md:p-8 p-6 border border-gray-200 space-y-12"
+            >
+              <div>
+                <div className="mb-[32px]">
+                  <h2 className="md:text-[24px] text-[18px] font-bold text-dark-100 mb-[8px] font-syne">
+                    Client Details
+                  </h2>
+                  <p className="text-gray-80 font-hanken font-light text-[16px]">
+                    Amet minim mollit non deserunt ullamco
+                  </p>
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
-                      First Name *
+                    <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                      First Name
                     </label>
                     <input
                       type="text"
@@ -115,14 +144,14 @@ export default function PostPropertyPage() {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       placeholder="John D"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
-                      Last Name *
+                    <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                      Last Name
                     </label>
                     <input
                       type="text"
@@ -130,14 +159,14 @@ export default function PostPropertyPage() {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       placeholder="Last Name"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
-                      Email Address *
+                    <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                      Email Address
                     </label>
                     <input
                       type="email"
@@ -145,14 +174,14 @@ export default function PostPropertyPage() {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="Email Address"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
-                      Phone Number *
+                    <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                      Phone Number
                     </label>
                     <input
                       type="tel"
@@ -160,14 +189,14 @@ export default function PostPropertyPage() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="Phone Number"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
-                      City *
+                    <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                      City
                     </label>
                     <input
                       type="text"
@@ -175,14 +204,14 @@ export default function PostPropertyPage() {
                       value={formData.city}
                       onChange={handleInputChange}
                       placeholder="City"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
-                      Address *
+                    <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                      Address
                     </label>
                     <input
                       type="text"
@@ -190,24 +219,27 @@ export default function PostPropertyPage() {
                       value={formData.address}
                       onChange={handleInputChange}
                       placeholder="Address"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Property Information */}
-              <div className="bg-white rounded-2xl p-8 border border-gray-200">
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-dark-100 mb-2">Property Information</h2>
-                  <p className="text-gray-600">Amet minim mollit non deserunt ullamco</p>
+              <div>
+                <div className="mb-[32px]">
+                  <h2 className="md:text-[24px] text-[18px] font-bold text-dark-100 mb-[8px] font-syne">
+                    Property Information
+                  </h2>
+                  <p className="text-gray-80 font-hanken font-light text-[18px]">
+                    Amet minim mollit non deserunt ullamcol
+                  </p>
                 </div>
-                
+
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
-                      Listing Title *
+                    <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                      Listing Title
                     </label>
                     <input
                       type="text"
@@ -215,51 +247,50 @@ export default function PostPropertyPage() {
                       value={formData.listingTitle}
                       onChange={handleInputChange}
                       placeholder="Listing Title"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
-                        Property Type *
+                      <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                        Property Type
                       </label>
-                      <select
-                        name="propertyType"
-                        value={formData.propertyType}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-                        required
-                      >
-                        <option value="">Property Type</option>
-                        {propertyTypes.map(type => (
-                          <option key={type} value={type}>{type}</option>
-                        ))}
-                      </select>
+                      <CustomDropdown
+                        isOpen={isPropertyTypeOpen}
+                        setIsOpen={setIsPropertyTypeOpen}
+                        selectedValue={formData.propertyType}
+                        selectedLabel={formData.propertyTypeLabel}
+                        onSelect={(value, label) =>
+                          handleDropdownSelect("propertyType", value, label)
+                        }
+                        options={propertyTypes}
+                        placeholder="Property Type"
+                      />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
-                        Listing Type *
+                      <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                        Listing Type
                       </label>
-                      <select
-                        name="listingType"
-                        value={formData.listingType}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-                        required
-                      >
-                        <option value="">Listing Type</option>
-                        <option value="sale">For Sale</option>
-                        <option value="rent">For Rent</option>
-                      </select>
+                      <CustomDropdown
+                        isOpen={isListingTypeOpen}
+                        setIsOpen={setIsListingTypeOpen}
+                        selectedValue={formData.listingType}
+                        selectedLabel={formData.listingTypeLabel}
+                        onSelect={(value, label) =>
+                          handleDropdownSelect("listingType", value, label)
+                        }
+                        options={listingTypes}
+                        placeholder="Listing Type"
+                      />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
-                      Price *
+                    <label className="block text-sm font-semibold text-dark-100 mb-2 font-hanken">
+                      Price
                     </label>
                     <input
                       type="number"
@@ -267,14 +298,14 @@ export default function PostPropertyPage() {
                       value={formData.price}
                       onChange={handleInputChange}
                       placeholder="0"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 md:gap-[24px] gap-[12px]">
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
+                      <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
                         Land sqft.
                       </label>
                       <input
@@ -282,14 +313,14 @@ export default function PostPropertyPage() {
                         name="landSqft"
                         value={formData.landSqft}
                         onChange={handleInputChange}
-                        placeholder="0 sqft"
-                        min="0"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        placeholder="0"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
+                        required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
+                      <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
                         Construction sqft.
                       </label>
                       <input
@@ -297,16 +328,14 @@ export default function PostPropertyPage() {
                         name="constructionSqft"
                         value={formData.constructionSqft}
                         onChange={handleInputChange}
-                        placeholder="0 sqft"
-                        min="0"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        placeholder="0"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
+                        required
                       />
                     </div>
-                  </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
+                      <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
                         Bedrooms
                       </label>
                       <input
@@ -315,14 +344,14 @@ export default function PostPropertyPage() {
                         value={formData.bedrooms}
                         onChange={handleInputChange}
                         placeholder="0"
-                        min="0"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
+                        required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
-                        Bathrooms
+                      <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
+                        Bathroom
                       </label>
                       <input
                         type="number"
@@ -330,14 +359,13 @@ export default function PostPropertyPage() {
                         value={formData.bathrooms}
                         onChange={handleInputChange}
                         placeholder="0"
-                        min="0"
-                        step="0.5"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
+                        required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
+                      <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
                         Parking Lots
                       </label>
                       <input
@@ -346,13 +374,13 @@ export default function PostPropertyPage() {
                         value={formData.parkingLots}
                         onChange={handleInputChange}
                         placeholder="0"
-                        min="0"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
+                        required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
+                      <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
                         Kitchen
                       </label>
                       <input
@@ -361,14 +389,14 @@ export default function PostPropertyPage() {
                         value={formData.kitchen}
                         onChange={handleInputChange}
                         placeholder="0"
-                        min="0"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
+                        required
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
+                    <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
                       Description
                     </label>
                     <textarea
@@ -376,24 +404,21 @@ export default function PostPropertyPage() {
                       value={formData.description}
                       onChange={handleInputChange}
                       placeholder="Description"
+                      className="w-full h-[100px] px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
+                      required
                       rows={4}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Image Upload */}
-              <div className="bg-white rounded-2xl p-8 border border-gray-200">
-                <div className="mb-6">
-                  <label className="block text-sm font-semibold text-dark-100 mb-2">
+              <div>
+                <div>
+                  <label className="block text-sm font-semibold text-dark-100 mb-[8px] font-hanken">
                     Image
                   </label>
                 </div>
-                
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                  <Gallery className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 mb-4">Upload Image</p>
+                <div className="border-2 border-dashed border-gray-300 rounded-[15px] p-4 cursor-pointer hover:bg-gray-50 transition-colors">
                   <input
                     type="file"
                     multiple
@@ -404,24 +429,68 @@ export default function PostPropertyPage() {
                   />
                   <label
                     htmlFor="image-upload"
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
+                    className="flex flex-row items-center justify-center gap-[12px] cursor-pointer"
                   >
-                    Choose Images
+                    <Download className="size-[24px] text-gray-400" />
+                    <p className="text-[#B7B8C1] font-hanken font-regular text-[16px]">
+                      Upload Image
+                    </p>
                   </label>
                 </div>
+
+                {formData.images.length > 0 && (
+                  <div className="mt-4">
+                    <h4 className="text-sm font-semibold text-dark-100 mb-3 font-hanken">
+                      Uploaded Images ({formData.images.length})
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {formData.images.map((file, index) => (
+                        <div key={index} className="relative group">
+                          <div className="aspect-square rounded-[15px] overflow-hidden bg-gray-100 border border-gray-200">
+                            <img
+                              src={URL.createObjectURL(file)}
+                              alt={`Upload ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newImages = formData.images.filter(
+                                (_, i) => i !== index
+                              );
+                              setFormData((prev) => ({
+                                ...prev,
+                                images: newImages,
+                              }));
+                            }}
+                            className="absolute top-2 right-2 size-[24px] bg-[#D6D7E0] text-black px-[6px] leading-[24px] rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                          >
+                            ×
+                          </button>
+                          <div className="mt-2">
+                            <p className="text-xs text-gray-600 truncate font-hanken">
+                              {file.name}
+                            </p>
+                            <p className="text-xs text-gray-400 font-hanken">
+                              {(file.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Location Details */}
-              <div className="bg-white rounded-2xl p-8 border border-gray-200">
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-dark-100 mb-2">Location Details (Address)</h2>
-                </div>
-                
+              <div className="w-full h-px bg-[#D6D7E0]"></div>
+
+              <div>
                 <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
-                        Country *
+                      <label className="block text-sm font-semibold text-dark-100 mb-2 font-hanken">
+                        Country
                       </label>
                       <input
                         type="text"
@@ -429,14 +498,14 @@ export default function PostPropertyPage() {
                         value={formData.country}
                         onChange={handleInputChange}
                         placeholder="Country"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                         required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
-                        City *
+                      <label className="block text-sm font-semibold text-dark-100 mb-2 font-hanken">
+                        City
                       </label>
                       <input
                         type="text"
@@ -444,15 +513,15 @@ export default function PostPropertyPage() {
                         value={formData.cityLocation}
                         onChange={handleInputChange}
                         placeholder="City"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                         required
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
-                      Address Line 1 *
+                    <label className="block text-sm font-semibold text-dark-100 mb-2 font-hanken">
+                      Address Line 1
                     </label>
                     <input
                       type="text"
@@ -460,13 +529,13 @@ export default function PostPropertyPage() {
                       value={formData.addressLine1}
                       onChange={handleInputChange}
                       placeholder="Address Line 1"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-dark-100 mb-2">
+                    <label className="block text-sm font-semibold text-dark-100 mb-2 font-hanken">
                       Address Line 2
                     </label>
                     <input
@@ -475,14 +544,14 @@ export default function PostPropertyPage() {
                       value={formData.addressLine2}
                       onChange={handleInputChange}
                       placeholder="Address Line 2"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 md:gap-[24px] gap-[12px]">
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
-                        State *
+                      <label className="block text-sm font-semibold text-dark-100 mb-2 font-hanken">
+                        State
                       </label>
                       <input
                         type="text"
@@ -490,14 +559,14 @@ export default function PostPropertyPage() {
                         value={formData.state}
                         onChange={handleInputChange}
                         placeholder="State"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                         required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-dark-100 mb-2">
-                        ZIP Code *
+                      <label className="block text-sm font-semibold text-dark-100 mb-2 font-hanken">
+                        ZIP Code
                       </label>
                       <input
                         type="text"
@@ -505,7 +574,7 @@ export default function PostPropertyPage() {
                         value={formData.zipCode}
                         onChange={handleInputChange}
                         placeholder="ZIP Code"
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-[15px] focus:outline-none focus:border-black"
                         required
                       />
                     </div>
@@ -513,22 +582,15 @@ export default function PostPropertyPage() {
                 </div>
               </div>
 
-              {/* Submit Button */}
-              <div className="w-full">
-                <button
-                  type="submit"
-                  className="w-full bg-dark-100 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition-colors"
-                >
-                  Post Property
-                </button>
-              </div>
+              <ButtonText variant="primary" className="w-full">
+                Post Property
+              </ButtonText>
             </form>
           </div>
         </SectionContainer>
 
-        {/* CTA Section */}
         <CtaSection />
       </main>
     </div>
-  )
+  );
 }

@@ -230,8 +230,7 @@ export default function SignInPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

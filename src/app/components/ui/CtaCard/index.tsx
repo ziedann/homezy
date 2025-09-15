@@ -35,7 +35,7 @@ export default function CtaCard({
                         <input
                             type="email"
                             placeholder={placeholder}
-                            className="lg:w-[320px] w-full px-[16px] h-[56px] text-[16px] leading-[26px] font-light font-hanken text-[#B7B8C1] focus:outline-none rounded-[15px] lg:rounded-none"
+                            className="lg:w-[320px] w-full px-[16px] h-[56px] text-[16px] leading-[26px] font-regular font-hanken text-[#000000] focus:outline-none rounded-[15px] lg:rounded-none"
                         />
                         <button className="flex items-center justify-center h-[56px] lg:px-[24px] bg-[#191A23] lg:rounded-[12px] rounded-[15px] hover:bg-[#2C2D3C] transition-colors w-full lg:w-auto">
                             <span className="text-[16px] leading-[24px] font-semibold font-hanken text-white">
