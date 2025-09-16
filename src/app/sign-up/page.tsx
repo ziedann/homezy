@@ -7,8 +7,10 @@ import CloudLine from "@assets/images/cloud-line.svg";
 import PatternHero from "@assets/images/pattern-hero.svg";
 import TestimonialCard from "@/app/components/ui/TestimonialCard";
 import Footer from "@/app/components/layouts/Footer";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -40,7 +42,6 @@ export default function SignUpPage() {
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
-    // Validate individual field on blur
     if (name === 'firstName') {
       if (!value.trim()) {
         setErrors((prev) => ({ ...prev, firstName: "First name is required" }));
@@ -73,38 +74,32 @@ export default function SignUpPage() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    // First name validation
     if (!formData.firstName.trim()) {
       newErrors.firstName = "First name is required";
     }
 
-    // Last name validation
     if (!formData.lastName.trim()) {
       newErrors.lastName = "Last name is required";
     }
 
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    // Password validation
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters long";
     }
 
-    // Confirm password validation
     if (!formData.confirmPassword.trim()) {
       newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.confirmPassword !== formData.password) {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
-    // Terms acceptance validation
     if (!acceptTerms) {
       newErrors.acceptTerms = "You must accept the terms and conditions";
     }
@@ -123,12 +118,28 @@ export default function SignUpPage() {
     setIsSubmitting(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
       
-      console.log("Sign up data:", formData);
-      // Here you would typically make an API call to register the user
+      const result = await response.json();
       
+      if (!response.ok) {
+        setErrors({ general: result.message || "Failed to sign up" });
+      } else {
+        console.log("Sign up successful:", result);
+        router.push("/sign-in");
+      }      
+      alert("Sign up successful");
     } catch (error) {
       console.error("Sign up error:", error);
       setErrors({ general: "An error occurred during sign up. Please try again." });
@@ -159,9 +170,8 @@ export default function SignUpPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* General Error Message */}
                 {errors.general && (
-                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-[15px] text-[14px]">
+                  <div className="bg-[#ff4646]/10 border border-[#ff4646] text-black px-4 py-3 rounded-[15px] text-[14px]">
                     {errors.general}
                   </div>
                 )}
