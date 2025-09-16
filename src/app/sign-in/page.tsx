@@ -7,8 +7,10 @@ import CloudLine from "@assets/images/cloud-line.svg";
 import PatternHero from "@assets/images/pattern-hero.svg";
 import TestimonialCard from "@/app/components/ui/TestimonialCard";
 import Footer from "@/app/components/layouts/Footer";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -36,7 +38,6 @@ export default function SignInPage() {
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
-    // Validate individual field on blur
     if (name === 'email') {
       if (!value.trim()) {
         setErrors((prev) => ({ ...prev, email: "Email is required" }));
@@ -55,14 +56,12 @@ export default function SignInPage() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    // Password validation
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
@@ -75,23 +74,33 @@ export default function SignInPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-
+  
+    if (!validateForm()) return;
+  
     setIsSubmitting(true);
-    
+  
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      console.log("Sign in data:", formData);
-      // Here you would typically make an API call to authenticate the user
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        setErrors({ general: data.message || "Sign in failed" });
+        return;
+      }
+  
+      console.log("Login successful:", data);
+  
+      alert("Sign in successful");
+      router.push("/post-property");
       
     } catch (error) {
       console.error("Sign in error:", error);
-      setErrors({ general: "An error occurred during sign in. Please try again." });
+      setErrors({ general: "An error occurred. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -119,9 +128,8 @@ export default function SignInPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* General Error Message */}
                 {errors.general && (
-                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-[15px] text-[14px]">
+                  <div className="bg-[#ff4646]/10 border border-[#ff4646] text-black px-4 py-3 rounded-[15px] text-[14px]">
                     {errors.general}
                   </div>
                 )}
@@ -158,6 +166,7 @@ export default function SignInPage() {
                   </label>
                   <div className="relative">
                     <input
+                      type={showPassword ? "text" : "password"}
                       id="password"
                       name="password"
                       value={formData.password}
@@ -224,20 +233,13 @@ export default function SignInPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full py-4 px-6 rounded-[15px] text-[16px] font-bold transition-all duration-300 ${
+                  className={`w-full py-4 px-6 rounded-[15px] text-[14px] font-bold transition-all duration-300 ${
                     isSubmitting
-                      ? 'bg-gray-400 cursor-not-allowed'
+                      ? 'bg-[#191A23]/70 cursor-not-allowed'
                       : 'bg-[#191A23] hover:bg-[#191A23]/80'
                   } text-white`}
                 >
-                  {isSubmitting ? (
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      Signing In...
-                    </div>
-                  ) : (
-                    'Sign In'
-                  )}
+                  {isSubmitting ? 'Signing In...' : 'Sign In'}
                 </button>
 
                 <button
