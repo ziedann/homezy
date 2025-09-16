@@ -19,6 +19,8 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,11 +28,113 @@ export default function SignUpPage() {
       ...prev,
       [name]: value,
     }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    
+    // Validate individual field on blur
+    if (name === 'firstName') {
+      if (!value.trim()) {
+        setErrors((prev) => ({ ...prev, firstName: "First name is required" }));
+      }
+    } else if (name === 'lastName') {
+      if (!value.trim()) {
+        setErrors((prev) => ({ ...prev, lastName: "Last name is required" }));
+      }
+    } else if (name === 'email') {
+      if (!value.trim()) {
+        setErrors((prev) => ({ ...prev, email: "Email is required" }));
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        setErrors((prev) => ({ ...prev, email: "Please enter a valid email address" }));
+      }
+    } else if (name === 'password') {
+      if (!value.trim()) {
+        setErrors((prev) => ({ ...prev, password: "Password is required" }));
+      } else if (value.length < 6) {
+        setErrors((prev) => ({ ...prev, password: "Password must be at least 6 characters long" }));
+      }
+    } else if (name === 'confirmPassword') {
+      if (!value.trim()) {
+        setErrors((prev) => ({ ...prev, confirmPassword: "Please confirm your password" }));
+      } else if (value !== formData.password) {
+        setErrors((prev) => ({ ...prev, confirmPassword: "Passwords do not match" }));
+      }
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    // First name validation
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+    }
+
+    // Last name validation
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+    }
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    // Password validation
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    // Confirm password validation
+    if (!formData.confirmPassword.trim()) {
+      newErrors.confirmPassword = "Please confirm your password";
+    } else if (formData.confirmPassword !== formData.password) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    // Terms acceptance validation
+    if (!acceptTerms) {
+      newErrors.acceptTerms = "You must accept the terms and conditions";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Sign up data:", formData);
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      console.log("Sign up data:", formData);
+      // Here you would typically make an API call to register the user
+      
+    } catch (error) {
+      console.error("Sign up error:", error);
+      setErrors({ general: "An error occurred during sign up. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -55,6 +159,12 @@ export default function SignUpPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* General Error Message */}
+                {errors.general && (
+                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-[15px] text-[14px]">
+                    {errors.general}
+                  </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label
@@ -69,10 +179,15 @@ export default function SignUpPage() {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
+                      onBlur={handleInputBlur}
                       placeholder="First Name"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:border-black"
-                      required
+                      className={`w-full px-4 py-3 border rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-[#191A23] focus:border-transparent ${
+                        errors.firstName ? 'border-[#ff4646]' : 'border-gray-200'
+                      }`}
                     />
+                    {errors.firstName && (
+                      <p className="text-[#ff4646] text-[14px] mt-1">{errors.firstName}</p>
+                    )}
                   </div>
 
                   <div>
@@ -83,15 +198,20 @@ export default function SignUpPage() {
                       Last Name
                     </label>
                     <input
-                      type="text"
+                      type="text" 
                       id="lastName"
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
+                      onBlur={handleInputBlur}
                       placeholder="Last Name"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:border-black"
-                      required
+                      className={`w-full px-4 py-3 border rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-[#191A23] focus:border-transparent ${
+                        errors.lastName ? 'border-[#ff4646]' : 'border-gray-200'
+                      }`}
                     />
+                    {errors.lastName && (
+                      <p className="text-[#ff4646] text-[14px] mt-1">{errors.lastName}</p>
+                    )}
                   </div>
                 </div>
 
@@ -103,15 +223,19 @@ export default function SignUpPage() {
                     Email Address
                   </label>
                   <input
-                    type="email"
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={handleInputBlur}
                     placeholder="Email Address"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    required
+                    className={`w-full px-4 py-3 border rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-[#191A23] focus:border-transparent ${
+                      errors.email ? 'border-[#ff4646]' : 'border-gray-200'
+                    }`}
                   />
+                  {errors.email && (
+                    <p className="text-[#ff4646] text-[14px] mt-1">{errors.email}</p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -129,9 +253,11 @@ export default function SignUpPage() {
                         name="password"
                         value={formData.password}
                         onChange={handleInputChange}
+                        onBlur={handleInputBlur}
                         placeholder="Password"
-                        className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        required
+                        className={`w-full px-4 py-3 pr-12 border rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-[#191A23] focus:border-transparent ${
+                          errors.password ? 'border-[#ff4646]' : 'border-gray-200'
+                        }`}
                       />
                       <button
                         type="button"
@@ -161,6 +287,9 @@ export default function SignUpPage() {
                         </svg>
                       </button>
                     </div>
+                    {errors.password && (
+                      <p className="text-[#ff4646] text-[14px] mt-1">{errors.password}</p>
+                    )}
                   </div>
 
                   <div>
@@ -177,9 +306,11 @@ export default function SignUpPage() {
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
-                        placeholder="Password"
-                        className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        required
+                        onBlur={handleInputBlur}
+                        placeholder="Confirm Password"
+                        className={`w-full px-4 py-3 pr-12 border rounded-[15px] text-[14px] focus:outline-none focus:ring-2 focus:ring-[#191A23] focus:border-transparent ${
+                          errors.confirmPassword ? 'border-[#ff4646]' : 'border-gray-200'
+                        }`}
                       />
                       <button
                         type="button"
@@ -211,6 +342,9 @@ export default function SignUpPage() {
                         </svg>
                       </button>
                     </div>
+                    {errors.confirmPassword && (
+                      <p className="text-[#ff4646] text-[14px] mt-1">{errors.confirmPassword}</p>
+                    )}
                   </div>
                 </div>
 
@@ -220,8 +354,7 @@ export default function SignUpPage() {
                     id="acceptTerms"
                     checked={acceptTerms}
                     onChange={(e) => setAcceptTerms(e.target.checked)}
-                    className="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500 hover:cursor-pointer"
-                    required
+                    className="w-4 h-4 text-[#191A23] border-gray-300 rounded focus:ring-[#191A23] hover:cursor-pointer"
                   />
                   <label
                     htmlFor="acceptTerms"
@@ -243,12 +376,20 @@ export default function SignUpPage() {
                     </Link>
                   </label>
                 </div>
+                {errors.acceptTerms && (
+                  <p className="text-[#ff4646] text-[14px] mt-1">{errors.acceptTerms}</p>
+                )}
 
                 <button
                   type="submit"
-                  className="w-full py-4 px-6 bg-[#191A23] text-white rounded-[15px] text-[14px] font-bold hover:bg-[#191A23]/80 transition-all duration-300"
+                  disabled={isSubmitting}
+                  className={`w-full py-4 px-6 rounded-[15px] text-[14px] font-bold transition-all duration-300 ${
+                    isSubmitting
+                      ? 'bg-[#191A23]/70 cursor-not-allowed'
+                      : 'bg-[#191A23] hover:bg-[#191A23]/80'
+                  } text-white`}
                 >
-                  Sign Up
+                  {isSubmitting ? 'Signing Up...' : 'Sign Up'}
                 </button>
 
                 <button

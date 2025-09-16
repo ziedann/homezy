@@ -134,20 +134,18 @@ export default function SignInPage() {
                     Email Address
                   </label>
                   <input
-                    type="email"
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
                     placeholder="Email Address"
-                    className={`w-full px-4 py-3 border rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
-                      errors.email ? 'border-red-500' : 'border-gray-200'
+                    className={`w-full px-4 py-3 border rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-[#191A23] focus:border-transparent ${
+                      errors.email ? 'border-[#ff4646]' : 'border-gray-200'
                     }`}
-                    required
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-[14px] mt-1">{errors.email}</p>
+                    <p className="text-[#ff4646] text-[14px] mt-1">{errors.email}</p>
                   )}
                 </div>
 
@@ -160,17 +158,15 @@ export default function SignInPage() {
                   </label>
                   <div className="relative">
                     <input
-                      type={showPassword ? "text" : "password"}
                       id="password"
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
                       onBlur={handleInputBlur}
                       placeholder="Password"
-                      className={`w-full px-4 py-3 pr-12 border rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
-                        errors.password ? 'border-red-500' : 'border-gray-200'
+                      className={`w-full px-4 py-3 pr-12 border rounded-[15px] text-[16px] focus:outline-none focus:ring-2 focus:ring-[#191A23] focus:border-transparent ${
+                        errors.password ? 'border-[#ff4646]' : 'border-gray-200'
                       }`}
-                      required
                     />
                     <button
                       type="button"
@@ -201,7 +197,7 @@ export default function SignInPage() {
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-500 text-[14px] mt-1">{errors.password}</p>
+                    <p className="text-[#ff4646] text-[14px] mt-1">{errors.password}</p>
                   )}
                 </div>
 
@@ -211,7 +207,7 @@ export default function SignInPage() {
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
-                      className="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500 hover:cursor-pointer"
+                      className="w-4 h-4 text-[#191A23] border-gray-300 rounded focus:ring-[#191A23] hover:cursor-pointer"
                     />
                     <span className="ml-2 text-[#868893] font-hanken font-light text-[16px]">
                       Remember Me
@@ -219,7 +215,7 @@ export default function SignInPage() {
                   </label>
                   <Link
                     href="#"
-                    className="text-primary-500 text-[14px] font-medium hover:underline"
+                    className="text-[#191A23] text-[14px] font-medium hover:underline"
                   >
                     Forgot Password
                   </Link>
